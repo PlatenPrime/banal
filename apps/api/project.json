@@ -8,9 +8,14 @@
       "executor": "nx:run-commands",
       "outputs": ["{projectRoot}/dist"],
       "options": {
-        "commands": [
-          "node -e \"require('node:fs').mkdirSync('dist',{recursive:true}); require('node:fs').writeFileSync('dist/.keep',''); console.log('api build stub ok')\""
-        ],
+        "command": "nest build",
+        "cwd": "{projectRoot}"
+      }
+    },
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "nest start --watch",
         "cwd": "{projectRoot}"
       }
     },

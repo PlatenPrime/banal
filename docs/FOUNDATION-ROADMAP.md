@@ -684,7 +684,7 @@ const getGitDiffFiles = (command) =>
 
 | Track | Steps | Status |
 | --- | --- | --- |
-| T0 Bootstrap | 001–018 | in progress (001–004 done) |
+| T0 Bootstrap | 001–018 | in progress (001–005 done) |
 | T1 Local quality | 019–024 | not started |
 | T2 Contracts | 025–030 | not started |
 | T3 API platform | 031–048 | not started |
