@@ -10,20 +10,20 @@
         "hash": "13194702717607086212"
       },
       {
-        "file": ".nvmrc",
-        "hash": "541564060168964990"
+        "file": ".gitignore",
+        "hash": "543909475324643940"
       },
       {
-        "file": "apps/.gitkeep",
-        "hash": "3244421341483603138"
+        "file": ".nvmrc",
+        "hash": "6929075154623388995"
       },
       {
         "file": "docs/FOUNDATION-ROADMAP.md",
-        "hash": "6862818254271578325"
+        "hash": "195250371225175218"
       },
       {
         "file": "docs/LOCAL_SETUP.md",
-        "hash": "3867230682270517803"
+        "hash": "17096108797825387868"
       },
       {
         "file": "libs/.gitkeep",
@@ -31,18 +31,29 @@
       },
       {
         "file": "nx.json",
-        "hash": "15923431941873395301"
+        "hash": "11350789782134724532"
       },
       {
         "file": "package-lock.json",
-        "hash": "10900806563342883363"
+        "hash": "11087707077270249306"
       },
       {
         "file": "package.json",
-        "hash": "13811219720518166950"
+        "hash": "1254873198863169024"
       }
     ],
-    "projectFileMap": {}
+    "projectFileMap": {
+      "api": [
+        {
+          "file": "apps/api/project.json",
+          "hash": "7076990949731694202"
+        },
+        {
+          "file": "apps/api/src/.gitkeep",
+          "hash": "3244421341483603138"
+        }
+      ]
+    }
   },
   "externalNodesHash": "8906043321257762361"
 }

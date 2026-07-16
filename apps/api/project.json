@@ -1,0 +1,25 @@
+{
+  "name": "api",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/api/src",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "outputs": ["{projectRoot}/dist"],
+      "options": {
+        "commands": [
+          "node -e \"require('node:fs').mkdirSync('dist',{recursive:true}); require('node:fs').writeFileSync('dist/.keep',''); console.log('api build stub ok')\""
+        ],
+        "cwd": "{projectRoot}"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node -e \"console.log('api test stub ok')\"",
+        "cwd": "{projectRoot}"
+      }
+    }
+  }
+}

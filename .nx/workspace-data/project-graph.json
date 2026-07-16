@@ -1,5 +1,60 @@
 {
-  "nodes": {},
+  "nodes": {
+    "api": {
+      "name": "api",
+      "type": "app",
+      "data": {
+        "root": "apps/api",
+        "name": "api",
+        "$schema": "../../node_modules/nx/schemas/project-schema.json",
+        "projectType": "application",
+        "sourceRoot": "apps/api/src",
+        "targets": {
+          "build": {
+            "executor": "nx:run-commands",
+            "outputs": [
+              "{projectRoot}/dist"
+            ],
+            "options": {
+              "commands": [
+                "node -e \"require('node:fs').mkdirSync('dist',{recursive:true}); require('node:fs').writeFileSync('dist/.keep',''); console.log('api build stub ok')\""
+              ],
+              "cwd": "apps/api"
+            },
+            "configurations": {},
+            "parallelism": true,
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
+            "cache": true
+          },
+          "test": {
+            "executor": "nx:run-commands",
+            "options": {
+              "command": "node -e \"console.log('api test stub ok')\"",
+              "cwd": "apps/api"
+            },
+            "configurations": {},
+            "parallelism": true,
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "default",
+              "^production"
+            ],
+            "cache": true
+          }
+        },
+        "implicitDependencies": [],
+        "tags": []
+      }
+    }
+  },
   "externalNodes": {
     "npm:@babel/code-frame": {
       "type": "npm",
@@ -3891,6 +3946,7 @@
     }
   },
   "dependencies": {
+    "api": [],
     "npm:@babel/code-frame": [
       {
         "source": "npm:@babel/code-frame",
@@ -8947,5 +9003,5 @@
   },
   "version": "6.0",
   "errors": [],
-  "computedAt": 1784196971603
+  "computedAt": 1784208519020
 }
