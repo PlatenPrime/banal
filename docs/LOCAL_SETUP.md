@@ -4,12 +4,12 @@ Runbook for developing the **banal** monorepo. Full foundation scope is defined 
 
 ## Requirements
 
-| Tool | Version |
-| --- | --- |
-| Node.js | 24.x (see `.nvmrc`) |
-| npm | 10.x or newer |
-| Docker | Latest stable (MongoDB local stack — step 016+) |
-| Git | 2.x |
+| Tool    | Version                                         |
+| ------- | ----------------------------------------------- |
+| Node.js | 24.x (see `.nvmrc`)                             |
+| npm     | 10.x or newer                                   |
+| Docker  | Latest stable (MongoDB local stack — step 016+) |
+| Git     | 2.x                                             |
 
 ## Node version
 
