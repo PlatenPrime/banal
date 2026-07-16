@@ -20,6 +20,7 @@
   "devDependencies": {
     "@nx/eslint": "~22.7",
     "@nx/vite": "~22.7",
-    "nx": "~22.7"
+    "nx": "~22.7",
+    "typescript": "~6.0.3"
   }
 }
