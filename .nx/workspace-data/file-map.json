@@ -1,0 +1,48 @@
+{
+  "version": "6.0",
+  "nxVersion": "22.7.7",
+  "pathMappings": {},
+  "nxJsonPlugins": [],
+  "fileMap": {
+    "nonProjectFiles": [
+      {
+        "file": ".gitattributes",
+        "hash": "13194702717607086212"
+      },
+      {
+        "file": ".nvmrc",
+        "hash": "541564060168964990"
+      },
+      {
+        "file": "apps/.gitkeep",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "docs/FOUNDATION-ROADMAP.md",
+        "hash": "6862818254271578325"
+      },
+      {
+        "file": "docs/LOCAL_SETUP.md",
+        "hash": "3867230682270517803"
+      },
+      {
+        "file": "libs/.gitkeep",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "nx.json",
+        "hash": "15923431941873395301"
+      },
+      {
+        "file": "package-lock.json",
+        "hash": "10900806563342883363"
+      },
+      {
+        "file": "package.json",
+        "hash": "13811219720518166950"
+      }
+    ],
+    "projectFileMap": {}
+  },
+  "externalNodesHash": "8906043321257762361"
+}

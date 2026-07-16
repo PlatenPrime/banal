@@ -1,0 +1,25 @@
+{
+  "name": "banal",
+  "private": true,
+  "engines": {
+    "node": ">=24 <25",
+    "npm": ">=10"
+  },
+  "workspaces": [
+    "apps/*",
+    "libs/*"
+  ],
+  "scripts": {
+    "build": "nx run-many -t build",
+    "test": "nx run-many -t test",
+    "lint": "nx run-many -t lint",
+    "typecheck": "nx run-many -t typecheck",
+    "format:check": "prettier --check .",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "@nx/eslint": "~22.7",
+    "@nx/vite": "~22.7",
+    "nx": "~22.7"
+  }
+}

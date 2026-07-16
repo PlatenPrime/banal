@@ -177,7 +177,7 @@ sequenceDiagram
 
 | Слой | Технология | Версия (pin после bootstrap) |
 | --- | --- | --- |
-| Runtime | Node.js LTS | 22.x (`.nvmrc`) |
+| Runtime | Node.js | 24.x (`.nvmrc`) |
 | Package manager | npm workspaces | 10.x |
 | Monorepo | Nx | ~22.7 |
 | API | NestJS | 11.x |
@@ -684,7 +684,7 @@ const getGitDiffFiles = (command) =>
 
 | Track | Steps | Status |
 | --- | --- | --- |
-| T0 Bootstrap | 001–018 | not started |
+| T0 Bootstrap | 001–018 | in progress (001–003 done) |
 | T1 Local quality | 019–024 | not started |
 | T2 Contracts | 025–030 | not started |
 | T3 API platform | 031–048 | not started |
