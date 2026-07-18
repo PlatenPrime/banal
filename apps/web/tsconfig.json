@@ -12,7 +12,8 @@
     "skipLibCheck": true,
     "strictNullChecks": true,
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": ["./src/*"],
+      "@app/*": ["../../libs/*/src/index.ts", "../../libs/*/src"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],

@@ -16,7 +16,11 @@ export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    files: ['apps/api/**/*.ts', 'apps/web/**/*.{ts,tsx}'],
+    files: [
+      'apps/api/**/*.ts',
+      'apps/web/**/*.{ts,tsx}',
+      'libs/shared-contracts/**/*.ts',
+    ],
     rules: {
       '@typescript-eslint/no-unused-vars': [
         'error',

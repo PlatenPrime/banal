@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { SHARED_CONTRACTS_READY } from '@app/shared-contracts';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -17,6 +18,7 @@ describe('AppController', () => {
 
   describe('root', () => {
     it('should return "Hello World!"', () => {
+      expect(SHARED_CONTRACTS_READY).toBe(true);
       expect(appController.getHello()).toBe('Hello World!');
     });
   });

@@ -22,7 +22,7 @@
     "test": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "node -e \"console.log('api test stub ok')\"",
+        "command": "vitest run",
         "cwd": "{projectRoot}"
       }
     },
