@@ -7,8 +7,9 @@
 1. Положи этот файл в `docs/` целевого репозитория (имя файла можно оставить или переименовать в `FOUNDATION_ROADMAP.md`).
 2. Инициализируй пустой git-репозиторий и начни с **шага 001**.
 3. Выполняй шаги по порядку треков (или по [рекомендуемому потоку](#6-порядок-выполнения-треков)).
-4. После каждого шага отмечай статус в таблице [Прогресс](#прогресс-обновляй-в-этом-репозитории) в конце документа.
-5. Не начинай доменные legacy-коллекции, пока Track 10 не закрыт.
+4. После каждого шага обновляй [Прогресс](#прогресс-обновляй-в-этом-репозитории): статус шага (`todo` → `doing` → `done`), блок **Текущий этап**, сводку треков.
+5. В работе одновременно только **один** шаг в статусе `doing`.
+6. Не начинай доменные legacy-коллекции, пока Track 10 не закрыт.
 
 ---
 
@@ -35,6 +36,7 @@
 19. [После фундамента: первый доменный модуль](#19-после-фундамента-первый-доменный-модуль)
 20. [Шаблоны артефактов](#20-шаблоны-артефактов)
 21. [Внешние ссылки](#21-внешние-ссылки)
+22. [Прогресс](#прогресс-обновляй-в-этом-репозитории)
 
 ---
 
@@ -683,22 +685,188 @@ const getGitDiffFiles = (command) =>
 
 ## Прогресс (обновляй в этом репозитории)
 
-| Track              | Steps   | Status                     |
-| ------------------ | ------- | -------------------------- |
-| T0 Bootstrap       | 001–018 | in progress (001–015 done) |
-| T1 Local quality   | 019–024 | not started                |
-| T2 Contracts       | 025–030 | not started                |
-| T3 API platform    | 031–048 | not started                |
-| T4 Mongo           | 049–058 | not started                |
-| T5 Web             | 059–068 | not started                |
-| T6 Testing         | 069–076 | not started                |
-| T7 CI/CD           | 077–084 | not started                |
-| T8 Contract bridge | 085–088 | not started                |
-| T9 Observability   | 089–092 | not started                |
-| T10 Acceptance     | 093–096 | not started                |
+Статусы шага: `todo` → `doing` → `done`. Статусы трека: `todo` → `doing` → `done`.
 
-Обновляй статус (`not started` → `in progress` → `done`) по мере прохождения шагов.
+### Текущий этап
+
+| Поле              | Значение                                      |
+| ----------------- | --------------------------------------------- |
+| Трек              | **T0 — Workspace Bootstrap**                  |
+| Текущий шаг       | **017** — `.env.example`                      |
+| Статус шага       | `doing`                                       |
+| Последний `done`  | **016** — Mongo compose                       |
+| Закрыто шагов     | **16 / 96**                                   |
+| Обновлено         | 2026-07-18                                    |
+
+### Сводка по трекам
+
+| Track              | Steps   | Done | Status  |
+| ------------------ | ------- | ---- | ------- |
+| T0 Bootstrap       | 001–018 | 16   | `doing` |
+| T1 Local quality   | 019–024 | 0    | `todo`  |
+| T2 Contracts       | 025–030 | 0    | `todo`  |
+| T3 API platform    | 031–048 | 0    | `todo`  |
+| T4 Mongo           | 049–058 | 0    | `todo`  |
+| T5 Web             | 059–068 | 0    | `todo`  |
+| T6 Testing         | 069–076 | 0    | `todo`  |
+| T7 CI/CD           | 077–084 | 0    | `todo`  |
+| T8 Contract bridge | 085–088 | 0    | `todo`  |
+| T9 Observability   | 089–092 | 0    | `todo`  |
+| T10 Acceptance     | 093–096 | 0    | `todo`  |
+
+### Чеклист шагов
+
+#### T0 — Workspace Bootstrap (001–018)
+
+| Step | Title                          | Status  | Notes                                      |
+| ---- | ------------------------------ | ------- | ------------------------------------------ |
+| 001  | Init git + root `package.json` | `done`  | workspaces `apps/*`, `libs/*`; scope `@app` |
+| 002  | Node policy                    | `done`  | `.nvmrc` 24; `docs/LOCAL_SETUP.md`         |
+| 003  | Nx init                        | `done`  | Nx 22 + `@nx/eslint`, `@nx/vite`           |
+| 004  | Nx target defaults             | `done`  | build/test/lint/typecheck cache            |
+| 005  | Nest in `apps/api`             | `done`  | + `app.controller.spec.ts`                 |
+| 006  | tsconfig base + paths          | `done`  | `@app/*` → `libs/*/src`                    |
+| 007  | ESLint flat config             | `done`  | `eslint.config.mjs`                        |
+| 008  | Prettier + EditorConfig        | `done`  | `.prettierrc`, `.editorconfig`             |
+| 009  | Root scripts via Nx            | `done`  | build/test/lint/typecheck/format           |
+| 010  | TanStack Start `apps/web`      | `done`  | vite build + route test                    |
+| 011  | `web:typecheck` target         | `done`  | `tsc --noEmit`                             |
+| 012  | `libs/shared-contracts`        | `done`  | lib + placeholder spec                     |
+| 013  | Wire contracts → API           | `done`  | `@app/shared-contracts` in api             |
+| 014  | Wire contracts → web           | `done`  | `@app/shared-contracts` in web             |
+| 015  | CORS + dev origins             | `done`  | `cors.options` + e2e stub                  |
+| 016  | Mongo compose                  | `done`  | `docker-compose.yml` mongo:7               |
+| 017  | `.env.example`                 | `doing` | есть `apps/api/.env.example`; нужны root + web |
+| 018  | Root README runbook            | `todo`  | README отсутствует                         |
+
+#### T1 — Local Quality Gates (019–024)
+
+| Step | Title                      | Status | Notes |
+| ---- | -------------------------- | ------ | ----- |
+| 019  | husky install              | `todo` |       |
+| 020  | lint-staged                | `todo` |       |
+| 021  | `validate-tests-first.mjs` | `todo` |       |
+| 022  | `run-staged-tests.mjs`     | `todo` |       |
+| 023  | `npm run ci`               | `todo` |       |
+| 024  | `.gitignore` normalize     | `todo` | файл есть — проверить полноту DoD |
+
+#### T2 — Shared Contracts (025–030)
+
+| Step | Title                    | Status | Notes |
+| ---- | ------------------------ | ------ | ----- |
+| 025  | Problem Details types    | `todo` |       |
+| 026  | Health response schemas  | `todo` |       |
+| 027  | Example resource schemas | `todo` |       |
+| 028  | Error code constants     | `todo` |       |
+| 029  | Wire filter → contracts  | `todo` |       |
+| 030  | Web imports health types | `todo` |       |
+
+#### T3 — API Platform (031–048)
+
+| Step | Title                      | Status | Notes |
+| ---- | -------------------------- | ------ | ----- |
+| 031  | ConfigModule + Zod env     | `todo` |       |
+| 032  | Global ValidationPipe      | `todo` |       |
+| 033  | ApiExceptionFilter         | `todo` |       |
+| 034  | URI versioning             | `todo` |       |
+| 035  | Helmet + security headers  | `todo` |       |
+| 036  | Terminus liveness          | `todo` |       |
+| 037  | Readiness stub             | `todo` |       |
+| 038  | Health DTOs from contracts | `todo` |       |
+| 039  | Request ID middleware      | `todo` |       |
+| 040  | Swagger stub               | `todo` |       |
+| 041  | ExamplesModule skeleton    | `todo` |       |
+| 042  | CreateExampleDto           | `todo` |       |
+| 043  | Graceful shutdown          | `todo` |       |
+| 044  | Global API prefix config   | `todo` |       |
+| 045  | 404 → Problem Details      | `todo` |       |
+| 046  | 422 validation mapping     | `todo` |       |
+| 047  | Correlation in logs        | `todo` |       |
+| 048  | Track 3 mini-checklist     | `todo` |       |
+
+#### T4 — Mongo Data Skeleton (049–058)
+
+| Step | Title                         | Status | Notes |
+| ---- | ----------------------------- | ------ | ----- |
+| 049  | MongooseModule                | `todo` |       |
+| 050  | Connection health indicator   | `todo` |       |
+| 051  | `_foundation_examples` schema | `todo` |       |
+| 052  | ExampleRepository             | `todo` |       |
+| 053  | Compat mapper pattern         | `todo` |       |
+| 054  | Legacy fixture samples        | `todo` |       |
+| 055  | ExamplesService + HTTP        | `todo` |       |
+| 056  | Inventory stub                | `todo` |       |
+| 057  | Index policy doc              | `todo` |       |
+| 058  | Mongo e2e isolation           | `todo` |       |
+
+#### T5 — Web Platform (059–068)
+
+| Step | Title                 | Status | Notes |
+| ---- | --------------------- | ------ | ----- |
+| 059  | Router file routes    | `todo` | scaffold есть — DoD шага не закрыт |
+| 060  | QueryClient provider  | `todo` |       |
+| 061  | Env validation web    | `todo` |       |
+| 062  | API client wrapper    | `todo` |       |
+| 063  | `/examples` route     | `todo` |       |
+| 064  | `/examples/new` Form  | `todo` |       |
+| 065  | Tailwind v4 setup     | `todo` |       |
+| 066  | Error boundary route  | `todo` |       |
+| 067  | Dev proxy or CORS doc | `todo` |       |
+| 068  | `web:build` SSR smoke | `todo` |       |
+
+#### T6 — Testing Iron (069–076)
+
+| Step | Title                     | Status | Notes |
+| ---- | ------------------------- | ------ | ----- |
+| 069  | Vitest api config         | `todo` | конфиг есть — DoD шага не закрыт |
+| 070  | Vitest api e2e config     | `todo` |       |
+| 071  | Vitest web config         | `todo` | конфиг есть — DoD шага не закрыт |
+| 072  | Coverage v8 all projects  | `todo` |       |
+| 073  | Tests-first in CI step    | `todo` |       |
+| 074  | Staged test runner        | `todo` |       |
+| 075  | Contract tests error JSON | `todo` |       |
+| 076  | Testing guide doc         | `todo` |       |
+
+#### T7 — CI/CD (077–084)
+
+| Step | Title                    | Status | Notes |
+| ---- | ------------------------ | ------ | ----- |
+| 077  | `ci.yml` baseline        | `todo` |       |
+| 078  | OS matrix                | `todo` |       |
+| 079  | Node from `.nvmrc`       | `todo` |       |
+| 080  | Nx cache in CI           | `todo` |       |
+| 081  | Nx affected range        | `todo` |       |
+| 082  | Mongo service in e2e job | `todo` |       |
+| 083  | Branch protection doc    | `todo` |       |
+| 084  | `npm run ci` = workflow  | `todo` |       |
+
+#### T8 — Contract Bridge (085–088)
+
+| Step | Title                          | Status | Notes |
+| ---- | ------------------------------ | ------ | ----- |
+| 085  | Export OpenAPI JSON            | `todo` |       |
+| 086  | `openapi-typescript` client    | `todo` |       |
+| 087  | Replace hand fetch on examples | `todo` |       |
+| 088  | CI drift check                 | `todo` |       |
+
+#### T9 — Observability Stub (089–092)
+
+| Step | Title                       | Status | Notes |
+| ---- | --------------------------- | ------ | ----- |
+| 089  | nestjs-pino                 | `todo` |       |
+| 090  | Redact `MONGODB_URI`        | `todo` |       |
+| 091  | Request logging interceptor | `todo` |       |
+| 092  | OTel noop stub              | `todo` |       |
+
+#### T10 — Acceptance (093–096)
+
+| Step | Title                           | Status | Notes |
+| ---- | ------------------------------- | ------ | ----- |
+| 093  | ADR-001 shared Mongo            | `todo` |       |
+| 094  | Foundation acceptance checklist | `todo` |       |
+| 095  | Domain module recipe            | `todo` |       |
+| 096  | Tag `foundation-v1.0.0`         | `todo` |       |
 
 ---
 
-_Документ версии 1.1 — standalone edition, июль 2026. Стек: Nest 11 + TanStack Start + Nx 22 + MongoDB (shared legacy) + Vitest 4._
+_Документ версии 1.2 — standalone edition, июль 2026. Стек: Nest 11 + TanStack Start + Nx 22 + MongoDB (shared legacy) + Vitest 4. Прогресс: пошаговые статусы `todo`/`doing`/`done`._
