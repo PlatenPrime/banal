@@ -691,18 +691,18 @@ const getGitDiffFiles = (command) =>
 
 | Поле              | Значение                                      |
 | ----------------- | --------------------------------------------- |
-| Трек              | **T0 — Workspace Bootstrap**                  |
-| Текущий шаг       | **017** — `.env.example`                      |
-| Статус шага       | `doing`                                       |
-| Последний `done`  | **016** — Mongo compose                       |
-| Закрыто шагов     | **16 / 96**                                   |
+| Трек              | **T1 — Local Quality Gates**                  |
+| Текущий шаг       | **019** — husky install                       |
+| Статус шага       | `todo`                                        |
+| Последний `done`  | **018** — Root README runbook                 |
+| Закрыто шагов     | **18 / 96**                                   |
 | Обновлено         | 2026-07-18                                    |
 
 ### Сводка по трекам
 
 | Track              | Steps   | Done | Status  |
 | ------------------ | ------- | ---- | ------- |
-| T0 Bootstrap       | 001–018 | 16   | `doing` |
+| T0 Bootstrap       | 001–018 | 18   | `done`  |
 | T1 Local quality   | 019–024 | 0    | `todo`  |
 | T2 Contracts       | 025–030 | 0    | `todo`  |
 | T3 API platform    | 031–048 | 0    | `todo`  |
@@ -736,8 +736,8 @@ const getGitDiffFiles = (command) =>
 | 014  | Wire contracts → web           | `done`  | `@app/shared-contracts` in web             |
 | 015  | CORS + dev origins             | `done`  | `cors.options` + e2e stub                  |
 | 016  | Mongo compose                  | `done`  | `docker-compose.yml` mongo:7               |
-| 017  | `.env.example`                 | `doing` | есть `apps/api/.env.example`; нужны root + web |
-| 018  | Root README runbook            | `todo`  | README отсутствует                         |
+| 017  | `.env.example`                 | `done`  | root + api + web; без секретов             |
+| 018  | Root README runbook            | `done`  | install / mongo / serve / quality scripts  |
 
 #### T1 — Local Quality Gates (019–024)
 
