@@ -65,10 +65,25 @@ npm run lint
 npm run typecheck
 ```
 
-Mongo (when `docker-compose.yml` is added):
+## MongoDB (local)
+
+From the repository root:
 
 ```bash
-docker compose up -d mongo
+docker compose up -d
+docker compose ps          # STATUS should be healthy
+```
+
+Connection (no auth, for local/dev only):
+
+```text
+mongodb://127.0.0.1:27017/app_foundation_dev
+```
+
+Stop:
+
+```bash
+docker compose down
 ```
 
 See [FOUNDATION-ROADMAP.md](./FOUNDATION-ROADMAP.md) for verification commands per step.
