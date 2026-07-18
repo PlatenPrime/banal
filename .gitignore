@@ -6,4 +6,5 @@ node_modules
 .env.production.local
 .nx
 **/dist
+**/.output
 *.tsbuildinfo

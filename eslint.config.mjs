@@ -16,7 +16,7 @@ export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    files: ['apps/api/**/*.ts'],
+    files: ['apps/api/**/*.ts', 'apps/web/**/*.{ts,tsx}'],
     rules: {
       '@typescript-eslint/no-unused-vars': [
         'error',
@@ -26,6 +26,9 @@ export default tseslint.config(
         },
       ],
     },
+  },
+  {
+    ignores: ['apps/web/src/routeTree.gen.ts', 'apps/web/.output/**'],
   },
   eslintConfigPrettier,
 );
