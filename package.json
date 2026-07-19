@@ -10,12 +10,18 @@
     "libs/*"
   ],
   "scripts": {
+    "prepare": "husky && node scripts/patch-husky-runner.mjs",
     "build": "nx run-many -t build",
     "test": "nx run-many -t test",
     "lint": "nx run-many -t lint",
     "typecheck": "nx run-many -t typecheck",
     "format:check": "prettier --check .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "ci": "node scripts/validate-tests-first.mjs --ci && npm run format:check && nx run-many -t lint && nx run-many -t typecheck && nx run-many -t build && nx run-many -t test"
+  },
+  "lint-staged": {
+    "*.{js,mjs,cjs,ts,tsx,json,md,yml,yaml}": "prettier --write",
+    "*.{js,mjs,cjs,ts,tsx}": "eslint --fix --max-warnings=0 --no-warn-ignored"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -23,6 +29,8 @@
     "@nx/vite": "~22.7",
     "eslint": "^10.7.0",
     "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.2",
     "nx": "~22.7",
     "prettier": "^3.9.5",
     "typescript": "~6.0.3",

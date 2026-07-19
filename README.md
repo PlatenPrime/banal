@@ -6,12 +6,12 @@ Roadmap (source of truth): [docs/FOUNDATION-ROADMAP.md](docs/FOUNDATION-ROADMAP.
 
 ## Requirements
 
-| Tool    | Version              |
-| ------- | -------------------- |
-| Node.js | 24.x (see `.nvmrc`)  |
-| npm     | 10.x or newer        |
-| Docker  | Latest stable        |
-| Git     | 2.x                  |
+| Tool    | Version             |
+| ------- | ------------------- |
+| Node.js | 24.x (see `.nvmrc`) |
+| npm     | 10.x or newer       |
+| Docker  | Latest stable       |
+| Git     | 2.x                 |
 
 ## Quick start
 
@@ -54,9 +54,20 @@ npm run test
 npm run lint
 npm run typecheck
 npm run format:check
+npm run ci
 ```
 
-A unified `npm run ci` lands in Track 1 (step 023).
+### `npm run ci` (local mirror)
+
+Runs the same quality order as the planned GitHub Actions job (Track 7):
+
+1. `validate-tests-first --ci`
+2. `format:check`
+3. `lint` → `typecheck` → `build` → `test` (all projects via `nx run-many`)
+
+**Parity vs future GHA (T7):** local `ci` uses `run-many` on every project. CI will switch to `nx affected` with `NX_BASE`/`NX_HEAD`, add `test:e2e` (Mongo service), and restore Nx cache. Until then, local `npm run ci` is the full green check.
+
+**pre-commit:** lint-staged (prettier + eslint) → tests-first on staged → unit tests for touched projects. **pre-push:** `node scripts/husky-pre-push.mjs` (typecheck).
 
 ## Layout
 

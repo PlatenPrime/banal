@@ -10,7 +10,7 @@ describe('getCorsOptions', () => {
     expect(options.origin).toBe('http://localhost:3000');
   });
 
-  it('leaves origin undefined when WEB_ORIGIN is missing', () => {
+  it('defaults origin to undefined when WEB_ORIGIN is missing', () => {
     const options = getCorsOptions({});
 
     expect(options.origin).toBeUndefined();

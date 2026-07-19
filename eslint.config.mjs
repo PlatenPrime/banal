@@ -11,16 +11,15 @@ export default tseslint.config(
       '**/coverage/**',
       '**/*.tsbuildinfo',
       'package-lock.json',
+      'apps/web/src/routeTree.gen.ts',
+      'apps/web/.output/**',
+      'libs/shared-contracts/src/**/*.{js,js.map,d.ts}',
     ],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    files: [
-      'apps/api/**/*.ts',
-      'apps/web/**/*.{ts,tsx}',
-      'libs/shared-contracts/**/*.ts',
-    ],
+    files: ['apps/api/**/*.ts', 'apps/web/**/*.{ts,tsx}', 'libs/shared-contracts/**/*.ts'],
     rules: {
       '@typescript-eslint/no-unused-vars': [
         'error',
@@ -30,9 +29,6 @@ export default tseslint.config(
         },
       ],
     },
-  },
-  {
-    ignores: ['apps/web/src/routeTree.gen.ts', 'apps/web/.output/**'],
   },
   eslintConfigPrettier,
 );

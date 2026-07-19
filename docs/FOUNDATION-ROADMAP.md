@@ -689,66 +689,66 @@ const getGitDiffFiles = (command) =>
 
 ### Текущий этап
 
-| Поле              | Значение                                      |
-| ----------------- | --------------------------------------------- |
-| Трек              | **T1 — Local Quality Gates**                  |
-| Текущий шаг       | **019** — husky install                       |
-| Статус шага       | `todo`                                        |
-| Последний `done`  | **018** — Root README runbook                 |
-| Закрыто шагов     | **18 / 96**                                   |
-| Обновлено         | 2026-07-18                                    |
+| Поле             | Значение                         |
+| ---------------- | -------------------------------- |
+| Трек             | **T2 — Shared Contracts**        |
+| Текущий шаг      | **025** — Problem Details types  |
+| Статус шага      | `todo`                           |
+| Последний `done` | **024** — `.gitignore` normalize |
+| Закрыто шагов    | **24 / 96**                      |
+| Обновлено        | 2026-07-19                       |
 
 ### Сводка по трекам
 
-| Track              | Steps   | Done | Status  |
-| ------------------ | ------- | ---- | ------- |
-| T0 Bootstrap       | 001–018 | 18   | `done`  |
-| T1 Local quality   | 019–024 | 0    | `todo`  |
-| T2 Contracts       | 025–030 | 0    | `todo`  |
-| T3 API platform    | 031–048 | 0    | `todo`  |
-| T4 Mongo           | 049–058 | 0    | `todo`  |
-| T5 Web             | 059–068 | 0    | `todo`  |
-| T6 Testing         | 069–076 | 0    | `todo`  |
-| T7 CI/CD           | 077–084 | 0    | `todo`  |
-| T8 Contract bridge | 085–088 | 0    | `todo`  |
-| T9 Observability   | 089–092 | 0    | `todo`  |
-| T10 Acceptance     | 093–096 | 0    | `todo`  |
+| Track              | Steps   | Done | Status |
+| ------------------ | ------- | ---- | ------ |
+| T0 Bootstrap       | 001–018 | 18   | `done` |
+| T1 Local quality   | 019–024 | 6    | `done` |
+| T2 Contracts       | 025–030 | 0    | `todo` |
+| T3 API platform    | 031–048 | 0    | `todo` |
+| T4 Mongo           | 049–058 | 0    | `todo` |
+| T5 Web             | 059–068 | 0    | `todo` |
+| T6 Testing         | 069–076 | 0    | `todo` |
+| T7 CI/CD           | 077–084 | 0    | `todo` |
+| T8 Contract bridge | 085–088 | 0    | `todo` |
+| T9 Observability   | 089–092 | 0    | `todo` |
+| T10 Acceptance     | 093–096 | 0    | `todo` |
 
 ### Чеклист шагов
 
 #### T0 — Workspace Bootstrap (001–018)
 
-| Step | Title                          | Status  | Notes                                      |
-| ---- | ------------------------------ | ------- | ------------------------------------------ |
-| 001  | Init git + root `package.json` | `done`  | workspaces `apps/*`, `libs/*`; scope `@app` |
-| 002  | Node policy                    | `done`  | `.nvmrc` 24; `docs/LOCAL_SETUP.md`         |
-| 003  | Nx init                        | `done`  | Nx 22 + `@nx/eslint`, `@nx/vite`           |
-| 004  | Nx target defaults             | `done`  | build/test/lint/typecheck cache            |
-| 005  | Nest in `apps/api`             | `done`  | + `app.controller.spec.ts`                 |
-| 006  | tsconfig base + paths          | `done`  | `@app/*` → `libs/*/src`                    |
-| 007  | ESLint flat config             | `done`  | `eslint.config.mjs`                        |
-| 008  | Prettier + EditorConfig        | `done`  | `.prettierrc`, `.editorconfig`             |
-| 009  | Root scripts via Nx            | `done`  | build/test/lint/typecheck/format           |
-| 010  | TanStack Start `apps/web`      | `done`  | vite build + route test                    |
-| 011  | `web:typecheck` target         | `done`  | `tsc --noEmit`                             |
-| 012  | `libs/shared-contracts`        | `done`  | lib + placeholder spec                     |
-| 013  | Wire contracts → API           | `done`  | `@app/shared-contracts` in api             |
-| 014  | Wire contracts → web           | `done`  | `@app/shared-contracts` in web             |
-| 015  | CORS + dev origins             | `done`  | `cors.options` + e2e stub                  |
-| 016  | Mongo compose                  | `done`  | `docker-compose.yml` mongo:7               |
-| 017  | `.env.example`                 | `done`  | root + api + web; без секретов             |
-| 018  | Root README runbook            | `done`  | install / mongo / serve / quality scripts  |
+| Step | Title                          | Status | Notes                                       |
+| ---- | ------------------------------ | ------ | ------------------------------------------- |
+| 001  | Init git + root `package.json` | `done` | workspaces `apps/*`, `libs/*`; scope `@app` |
+| 002  | Node policy                    | `done` | `.nvmrc` 24; `docs/LOCAL_SETUP.md`          |
+| 003  | Nx init                        | `done` | Nx 22 + `@nx/eslint`, `@nx/vite`            |
+| 004  | Nx target defaults             | `done` | build/test/lint/typecheck cache             |
+| 005  | Nest in `apps/api`             | `done` | + `app.controller.spec.ts`                  |
+| 006  | tsconfig base + paths          | `done` | `@app/*` → `libs/*/src`                     |
+| 007  | ESLint flat config             | `done` | `eslint.config.mjs`                         |
+| 008  | Prettier + EditorConfig        | `done` | `.prettierrc`, `.editorconfig`              |
+| 009  | Root scripts via Nx            | `done` | build/test/lint/typecheck/format            |
+| 010  | TanStack Start `apps/web`      | `done` | vite build + route test                     |
+| 011  | `web:typecheck` target         | `done` | `tsc --noEmit`                              |
+| 012  | `libs/shared-contracts`        | `done` | lib + placeholder spec                      |
+| 013  | Wire contracts → API           | `done` | `@app/shared-contracts` in api              |
+| 014  | Wire contracts → web           | `done` | `@app/shared-contracts` in web              |
+| 015  | CORS + dev origins             | `done` | `cors.options` + e2e stub                   |
+| 016  | Mongo compose                  | `done` | `docker-compose.yml` mongo:7                |
+| 017  | `.env.example`                 | `done` | root + api + web; без секретов              |
+| 018  | Root README runbook            | `done` | install / mongo / serve / quality scripts   |
 
 #### T1 — Local Quality Gates (019–024)
 
-| Step | Title                      | Status | Notes |
-| ---- | -------------------------- | ------ | ----- |
-| 019  | husky install              | `todo` |       |
-| 020  | lint-staged                | `todo` |       |
-| 021  | `validate-tests-first.mjs` | `todo` |       |
-| 022  | `run-staged-tests.mjs`     | `todo` |       |
-| 023  | `npm run ci`               | `todo` |       |
-| 024  | `.gitignore` normalize     | `todo` | файл есть — проверить полноту DoD |
+| Step | Title                      | Status | Notes                                                      |
+| ---- | -------------------------- | ------ | ---------------------------------------------------------- |
+| 019  | husky install              | `done` | `.husky/*` + `scripts/husky-pre-commit.mjs`                |
+| 020  | lint-staged                | `done` | prettier + eslint on staged; config in root `package.json` |
+| 021  | `validate-tests-first.mjs` | `done` | §20; pre-commit + `ci` via `--ci`                          |
+| 022  | `run-staged-tests.mjs`     | `done` | nx run-many -t test for touched projects                   |
+| 023  | `npm run ci`               | `done` | mirror order; parity in README + LOCAL_SETUP               |
+| 024  | `.gitignore` normalize     | `done` | coverage, env, nx, dist, logs                              |
 
 #### T2 — Shared Contracts (025–030)
 
@@ -801,31 +801,31 @@ const getGitDiffFiles = (command) =>
 
 #### T5 — Web Platform (059–068)
 
-| Step | Title                 | Status | Notes |
-| ---- | --------------------- | ------ | ----- |
+| Step | Title                 | Status | Notes                              |
+| ---- | --------------------- | ------ | ---------------------------------- |
 | 059  | Router file routes    | `todo` | scaffold есть — DoD шага не закрыт |
-| 060  | QueryClient provider  | `todo` |       |
-| 061  | Env validation web    | `todo` |       |
-| 062  | API client wrapper    | `todo` |       |
-| 063  | `/examples` route     | `todo` |       |
-| 064  | `/examples/new` Form  | `todo` |       |
-| 065  | Tailwind v4 setup     | `todo` |       |
-| 066  | Error boundary route  | `todo` |       |
-| 067  | Dev proxy or CORS doc | `todo` |       |
-| 068  | `web:build` SSR smoke | `todo` |       |
+| 060  | QueryClient provider  | `todo` |                                    |
+| 061  | Env validation web    | `todo` |                                    |
+| 062  | API client wrapper    | `todo` |                                    |
+| 063  | `/examples` route     | `todo` |                                    |
+| 064  | `/examples/new` Form  | `todo` |                                    |
+| 065  | Tailwind v4 setup     | `todo` |                                    |
+| 066  | Error boundary route  | `todo` |                                    |
+| 067  | Dev proxy or CORS doc | `todo` |                                    |
+| 068  | `web:build` SSR smoke | `todo` |                                    |
 
 #### T6 — Testing Iron (069–076)
 
-| Step | Title                     | Status | Notes |
-| ---- | ------------------------- | ------ | ----- |
+| Step | Title                     | Status | Notes                            |
+| ---- | ------------------------- | ------ | -------------------------------- |
 | 069  | Vitest api config         | `todo` | конфиг есть — DoD шага не закрыт |
-| 070  | Vitest api e2e config     | `todo` |       |
+| 070  | Vitest api e2e config     | `todo` |                                  |
 | 071  | Vitest web config         | `todo` | конфиг есть — DoD шага не закрыт |
-| 072  | Coverage v8 all projects  | `todo` |       |
-| 073  | Tests-first in CI step    | `todo` |       |
-| 074  | Staged test runner        | `todo` |       |
-| 075  | Contract tests error JSON | `todo` |       |
-| 076  | Testing guide doc         | `todo` |       |
+| 072  | Coverage v8 all projects  | `todo` |                                  |
+| 073  | Tests-first in CI step    | `todo` |                                  |
+| 074  | Staged test runner        | `todo` |                                  |
+| 075  | Contract tests error JSON | `todo` |                                  |
+| 076  | Testing guide doc         | `todo` |                                  |
 
 #### T7 — CI/CD (077–084)
 

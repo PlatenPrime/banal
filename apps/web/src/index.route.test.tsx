@@ -8,7 +8,7 @@ describe('index route', () => {
     expect(Route.options.component).toBeTypeOf('function');
   });
 
-  it('imports shared contracts', () => {
+  it('wires shared contracts into the web app', () => {
     expect(SHARED_CONTRACTS_READY).toBe(true);
   });
 });

@@ -7,4 +7,13 @@ node_modules
 .nx
 **/dist
 **/.output
+**/coverage
 *.tsbuildinfo
+*.log
+.DS_Store
+
+# Accidental tsc emit beside sources (shared-contracts outDir is dist/)
+libs/shared-contracts/src/**/*.js
+libs/shared-contracts/src/**/*.js.map
+libs/shared-contracts/src/**/*.d.ts
+libs/shared-contracts/src/**/*.d.ts.map
