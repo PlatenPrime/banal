@@ -12,6 +12,9 @@ node_modules
 *.log
 .DS_Store
 
+# TanStack Router (regenerated on web dev/build)
+apps/web/src/routeTree.gen.ts
+
 # Accidental tsc emit beside sources (shared-contracts outDir is dist/)
 libs/shared-contracts/src/**/*.js
 libs/shared-contracts/src/**/*.js.map
