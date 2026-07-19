@@ -689,14 +689,14 @@ const getGitDiffFiles = (command) =>
 
 ### Текущий этап
 
-| Поле             | Значение                     |
-| ---------------- | ---------------------------- |
-| Трек             | **T3 — API Platform**        |
-| Текущий шаг      | **034** — URI versioning     |
-| Статус шага      | `todo`                       |
-| Последний `done` | **033** — ApiExceptionFilter |
-| Закрыто шагов    | **33 / 96**                  |
-| Обновлено        | 2026-07-19                   |
+| Поле             | Значение                            |
+| ---------------- | ----------------------------------- |
+| Трек             | **T3 — API Platform**               |
+| Текущий шаг      | **035** — Helmet + security headers |
+| Статус шага      | `todo`                              |
+| Последний `done` | **034** — URI versioning            |
+| Закрыто шагов    | **34 / 96**                         |
+| Обновлено        | 2026-07-19                          |
 
 ### Сводка по трекам
 
@@ -705,7 +705,7 @@ const getGitDiffFiles = (command) =>
 | T0 Bootstrap       | 001–018 | 18   | `done` |
 | T1 Local quality   | 019–024 | 6    | `done` |
 | T2 Contracts       | 025–030 | 6    | `done` |
-| T3 API platform    | 031–048 | 3    | `wip`  |
+| T3 API platform    | 031–048 | 4    | `wip`  |
 | T4 Mongo           | 049–058 | 0    | `todo` |
 | T5 Web             | 059–068 | 0    | `todo` |
 | T6 Testing         | 069–076 | 0    | `todo` |
@@ -768,7 +768,7 @@ const getGitDiffFiles = (command) =>
 | 031  | ConfigModule + Zod env     | `done` | `@nestjs/config` + Zod; `env.schema` + validate; WEB_ORIGIN                              |
 | 032  | Global ValidationPipe      | `done` | `APP_PIPE` + whitelist/transform/forbidNonWhitelisted; vitest via unplugin-swc; e2e stub |
 | 033  | ApiExceptionFilter         | `done` | `problem+json`; unknown → 500 без stack; unit catch + e2e stub                           |
-| 034  | URI versioning             | `todo` |                                                                                          |
+| 034  | URI versioning             | `done` | `applyApiUriVersioning`; prefix `/api`, version `v1`; unit + e2e stub                    |
 | 035  | Helmet + security headers  | `todo` |                                                                                          |
 | 036  | Terminus liveness          | `todo` |                                                                                          |
 | 037  | Readiness stub             | `todo` |                                                                                          |
