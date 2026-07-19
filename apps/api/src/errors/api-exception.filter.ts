@@ -7,6 +7,8 @@ import {
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common';
 import type { Response } from 'express';
 
+const PROBLEM_JSON = 'application/problem+json';
+
 const STATUS_TO_ERROR_TYPE: Record<number, ErrorTypeUri> = {
   [HttpStatus.BAD_REQUEST]: ERROR_TYPE_URIS.validationFailed,
   [HttpStatus.UNAUTHORIZED]: ERROR_TYPE_URIS.unauthorized,
@@ -53,7 +55,7 @@ function extractDetail(exception: HttpException): string | undefined {
 
 /**
  * Maps Nest HTTP exceptions to RFC 9457 Problem Details from shared-contracts.
- * Full hardening (404/422 mapping, e2e) lands in Track 3.
+ * Unknown errors become a generic 500 — never leak stack or exception message.
  */
 export function toProblemDetails(exception: HttpException, instance?: string): ProblemDetails {
   const status = exception.getStatus();
@@ -68,20 +70,28 @@ export function toProblemDetails(exception: HttpException, instance?: string): P
   return problemDetailsSchema.parse(problem);
 }
 
+function toInternalProblem(instance?: string): ProblemDetails {
+  return problemDetailsSchema.parse({
+    type: ERROR_TYPE_URIS.internal,
+    title: 'Internal Server Error',
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    instance,
+  });
+}
+
 @Catch()
 export class ApiExceptionFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost): void {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<{ url?: string }>();
+    const instance = request.url;
 
-    const httpException =
+    const problem =
       exception instanceof HttpException
-        ? exception
-        : new HttpException('Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR);
+        ? toProblemDetails(exception, instance)
+        : toInternalProblem(instance);
 
-    const problem = toProblemDetails(httpException, request.url);
-
-    response.status(problem.status).type('application/problem+json').json(problem);
+    response.status(problem.status).type(PROBLEM_JSON).json(problem);
   }
 }
