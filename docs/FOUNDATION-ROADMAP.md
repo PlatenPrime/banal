@@ -689,14 +689,14 @@ const getGitDiffFiles = (command) =>
 
 ### Текущий этап
 
-| Поле             | Значение                           |
-| ---------------- | ---------------------------------- |
-| Трек             | **T3 — API Platform**              |
-| Текущий шаг      | **031** — ConfigModule + Zod env   |
-| Статус шага      | `todo`                             |
-| Последний `done` | **030** — Web imports health types |
-| Закрыто шагов    | **30 / 96**                        |
-| Обновлено        | 2026-07-19                         |
+| Поле             | Значение                         |
+| ---------------- | -------------------------------- |
+| Трек             | **T3 — API Platform**            |
+| Текущий шаг      | **032** — Global ValidationPipe  |
+| Статус шага      | `todo`                           |
+| Последний `done` | **031** — ConfigModule + Zod env |
+| Закрыто шагов    | **31 / 96**                      |
+| Обновлено        | 2026-07-19                       |
 
 ### Сводка по трекам
 
@@ -705,7 +705,7 @@ const getGitDiffFiles = (command) =>
 | T0 Bootstrap       | 001–018 | 18   | `done` |
 | T1 Local quality   | 019–024 | 6    | `done` |
 | T2 Contracts       | 025–030 | 6    | `done` |
-| T3 API platform    | 031–048 | 0    | `todo` |
+| T3 API platform    | 031–048 | 1    | `wip`  |
 | T4 Mongo           | 049–058 | 0    | `todo` |
 | T5 Web             | 059–068 | 0    | `todo` |
 | T6 Testing         | 069–076 | 0    | `todo` |
@@ -763,26 +763,26 @@ const getGitDiffFiles = (command) =>
 
 #### T3 — API Platform (031–048)
 
-| Step | Title                      | Status | Notes |
-| ---- | -------------------------- | ------ | ----- |
-| 031  | ConfigModule + Zod env     | `todo` |       |
-| 032  | Global ValidationPipe      | `todo` |       |
-| 033  | ApiExceptionFilter         | `todo` |       |
-| 034  | URI versioning             | `todo` |       |
-| 035  | Helmet + security headers  | `todo` |       |
-| 036  | Terminus liveness          | `todo` |       |
-| 037  | Readiness stub             | `todo` |       |
-| 038  | Health DTOs from contracts | `todo` |       |
-| 039  | Request ID middleware      | `todo` |       |
-| 040  | Swagger stub               | `todo` |       |
-| 041  | ExamplesModule skeleton    | `todo` |       |
-| 042  | CreateExampleDto           | `todo` |       |
-| 043  | Graceful shutdown          | `todo` |       |
-| 044  | Global API prefix config   | `todo` |       |
-| 045  | 404 → Problem Details      | `todo` |       |
-| 046  | 422 validation mapping     | `todo` |       |
-| 047  | Correlation in logs        | `todo` |       |
-| 048  | Track 3 mini-checklist     | `todo` |       |
+| Step | Title                      | Status | Notes                                                       |
+| ---- | -------------------------- | ------ | ----------------------------------------------------------- |
+| 031  | ConfigModule + Zod env     | `done` | `@nestjs/config` + Zod; `env.schema` + validate; WEB_ORIGIN |
+| 032  | Global ValidationPipe      | `todo` |                                                             |
+| 033  | ApiExceptionFilter         | `todo` |                                                             |
+| 034  | URI versioning             | `todo` |                                                             |
+| 035  | Helmet + security headers  | `todo` |                                                             |
+| 036  | Terminus liveness          | `todo` |                                                             |
+| 037  | Readiness stub             | `todo` |                                                             |
+| 038  | Health DTOs from contracts | `todo` |                                                             |
+| 039  | Request ID middleware      | `todo` |                                                             |
+| 040  | Swagger stub               | `todo` |                                                             |
+| 041  | ExamplesModule skeleton    | `todo` |                                                             |
+| 042  | CreateExampleDto           | `todo` |                                                             |
+| 043  | Graceful shutdown          | `todo` |                                                             |
+| 044  | Global API prefix config   | `todo` |                                                             |
+| 045  | 404 → Problem Details      | `todo` |                                                             |
+| 046  | 422 validation mapping     | `todo` |                                                             |
+| 047  | Correlation in logs        | `todo` |                                                             |
+| 048  | Track 3 mini-checklist     | `todo` |                                                             |
 
 #### T4 — Mongo Data Skeleton (049–058)
 

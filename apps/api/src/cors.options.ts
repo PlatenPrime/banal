@@ -1,10 +1,13 @@
 import type { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 
+export type CorsEnv = {
+  WEB_ORIGIN: string;
+};
+
 /**
- * Dev CORS from WEB_ORIGIN. Undefined origin leaves Nest default (reflective) disabled —
- * callers must set WEB_ORIGIN for browser clients.
+ * Dev CORS from WEB_ORIGIN. Origin is required after ConfigModule + Zod validation.
  */
-export function getCorsOptions(env: NodeJS.ProcessEnv = process.env): CorsOptions {
+export function getCorsOptions(env: CorsEnv): CorsOptions {
   return {
     origin: env.WEB_ORIGIN,
   };
