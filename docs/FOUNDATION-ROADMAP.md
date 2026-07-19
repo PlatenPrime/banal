@@ -689,14 +689,14 @@ const getGitDiffFiles = (command) =>
 
 ### Текущий этап
 
-| Поле             | Значение                         |
-| ---------------- | -------------------------------- |
-| Трек             | **T2 — Shared Contracts**        |
-| Текущий шаг      | **025** — Problem Details types  |
-| Статус шага      | `todo`                           |
-| Последний `done` | **024** — `.gitignore` normalize |
-| Закрыто шагов    | **24 / 96**                      |
-| Обновлено        | 2026-07-19                       |
+| Поле             | Значение                           |
+| ---------------- | ---------------------------------- |
+| Трек             | **T3 — API Platform**              |
+| Текущий шаг      | **031** — ConfigModule + Zod env   |
+| Статус шага      | `todo`                             |
+| Последний `done` | **030** — Web imports health types |
+| Закрыто шагов    | **30 / 96**                        |
+| Обновлено        | 2026-07-19                         |
 
 ### Сводка по трекам
 
@@ -704,7 +704,7 @@ const getGitDiffFiles = (command) =>
 | ------------------ | ------- | ---- | ------ |
 | T0 Bootstrap       | 001–018 | 18   | `done` |
 | T1 Local quality   | 019–024 | 6    | `done` |
-| T2 Contracts       | 025–030 | 0    | `todo` |
+| T2 Contracts       | 025–030 | 6    | `done` |
 | T3 API platform    | 031–048 | 0    | `todo` |
 | T4 Mongo           | 049–058 | 0    | `todo` |
 | T5 Web             | 059–068 | 0    | `todo` |
@@ -752,14 +752,14 @@ const getGitDiffFiles = (command) =>
 
 #### T2 — Shared Contracts (025–030)
 
-| Step | Title                    | Status | Notes |
-| ---- | ------------------------ | ------ | ----- |
-| 025  | Problem Details types    | `todo` |       |
-| 026  | Health response schemas  | `todo` |       |
-| 027  | Example resource schemas | `todo` |       |
-| 028  | Error code constants     | `todo` |       |
-| 029  | Wire filter → contracts  | `todo` |       |
-| 030  | Web imports health types | `todo` |       |
+| Step | Title                    | Status | Notes                                      |
+| ---- | ------------------------ | ------ | ------------------------------------------ |
+| 025  | Problem Details types    | `done` | RFC 9457 Zod in `problem-details.ts`       |
+| 026  | Health response schemas  | `done` | liveness + readiness Terminus-shaped       |
+| 027  | Example resource schemas | `done` | create / DTO / list                        |
+| 028  | Error code constants     | `done` | `ERROR_TYPE_URIS` + snapshot               |
+| 029  | Wire filter → contracts  | `done` | `ApiExceptionFilter` + `APP_FILTER`        |
+| 030  | Web imports health types | `done` | `lib/api-client/health.ts` type re-exports |
 
 #### T3 — API Platform (031–048)
 
