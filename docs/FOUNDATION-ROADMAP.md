@@ -689,14 +689,14 @@ const getGitDiffFiles = (command) =>
 
 ### Текущий этап
 
-| Поле             | Значение                          |
-| ---------------- | --------------------------------- |
-| Трек             | **T3 — API Platform**             |
-| Текущий шаг      | **042** — CreateExampleDto        |
-| Статус шага      | `todo`                            |
-| Последний `done` | **041** — ExamplesModule skeleton |
-| Закрыто шагов    | **41 / 96**                       |
-| Обновлено        | 2026-07-20                        |
+| Поле             | Значение                    |
+| ---------------- | --------------------------- |
+| Трек             | **T3 — API Platform**       |
+| Текущий шаг      | **043** — Graceful shutdown |
+| Статус шага      | `todo`                      |
+| Последний `done` | **042** — CreateExampleDto  |
+| Закрыто шагов    | **42 / 96**                 |
+| Обновлено        | 2026-07-20                  |
 
 ### Сводка по трекам
 
@@ -705,7 +705,7 @@ const getGitDiffFiles = (command) =>
 | T0 Bootstrap       | 001–018 | 18   | `done` |
 | T1 Local quality   | 019–024 | 6    | `done` |
 | T2 Contracts       | 025–030 | 6    | `done` |
-| T3 API platform    | 031–048 | 11   | `wip`  |
+| T3 API platform    | 031–048 | 12   | `wip`  |
 | T4 Mongo           | 049–058 | 0    | `todo` |
 | T5 Web             | 059–068 | 0    | `todo` |
 | T6 Testing         | 069–076 | 0    | `todo` |
@@ -776,7 +776,7 @@ const getGitDiffFiles = (command) =>
 | 039  | Request ID middleware      | `done` | `request-id.middleware`; `x-request-id` echo/generate; unit + e2e                        |
 | 040  | Swagger stub               | `done` | `applySwaggerDocs`; `/api/docs` + `/api/docs-json`; Helmet CSP for UI; smoke spec        |
 | 041  | ExamplesModule skeleton    | `done` | `GET /api/v1/examples` → `{ items: [], total: 0 }`; controller spec + Zod                |
-| 042  | CreateExampleDto           | `todo` |                                                                                          |
+| 042  | CreateExampleDto           | `done` | class-validator DTO; POST stub 501; 400 cases in dto spec                                |
 | 043  | Graceful shutdown          | `todo` |                                                                                          |
 | 044  | Global API prefix config   | `todo` |                                                                                          |
 | 045  | 404 → Problem Details      | `todo` |                                                                                          |

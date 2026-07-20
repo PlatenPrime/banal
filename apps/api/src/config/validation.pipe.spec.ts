@@ -2,27 +2,21 @@ import 'reflect-metadata';
 import { BadRequestException, Body, Controller, Post, ValidationPipe } from '@nestjs/common';
 import { APP_PIPE } from '@nestjs/core';
 import { Test } from '@nestjs/testing';
-import { IsString } from 'class-validator';
 import { describe, expect, it } from 'vitest';
+import { CreateExampleDto } from '../examples/create-example.dto';
 import { createValidationPipe } from './validation.pipe';
-
-/** Fixture DTO -- only for this spec until CreateExampleDto (042). */
-class ProbeDto {
-  @IsString()
-  name!: string;
-}
 
 @Controller('probe')
 class ProbeController {
   @Post()
-  create(@Body() body: ProbeDto): ProbeDto {
+  create(@Body() body: CreateExampleDto): CreateExampleDto {
     return body;
   }
 }
 
 const bodyMetadata = {
   type: 'body' as const,
-  metatype: ProbeDto,
+  metatype: CreateExampleDto,
   data: '',
 };
 
