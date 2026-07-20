@@ -3,12 +3,14 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { applyApiUriVersioning } from './config/api-versioning';
 import type { Env } from './config/env.schema';
+import { applyRequestIdMiddleware } from './config/request-id.middleware';
 import { applySecurityHeaders } from './config/security-headers';
 import { getCorsOptions } from './cors.options';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   applySecurityHeaders(app);
+  applyRequestIdMiddleware(app);
 
   const config = app.get(ConfigService<Env, true>);
 

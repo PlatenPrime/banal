@@ -689,14 +689,14 @@ const getGitDiffFiles = (command) =>
 
 ### Текущий этап
 
-| Поле             | Значение                             |
-| ---------------- | ------------------------------------ |
-| Трек             | **T3 — API Platform**                |
-| Текущий шаг      | **039** — Request ID middleware      |
-| Статус шага      | `todo`                               |
-| Последний `done` | **038** — Health DTOs from contracts |
-| Закрыто шагов    | **38 / 96**                          |
-| Обновлено        | 2026-07-20                           |
+| Поле             | Значение                        |
+| ---------------- | ------------------------------- |
+| Трек             | **T3 — API Platform**           |
+| Текущий шаг      | **040** — Swagger stub          |
+| Статус шага      | `todo`                          |
+| Последний `done` | **039** — Request ID middleware |
+| Закрыто шагов    | **39 / 96**                     |
+| Обновлено        | 2026-07-20                      |
 
 ### Сводка по трекам
 
@@ -705,7 +705,7 @@ const getGitDiffFiles = (command) =>
 | T0 Bootstrap       | 001–018 | 18   | `done` |
 | T1 Local quality   | 019–024 | 6    | `done` |
 | T2 Contracts       | 025–030 | 6    | `done` |
-| T3 API platform    | 031–048 | 8    | `wip`  |
+| T3 API platform    | 031–048 | 9    | `wip`  |
 | T4 Mongo           | 049–058 | 0    | `todo` |
 | T5 Web             | 059–068 | 0    | `todo` |
 | T6 Testing         | 069–076 | 0    | `todo` |
@@ -773,7 +773,7 @@ const getGitDiffFiles = (command) =>
 | 036  | Terminus liveness          | `done` | `HealthModule`; `GET /health` via Terminus; VERSION_NEUTRAL; unit fetch + e2e stub       |
 | 037  | Readiness stub             | `done` | `GET /health/ready`; `StubMongoHealthIndicator` → 503 until T4                           |
 | 038  | Health DTOs from contracts | `done` | `health-response` mappers; Zod parse in controller spec                                  |
-| 039  | Request ID middleware      | `todo` |                                                                                          |
+| 039  | Request ID middleware      | `done` | `request-id.middleware`; `x-request-id` echo/generate; unit + e2e                        |
 | 040  | Swagger stub               | `todo` |                                                                                          |
 | 041  | ExamplesModule skeleton    | `todo` |                                                                                          |
 | 042  | CreateExampleDto           | `todo` |                                                                                          |

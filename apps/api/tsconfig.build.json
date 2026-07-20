@@ -1,4 +1,9 @@
 {
   "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "composite": false,
+    "incremental": false,
+    "declaration": false
+  },
   "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]
 }
