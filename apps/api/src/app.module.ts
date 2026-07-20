@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { validate } from './config/env.validation';
 import { createValidationPipe } from './config/validation.pipe';
 import { ApiExceptionFilter } from './errors/api-exception.filter';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { ApiExceptionFilter } from './errors/api-exception.filter';
       isGlobal: true,
       validate,
     }),
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [

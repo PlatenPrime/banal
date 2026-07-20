@@ -689,14 +689,14 @@ const getGitDiffFiles = (command) =>
 
 ### Текущий этап
 
-| Поле             | Значение                            |
-| ---------------- | ----------------------------------- |
-| Трек             | **T3 — API Platform**               |
-| Текущий шаг      | **036** — Terminus liveness         |
-| Статус шага      | `todo`                              |
-| Последний `done` | **035** — Helmet + security headers |
-| Закрыто шагов    | **35 / 96**                         |
-| Обновлено        | 2026-07-20                          |
+| Поле             | Значение                             |
+| ---------------- | ------------------------------------ |
+| Трек             | **T3 — API Platform**                |
+| Текущий шаг      | **039** — Request ID middleware      |
+| Статус шага      | `todo`                               |
+| Последний `done` | **038** — Health DTOs from contracts |
+| Закрыто шагов    | **38 / 96**                          |
+| Обновлено        | 2026-07-20                           |
 
 ### Сводка по трекам
 
@@ -705,7 +705,7 @@ const getGitDiffFiles = (command) =>
 | T0 Bootstrap       | 001–018 | 18   | `done` |
 | T1 Local quality   | 019–024 | 6    | `done` |
 | T2 Contracts       | 025–030 | 6    | `done` |
-| T3 API platform    | 031–048 | 5    | `wip`  |
+| T3 API platform    | 031–048 | 8    | `wip`  |
 | T4 Mongo           | 049–058 | 0    | `todo` |
 | T5 Web             | 059–068 | 0    | `todo` |
 | T6 Testing         | 069–076 | 0    | `todo` |
@@ -770,9 +770,9 @@ const getGitDiffFiles = (command) =>
 | 033  | ApiExceptionFilter         | `done` | `problem+json`; unknown → 500 без stack; unit catch + e2e stub                           |
 | 034  | URI versioning             | `done` | `applyApiUriVersioning`; prefix `/api`, version `v1`; unit + e2e stub                    |
 | 035  | Helmet + security headers  | `done` | `applySecurityHeaders`; helmet defaults; unit fetch + e2e stub                           |
-| 036  | Terminus liveness          | `todo` |                                                                                          |
-| 037  | Readiness stub             | `todo` |                                                                                          |
-| 038  | Health DTOs from contracts | `todo` |                                                                                          |
+| 036  | Terminus liveness          | `done` | `HealthModule`; `GET /health` via Terminus; VERSION_NEUTRAL; unit fetch + e2e stub       |
+| 037  | Readiness stub             | `done` | `GET /health/ready`; `StubMongoHealthIndicator` → 503 until T4                           |
+| 038  | Health DTOs from contracts | `done` | `health-response` mappers; Zod parse in controller spec                                  |
 | 039  | Request ID middleware      | `todo` |                                                                                          |
 | 040  | Swagger stub               | `todo` |                                                                                          |
 | 041  | ExamplesModule skeleton    | `todo` |                                                                                          |
