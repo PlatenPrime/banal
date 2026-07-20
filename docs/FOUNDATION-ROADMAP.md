@@ -689,14 +689,14 @@ const getGitDiffFiles = (command) =>
 
 ### Текущий этап
 
-| Поле             | Значение                           |
-| ---------------- | ---------------------------------- |
-| Трек             | **T3 — API Platform**              |
-| Текущий шаг      | **045** — 404 → Problem Details    |
-| Статус шага      | `todo`                             |
-| Последний `done` | **044** — Global API prefix config |
-| Закрыто шагов    | **44 / 96**                        |
-| Обновлено        | 2026-07-20                         |
+| Поле             | Значение                         |
+| ---------------- | -------------------------------- |
+| Трек             | **T3 — API Platform**            |
+| Текущий шаг      | **046** — 422 validation mapping |
+| Статус шага      | `todo`                           |
+| Последний `done` | **045** — 404 → Problem Details  |
+| Закрыто шагов    | **45 / 96**                      |
+| Обновлено        | 2026-07-20                       |
 
 ### Сводка по трекам
 
@@ -705,7 +705,7 @@ const getGitDiffFiles = (command) =>
 | T0 Bootstrap       | 001–018 | 18   | `done` |
 | T1 Local quality   | 019–024 | 6    | `done` |
 | T2 Contracts       | 025–030 | 6    | `done` |
-| T3 API platform    | 031–048 | 14   | `wip`  |
+| T3 API platform    | 031–048 | 15   | `wip`  |
 | T4 Mongo           | 049–058 | 0    | `todo` |
 | T5 Web             | 059–068 | 0    | `todo` |
 | T6 Testing         | 069–076 | 0    | `todo` |
@@ -779,7 +779,7 @@ const getGitDiffFiles = (command) =>
 | 042  | CreateExampleDto           | `done` | class-validator DTO; POST stub 501; 400 cases in dto spec                                |
 | 043  | Graceful shutdown          | `done` | `enableShutdownHooks` in `main.ts`; SIGTERM clean exit verified (prod)                   |
 | 044  | Global API prefix config   | `done` | `API_URI_VERSION` + `apiV1Path` / `apiPrefixedPath`; controllers + unit/e2e DRY          |
-| 045  | 404 → Problem Details      | `todo` |                                                                                          |
+| 045  | 404 → Problem Details      | `done` | unknown route → `problem+json` + Zod; vitest include `*.e2e-spec.ts`                     |
 | 046  | 422 validation mapping     | `todo` |                                                                                          |
 | 047  | Correlation in logs        | `todo` |                                                                                          |
 | 048  | Track 3 mini-checklist     | `todo` |                                                                                          |
