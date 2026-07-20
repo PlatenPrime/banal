@@ -16,8 +16,8 @@
       "executor": "nx:run-commands",
       "dependsOn": ["^build", "build"],
       "options": {
-        "command": "nest start --watch",
-        "cwd": "{projectRoot}"
+        "command": "node scripts/dev-api.mjs",
+        "cwd": "{workspaceRoot}"
       }
     },
     "test": {

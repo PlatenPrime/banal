@@ -22,6 +22,11 @@ class HealthProbeController {
   liveness(): { status: 'ok' } {
     return { status: 'ok' };
   }
+
+  @Get('ready')
+  readiness(): { status: 'ready' } {
+    return { status: 'ready' };
+  }
 }
 
 describe('applyApiUriVersioning', () => {
@@ -37,7 +42,7 @@ describe('applyApiUriVersioning', () => {
   it('exposes API_GLOBAL_PREFIX and API_DEFAULT_VERSION for /api/v1', () => {
     expect(API_GLOBAL_PREFIX).toBe('api');
     expect(API_DEFAULT_VERSION).toBe('1');
-    expect(API_PREFIX_EXCLUDE_PATHS).toContain('health');
+    expect(API_PREFIX_EXCLUDE_PATHS).toEqual(['health', 'health/{*path}']);
   });
 
   it('serves the probe at /api/v1/probe and rejects unversioned paths', async () => {
@@ -78,6 +83,10 @@ describe('applyApiUriVersioning', () => {
     const health = await fetch(`${baseUrl}/health`);
     expect(health.status).toBe(200);
     await expect(health.json()).resolves.toEqual({ status: 'ok' });
+
+    const ready = await fetch(`${baseUrl}/health/ready`);
+    expect(ready.status).toBe(200);
+    await expect(ready.json()).resolves.toEqual({ status: 'ready' });
 
     const versionedHealth = await fetch(`${baseUrl}/api/v1/health`);
     expect(versionedHealth.status).not.toBe(200);

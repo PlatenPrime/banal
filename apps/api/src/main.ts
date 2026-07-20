@@ -9,6 +9,7 @@ import { getCorsOptions } from './cors.options';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableShutdownHooks();
   applySecurityHeaders(app);
   applyRequestIdMiddleware(app);
 

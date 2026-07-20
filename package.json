@@ -17,7 +17,7 @@
     "typecheck": "nx run-many -t typecheck",
     "format:check": "prettier --check .",
     "format": "prettier --write .",
-    "dev:api": "nx run api:serve",
+    "dev:api": "nx run api:build && node scripts/dev-api.mjs",
     "ci": "node scripts/validate-tests-first.mjs --ci && npm run format:check && nx run-many -t lint && nx run-many -t typecheck && nx run-many -t build && nx run-many -t test"
   },
   "lint-staged": {
