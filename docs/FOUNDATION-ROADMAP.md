@@ -692,11 +692,11 @@ const getGitDiffFiles = (command) =>
 | Поле             | Значение                            |
 | ---------------- | ----------------------------------- |
 | Трек             | **T3 — API Platform**               |
-| Текущий шаг      | **035** — Helmet + security headers |
+| Текущий шаг      | **036** — Terminus liveness         |
 | Статус шага      | `todo`                              |
-| Последний `done` | **034** — URI versioning            |
-| Закрыто шагов    | **34 / 96**                         |
-| Обновлено        | 2026-07-19                          |
+| Последний `done` | **035** — Helmet + security headers |
+| Закрыто шагов    | **35 / 96**                         |
+| Обновлено        | 2026-07-20                          |
 
 ### Сводка по трекам
 
@@ -705,7 +705,7 @@ const getGitDiffFiles = (command) =>
 | T0 Bootstrap       | 001–018 | 18   | `done` |
 | T1 Local quality   | 019–024 | 6    | `done` |
 | T2 Contracts       | 025–030 | 6    | `done` |
-| T3 API platform    | 031–048 | 4    | `wip`  |
+| T3 API platform    | 031–048 | 5    | `wip`  |
 | T4 Mongo           | 049–058 | 0    | `todo` |
 | T5 Web             | 059–068 | 0    | `todo` |
 | T6 Testing         | 069–076 | 0    | `todo` |
@@ -769,7 +769,7 @@ const getGitDiffFiles = (command) =>
 | 032  | Global ValidationPipe      | `done` | `APP_PIPE` + whitelist/transform/forbidNonWhitelisted; vitest via unplugin-swc; e2e stub |
 | 033  | ApiExceptionFilter         | `done` | `problem+json`; unknown → 500 без stack; unit catch + e2e stub                           |
 | 034  | URI versioning             | `done` | `applyApiUriVersioning`; prefix `/api`, version `v1`; unit + e2e stub                    |
-| 035  | Helmet + security headers  | `todo` |                                                                                          |
+| 035  | Helmet + security headers  | `done` | `applySecurityHeaders`; helmet defaults; unit fetch + e2e stub                           |
 | 036  | Terminus liveness          | `todo` |                                                                                          |
 | 037  | Readiness stub             | `todo` |                                                                                          |
 | 038  | Health DTOs from contracts | `todo` |                                                                                          |
