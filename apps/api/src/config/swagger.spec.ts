@@ -1,10 +1,10 @@
 import { Controller, Get } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { afterEach, describe, expect, it } from 'vitest';
-import { applyApiUriVersioning } from './api-versioning';
+import { API_DEFAULT_VERSION, apiPrefixedPath, applyApiUriVersioning } from './api-versioning';
 import { applySwaggerDocs, SWAGGER_TITLE, SWAGGER_VERSION } from './swagger';
 
-@Controller({ path: 'probe', version: '1' })
+@Controller({ path: 'probe', version: API_DEFAULT_VERSION })
 class ProbeController {
   @Get()
   ping(): { ok: true } {
@@ -36,10 +36,10 @@ describe('applySwaggerDocs', () => {
     return app.getUrl();
   }
 
-  it('serves Swagger UI at /api/docs', async () => {
+  it('serves Swagger UI at the prefixed docs path', async () => {
     const baseUrl = await createSwaggerApp();
 
-    const response = await fetch(`${baseUrl}/api/docs`);
+    const response = await fetch(`${baseUrl}${apiPrefixedPath('docs')}`);
     const html = await response.text();
 
     expect(response.status).toBe(200);
@@ -47,10 +47,10 @@ describe('applySwaggerDocs', () => {
     expect(html.toLowerCase()).toContain('swagger');
   });
 
-  it('serves OpenAPI JSON at /api/docs-json', async () => {
+  it('serves OpenAPI JSON at the prefixed docs-json path', async () => {
     const baseUrl = await createSwaggerApp();
 
-    const response = await fetch(`${baseUrl}/api/docs-json`);
+    const response = await fetch(`${baseUrl}${apiPrefixedPath('docs-json')}`);
     const body = (await response.json()) as {
       openapi: string;
       info: { title: string; version: string };

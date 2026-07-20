@@ -1,7 +1,7 @@
 import { livenessResponseSchema, readinessResponseSchema } from '@app/shared-contracts';
 import { Test } from '@nestjs/testing';
 import { afterEach, describe, expect, it } from 'vitest';
-import { applyApiUriVersioning } from '../config/api-versioning';
+import { apiPrefixedPath, apiV1Path, applyApiUriVersioning } from '../config/api-versioning';
 import { HealthModule } from './health.module';
 import { STUB_MONGO_NOT_CONFIGURED } from './stub-mongo.health-indicator';
 
@@ -56,13 +56,13 @@ describe('HealthController', () => {
     });
   });
 
-  it('serves health routes outside /api/v1 prefix', async () => {
+  it('serves health routes outside the versioned API prefix', async () => {
     const baseUrl = await createHealthApp();
 
-    const versioned = await fetch(`${baseUrl}/api/v1/health`);
+    const versioned = await fetch(`${baseUrl}${apiV1Path('health')}`);
     expect(versioned.status).not.toBe(200);
 
-    const prefixed = await fetch(`${baseUrl}/api/health`);
+    const prefixed = await fetch(`${baseUrl}${apiPrefixedPath('health')}`);
     expect(prefixed.status).not.toBe(200);
   });
 });

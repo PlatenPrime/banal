@@ -2,9 +2,10 @@ import { ERROR_TYPE_URIS, problemDetailsSchema } from '@app/shared-contracts';
 import { ArgumentsHost, HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
 import type { Response } from 'express';
 import { describe, expect, it, vi } from 'vitest';
+import { apiV1Path } from '../config/api-versioning';
 import { ApiExceptionFilter, toProblemDetails } from './api-exception.filter';
 
-function createHostMock(url = '/api/v1/probe'): {
+function createHostMock(url = apiV1Path('probe')): {
   host: ArgumentsHost;
   response: {
     status: ReturnType<typeof vi.fn>;
@@ -30,16 +31,14 @@ function createHostMock(url = '/api/v1/probe'): {
 
 describe('toProblemDetails', () => {
   it('maps HttpException to a valid Problem Details body', () => {
-    const problem = toProblemDetails(
-      new NotFoundException('Example not found'),
-      '/api/v1/examples/missing',
-    );
+    const instance = apiV1Path('examples', 'missing');
+    const problem = toProblemDetails(new NotFoundException('Example not found'), instance);
 
     expect(problemDetailsSchema.parse(problem)).toEqual(problem);
     expect(problem).toMatchObject({
       type: ERROR_TYPE_URIS.notFound,
       status: HttpStatus.NOT_FOUND,
-      instance: '/api/v1/examples/missing',
+      instance,
     });
     expect(problem).not.toHaveProperty('stack');
   });
@@ -56,7 +55,8 @@ describe('toProblemDetails', () => {
 describe('ApiExceptionFilter', () => {
   it('writes application/problem+json for HttpException', () => {
     const filter = new ApiExceptionFilter();
-    const { host, response } = createHostMock('/api/v1/examples/missing');
+    const instance = apiV1Path('examples', 'missing');
+    const { host, response } = createHostMock(instance);
 
     filter.catch(new NotFoundException('Example not found'), host);
 
@@ -68,14 +68,15 @@ describe('ApiExceptionFilter', () => {
     expect(body).toMatchObject({
       type: ERROR_TYPE_URIS.notFound,
       status: HttpStatus.NOT_FOUND,
-      instance: '/api/v1/examples/missing',
+      instance,
     });
     expect(body).not.toHaveProperty('stack');
   });
 
   it('maps unknown Error to 500 without leaking stack or message', () => {
     const filter = new ApiExceptionFilter();
-    const { host, response } = createHostMock('/api/v1/boom');
+    const instance = apiV1Path('boom');
+    const { host, response } = createHostMock(instance);
     const secret = new Error('secret-db-password-xyz');
 
     filter.catch(secret, host);
@@ -89,7 +90,7 @@ describe('ApiExceptionFilter', () => {
       type: ERROR_TYPE_URIS.internal,
       title: 'Internal Server Error',
       status: HttpStatus.INTERNAL_SERVER_ERROR,
-      instance: '/api/v1/boom',
+      instance,
     });
     expect(body).not.toHaveProperty('stack');
     expect(JSON.stringify(body)).not.toContain('secret-db-password-xyz');

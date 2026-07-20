@@ -5,6 +5,9 @@ import {
   API_DEFAULT_VERSION,
   API_GLOBAL_PREFIX,
   API_PREFIX_EXCLUDE_PATHS,
+  API_URI_VERSION,
+  apiPrefixedPath,
+  apiV1Path,
   applyApiUriVersioning,
 } from './api-versioning';
 
@@ -29,6 +32,24 @@ class HealthProbeController {
   }
 }
 
+describe('api path helpers', () => {
+  it('exposes prefix/version constants for the public /api/v1 surface', () => {
+    expect(API_GLOBAL_PREFIX).toBe('api');
+    expect(API_DEFAULT_VERSION).toBe('1');
+    expect(API_URI_VERSION).toBe('v1');
+    expect(API_PREFIX_EXCLUDE_PATHS).toEqual(['health', 'health/{*path}']);
+  });
+
+  it('builds versioned and prefix-only paths from the single source', () => {
+    expect(apiV1Path()).toBe('/api/v1');
+    expect(apiV1Path('probe')).toBe('/api/v1/probe');
+    expect(apiV1Path('examples', 'missing')).toBe('/api/v1/examples/missing');
+    expect(apiPrefixedPath('docs')).toBe('/api/docs');
+    expect(apiPrefixedPath('docs-json')).toBe('/api/docs-json');
+    expect(apiPrefixedPath('health')).toBe('/api/health');
+  });
+});
+
 describe('applyApiUriVersioning', () => {
   let closeApp: (() => Promise<void>) | undefined;
 
@@ -39,13 +60,7 @@ describe('applyApiUriVersioning', () => {
     }
   });
 
-  it('exposes API_GLOBAL_PREFIX and API_DEFAULT_VERSION for /api/v1', () => {
-    expect(API_GLOBAL_PREFIX).toBe('api');
-    expect(API_DEFAULT_VERSION).toBe('1');
-    expect(API_PREFIX_EXCLUDE_PATHS).toEqual(['health', 'health/{*path}']);
-  });
-
-  it('serves the probe at /api/v1/probe and rejects unversioned paths', async () => {
+  it('serves the probe at the versioned path and rejects unversioned paths', async () => {
     const moduleRef = await Test.createTestingModule({
       controllers: [ProbeController],
     }).compile();
@@ -57,14 +72,14 @@ describe('applyApiUriVersioning', () => {
 
     const baseUrl = await app.getUrl();
 
-    const versioned = await fetch(`${baseUrl}/api/v1/probe`);
+    const versioned = await fetch(`${baseUrl}${apiV1Path('probe')}`);
     expect(versioned.status).toBe(200);
     await expect(versioned.json()).resolves.toEqual({ ok: true });
 
     const bare = await fetch(`${baseUrl}/probe`);
     expect(bare.status).not.toBe(200);
 
-    const unversioned = await fetch(`${baseUrl}/api/probe`);
+    const unversioned = await fetch(`${baseUrl}${apiPrefixedPath('probe')}`);
     expect(unversioned.status).not.toBe(200);
   });
 
@@ -88,7 +103,7 @@ describe('applyApiUriVersioning', () => {
     expect(ready.status).toBe(200);
     await expect(ready.json()).resolves.toEqual({ status: 'ready' });
 
-    const versionedHealth = await fetch(`${baseUrl}/api/v1/health`);
+    const versionedHealth = await fetch(`${baseUrl}${apiV1Path('health')}`);
     expect(versionedHealth.status).not.toBe(200);
   });
 });

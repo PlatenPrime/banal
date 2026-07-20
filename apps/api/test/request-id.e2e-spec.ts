@@ -1,7 +1,11 @@
 import { Controller, Get, Req, VERSION_NEUTRAL } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { afterEach, describe, expect, it } from 'vitest';
-import { applyApiUriVersioning } from '../src/config/api-versioning';
+import {
+  API_DEFAULT_VERSION,
+  apiV1Path,
+  applyApiUriVersioning,
+} from '../src/config/api-versioning';
 import {
   applyRequestIdMiddleware,
   REQUEST_ID_HEADER,
@@ -10,7 +14,7 @@ import {
 } from '../src/config/request-id.middleware';
 import { applySecurityHeaders } from '../src/config/security-headers';
 
-@Controller({ path: '', version: '1' })
+@Controller({ path: '', version: API_DEFAULT_VERSION })
 class VersionedProbeController {
   @Get()
   ping(@Req() req: RequestWithId): { requestId: string } {
@@ -55,7 +59,7 @@ describe('Request ID (e2e)', () => {
     const baseUrl = await createApiLikeApp();
     const clientId = 'e2e-client-trace-001';
 
-    const response = await fetch(`${baseUrl}/api/v1`, {
+    const response = await fetch(`${baseUrl}${apiV1Path()}`, {
       headers: { [REQUEST_ID_HEADER]: clientId },
     });
     const body = (await response.json()) as { requestId: string };
