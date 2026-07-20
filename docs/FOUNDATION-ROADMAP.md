@@ -692,10 +692,10 @@ const getGitDiffFiles = (command) =>
 | Поле             | Значение                          |
 | ---------------- | --------------------------------- |
 | Трек             | **T3 — API Platform**             |
-| Текущий шаг      | **041** — ExamplesModule skeleton |
+| Текущий шаг      | **042** — CreateExampleDto        |
 | Статус шага      | `todo`                            |
-| Последний `done` | **040** — Swagger stub            |
-| Закрыто шагов    | **40 / 96**                       |
+| Последний `done` | **041** — ExamplesModule skeleton |
+| Закрыто шагов    | **41 / 96**                       |
 | Обновлено        | 2026-07-20                        |
 
 ### Сводка по трекам
@@ -705,7 +705,7 @@ const getGitDiffFiles = (command) =>
 | T0 Bootstrap       | 001–018 | 18   | `done` |
 | T1 Local quality   | 019–024 | 6    | `done` |
 | T2 Contracts       | 025–030 | 6    | `done` |
-| T3 API platform    | 031–048 | 10   | `wip`  |
+| T3 API platform    | 031–048 | 11   | `wip`  |
 | T4 Mongo           | 049–058 | 0    | `todo` |
 | T5 Web             | 059–068 | 0    | `todo` |
 | T6 Testing         | 069–076 | 0    | `todo` |
@@ -775,7 +775,7 @@ const getGitDiffFiles = (command) =>
 | 038  | Health DTOs from contracts | `done` | `health-response` mappers; Zod parse in controller spec                                  |
 | 039  | Request ID middleware      | `done` | `request-id.middleware`; `x-request-id` echo/generate; unit + e2e                        |
 | 040  | Swagger stub               | `done` | `applySwaggerDocs`; `/api/docs` + `/api/docs-json`; Helmet CSP for UI; smoke spec        |
-| 041  | ExamplesModule skeleton    | `todo` |                                                                                          |
+| 041  | ExamplesModule skeleton    | `done` | `GET /api/v1/examples` → `{ items: [], total: 0 }`; controller spec + Zod                |
 | 042  | CreateExampleDto           | `todo` |                                                                                          |
 | 043  | Graceful shutdown          | `todo` |                                                                                          |
 | 044  | Global API prefix config   | `todo` |                                                                                          |

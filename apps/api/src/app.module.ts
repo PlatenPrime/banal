@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { validate } from './config/env.validation';
 import { createValidationPipe } from './config/validation.pipe';
 import { ApiExceptionFilter } from './errors/api-exception.filter';
+import { ExamplesModule } from './examples/examples.module';
 import { HealthModule } from './health/health.module';
 
 @Module({
@@ -15,6 +16,7 @@ import { HealthModule } from './health/health.module';
       validate,
     }),
     HealthModule,
+    ExamplesModule,
   ],
   controllers: [AppController],
   providers: [
