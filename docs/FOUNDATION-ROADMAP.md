@@ -689,14 +689,14 @@ const getGitDiffFiles = (command) =>
 
 ### Текущий этап
 
-| Поле             | Значение                         |
-| ---------------- | -------------------------------- |
-| Трек             | **T6 — Testing Iron**            |
-| Текущий шаг      | **074** — Staged test runner     |
-| Статус шага      | `todo`                           |
-| Последний `done` | **073** — Tests-first in CI step |
-| Закрыто шагов    | **73 / 96**                      |
-| Обновлено        | 2026-07-21                       |
+| Поле             | Значение                            |
+| ---------------- | ----------------------------------- |
+| Трек             | **T6 — Testing Iron**               |
+| Текущий шаг      | **075** — Contract tests error JSON |
+| Статус шага      | `todo`                              |
+| Последний `done` | **074** — Staged test runner        |
+| Закрыто шагов    | **74 / 96**                         |
+| Обновлено        | 2026-07-21                          |
 
 ### Сводка по трекам
 
@@ -708,7 +708,7 @@ const getGitDiffFiles = (command) =>
 | T3 API platform    | 031–048 | 18   | `done`  |
 | T4 Mongo           | 049–058 | 10   | `done`  |
 | T5 Web             | 059–068 | 10   | `done`  |
-| T6 Testing         | 069–076 | 5    | `doing` |
+| T6 Testing         | 069–076 | 6    | `doing` |
 | T7 CI/CD           | 077–084 | 0    | `todo`  |
 | T8 Contract bridge | 085–088 | 0    | `todo`  |
 | T9 Observability   | 089–092 | 0    | `todo`  |
@@ -823,7 +823,7 @@ const getGitDiffFiles = (command) =>
 | 071  | Vitest web config         | `done` | `happy-dom`; unit-only; smoke → `test:smoke`; `setupFiles` cleanup    |
 | 072  | Coverage v8 all projects  | `done` | per-project v8; scoped thresholds on unit `test`                      |
 | 073  | Tests-first in CI step    | `done` | `validate:tests-first` first in `ci`; self-tests; no-bypass docs      |
-| 074  | Staged test runner        | `todo` |                                                                       |
+| 074  | Staged test runner        | `done` | `nx affected -t test --files`; dependents; self-tests; <1 min typical |
 | 075  | Contract tests error JSON | `todo` |                                                                       |
 | 076  | Testing guide doc         | `todo` |                                                                       |
 

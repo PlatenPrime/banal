@@ -1,6 +1,6 @@
 /**
- * Pre-commit orchestrator (steps 019–022).
- * Single entrypoint: lint-staged → tests-first → staged unit tests.
+ * Pre-commit orchestrator (steps 019–022, 074).
+ * Single entrypoint: lint-staged → tests-first → affected staged unit tests.
  */
 /* global console, process */
 import { execSync } from 'node:child_process';

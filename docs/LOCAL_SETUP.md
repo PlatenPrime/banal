@@ -43,7 +43,7 @@ npm install
 - **pre-commit** → `node scripts/husky-pre-commit.mjs`
   1. `lint-staged` (prettier + eslint on staged files)
   2. `node scripts/validate-tests-first.mjs`
-  3. `node scripts/run-staged-tests.mjs` (unit tests for touched Nx projects)
+  3. `node scripts/run-staged-tests.mjs` — **Nx affected** unit tests (`nx affected -t test --files=…`) for staged workspace graph files (`apps/`, `libs/`, plus root `package.json` / `nx.json` / `tsconfig.base.json`). Docs/scripts-only commits skip. Typical budget **<1 min** (Nx cache helps).
 - **pre-push** → `node scripts/husky-pre-push.mjs` (`npm run typecheck`)
 
 ### Windows: `execvpe(/bin/bash)` / husky pre-push failed

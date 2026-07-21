@@ -1,12 +1,54 @@
 /**
- * Run unit tests for Nx projects touched by staged files (step 022).
+ * Run unit tests for Nx projects affected by staged files (step 074).
+ * Uses graph-aware `nx affected --files` (supersedes path-only run-many from 022).
  */
 /* global console, process */
 import { execSync } from 'node:child_process';
 
-const normalizePath = (p) => p.replaceAll('\\', '/');
+export const normalizePath = (p) => p.replaceAll('\\', '/');
 
-const getStagedFiles = () =>
+/**
+ * Files that can change the Nx project graph for pre-commit unit tests.
+ * Docs/scripts/misc paths are excluded so we skip without invoking Nx.
+ *
+ * @param {string} file
+ */
+export const isWorkspaceGraphFile = (file) => {
+  const n = normalizePath(file);
+  return (
+    n.startsWith('apps/') ||
+    n.startsWith('libs/') ||
+    n === 'package.json' ||
+    n === 'package-lock.json' ||
+    n === 'nx.json' ||
+    n === 'tsconfig.base.json'
+  );
+};
+
+/**
+ * @param {string[]} files
+ * @returns {string[]}
+ */
+export const filterGraphFiles = (files) =>
+  [...new Set(files.map(normalizePath).filter(isWorkspaceGraphFile))].sort();
+
+/**
+ * Build the nx affected unit-test command, or null when there is nothing to run.
+ *
+ * @param {string[]} files staged (or candidate) paths
+ * @returns {string | null}
+ */
+export const buildAffectedTestCommand = (files) => {
+  const graphFiles = filterGraphFiles(files);
+  if (graphFiles.length === 0) {
+    return null;
+  }
+
+  const filesArg = graphFiles.map((f) => (/\s/.test(f) ? `"${f}"` : f)).join(',');
+  return `npx nx affected -t test --files=${filesArg}`;
+};
+
+export const getStagedFiles = () =>
   execSync('git diff --cached --name-only --diff-filter=ACMR', {
     encoding: 'utf8',
     stdio: ['ignore', 'pipe', 'ignore'],
@@ -15,25 +57,6 @@ const getStagedFiles = () =>
     .map((s) => s.trim())
     .filter(Boolean)
     .map(normalizePath);
-
-/** @type {{ prefix: string, project: string }[]} */
-const PROJECT_MAP = [
-  { prefix: 'apps/api/', project: 'api' },
-  { prefix: 'apps/web/', project: 'web' },
-  { prefix: 'libs/shared-contracts/', project: 'shared-contracts' },
-];
-
-const resolveProjects = (files) => {
-  const projects = new Set();
-  for (const file of files) {
-    for (const { prefix, project } of PROJECT_MAP) {
-      if (file.startsWith(prefix)) {
-        projects.add(project);
-      }
-    }
-  }
-  return [...projects].sort();
-};
 
 const main = () => {
   let files;
@@ -44,19 +67,22 @@ const main = () => {
     process.exit(1);
   }
 
-  const projects = resolveProjects(files);
-  if (projects.length === 0) {
-    console.log('[run-staged-tests] No app/lib projects in staged files — skip');
+  const command = buildAffectedTestCommand(files);
+  if (!command) {
+    console.log('[run-staged-tests] No workspace graph files in staged set — skip');
     process.exit(0);
   }
 
-  const projectList = projects.join(',');
-  console.log(`[run-staged-tests] Running unit tests for: ${projectList}`);
+  const graphFiles = filterGraphFiles(files);
+  console.log(
+    `[run-staged-tests] Running affected unit tests for staged files (${graphFiles.length}):`,
+  );
+  for (const file of graphFiles) {
+    console.log(`  - ${file}`);
+  }
 
   try {
-    execSync(`npx nx run-many -t test --projects=${projectList}`, {
-      stdio: 'inherit',
-    });
+    execSync(command, { stdio: 'inherit' });
   } catch {
     process.exit(1);
   }
@@ -64,4 +90,10 @@ const main = () => {
   process.exit(0);
 };
 
-main();
+const isDirectRun =
+  Boolean(process.argv[1]) &&
+  normalizePath(process.argv[1]).endsWith('scripts/run-staged-tests.mjs');
+
+if (isDirectRun) {
+  main();
+}
