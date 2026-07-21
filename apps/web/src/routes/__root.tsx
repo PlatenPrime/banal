@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { Outlet, createRootRoute, HeadContent, Scripts } from '@tanstack/react-router';
+import '../styles.css';
 
 export const Route = createRootRoute({
   head: () => ({
@@ -29,7 +30,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
       <head>
         <HeadContent />
       </head>
-      <body>
+      <body className="min-h-screen bg-zinc-50 text-zinc-900 antialiased">
         {children}
         <Scripts />
       </body>

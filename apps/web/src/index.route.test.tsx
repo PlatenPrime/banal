@@ -27,4 +27,12 @@ describe('index route', () => {
       '/examples/new',
     );
   });
+
+  it('applies Tailwind utility classes on the shell', () => {
+    const { container } = render(<HomePage />);
+    const main = container.querySelector('main');
+
+    expect(main?.className).toContain('mx-auto');
+    expect(main?.className).toContain('max-w-3xl');
+  });
 });

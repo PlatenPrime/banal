@@ -1,5 +1,6 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import tailwindcss from '@tailwindcss/vite';
 import { tanstackStart } from '@tanstack/react-start/plugin/vite';
 import { defineConfig } from 'vite';
 import viteReact from '@vitejs/plugin-react';
@@ -18,5 +19,5 @@ export default defineConfig({
     },
     tsconfigPaths: true,
   },
-  plugins: [tanstackStart({ srcDirectory: 'src' }), nitro(), viteReact()],
+  plugins: [tailwindcss(), tanstackStart({ srcDirectory: 'src' }), nitro(), viteReact()],
 });
