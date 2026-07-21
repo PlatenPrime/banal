@@ -689,14 +689,14 @@ const getGitDiffFiles = (command) =>
 
 ### Текущий этап
 
-| Поле             | Значение                       |
-| ---------------- | ------------------------------ |
-| Трек             | **T5 — Web Platform**          |
-| Текущий шаг      | **066** — Error boundary route |
-| Статус шага      | `todo`                         |
-| Последний `done` | **065** — Tailwind v4 setup    |
-| Закрыто шагов    | **65 / 96**                    |
-| Обновлено        | 2026-07-21                     |
+| Поле             | Значение                        |
+| ---------------- | ------------------------------- |
+| Трек             | **T5 — Web Platform**           |
+| Текущий шаг      | **067** — Dev proxy or CORS doc |
+| Статус шага      | `todo`                          |
+| Последний `done` | **066** — Error boundary route  |
+| Закрыто шагов    | **66 / 96**                     |
+| Обновлено        | 2026-07-21                      |
 
 ### Сводка по трекам
 
@@ -707,7 +707,7 @@ const getGitDiffFiles = (command) =>
 | T2 Contracts       | 025–030 | 6    | `done`  |
 | T3 API platform    | 031–048 | 18   | `done`  |
 | T4 Mongo           | 049–058 | 10   | `done`  |
-| T5 Web             | 059–068 | 7    | `doing` |
+| T5 Web             | 059–068 | 8    | `doing` |
 | T6 Testing         | 069–076 | 0    | `todo`  |
 | T7 CI/CD           | 077–084 | 0    | `todo`  |
 | T8 Contract bridge | 085–088 | 0    | `todo`  |
@@ -810,7 +810,7 @@ const getGitDiffFiles = (command) =>
 | 063  | `/examples` route     | `done` | loader prefetch + `useSuspenseQuery`; errorComponent                 |
 | 064  | `/examples/new` Form  | `done` | TanStack Form + mutation + cache invalidation                        |
 | 065  | Tailwind v4 setup     | `done` | `@tailwindcss/vite` + `styles.css`; shell utilities on home          |
-| 066  | Error boundary route  | `todo` |                                                                      |
+| 066  | Error boundary route  | `done` | `RouteError` + `defaultErrorComponent` + root `notFoundComponent`    |
 | 067  | Dev proxy or CORS doc | `todo` |                                                                      |
 | 068  | `web:build` SSR smoke | `todo` |                                                                      |
 

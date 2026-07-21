@@ -1,8 +1,8 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
 import type { ErrorComponentProps } from '@tanstack/react-router';
-import { ApiClientError } from '../lib/api-client/client';
 import { examplesQueryOptions } from '../lib/api-client/examples-query';
+import { RouteError } from './route-error';
 
 export function ExamplesPage() {
   const { data } = useSuspenseQuery(examplesQueryOptions);
@@ -32,14 +32,6 @@ export function ExamplesPage() {
   );
 }
 
-export function ExamplesError({ error }: ErrorComponentProps) {
-  const message = error instanceof ApiClientError ? error.problem.title : 'Failed to load examples';
-
-  return (
-    <main>
-      <h1>Examples</h1>
-      <p role="alert">{message}</p>
-      <Link to="/">Home</Link>
-    </main>
-  );
+export function ExamplesError(props: ErrorComponentProps) {
+  return <RouteError {...props} />;
 }
