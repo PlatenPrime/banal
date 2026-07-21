@@ -14,6 +14,11 @@ concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  # Public Vite client config (same as apps/web/.env.example). Required because
+  # gitignored `.env*` files are absent in CI checkouts.
+  VITE_API_URL: http://localhost:4000
+
 jobs:
   quality:
     name: quality (${{ matrix.os }})

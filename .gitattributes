@@ -1,2 +1,5 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# Force LF in the working tree on every OS (needed for Prettier + Windows GHA).
+* text=auto eol=lf
+
+# Binary assets — do not touch line endings
+*.{png,jpg,jpeg,gif,webp,ico,pdf,zip,gz,tgz,woff,woff2,mp4,webm} binary

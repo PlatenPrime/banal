@@ -30,6 +30,8 @@ node -v   # v24.x.x
 npm -v    # 10.x or newer
 ```
 
+Line endings are **LF** (`.editorconfig`, `.gitattributes` `eol=lf`, Prettier `endOfLine: lf`). Required for `format:check` on Windows CI runners.
+
 ## Install dependencies
 
 From the repository root:
@@ -139,10 +141,10 @@ docker compose down
 
 Browser and SSR both call the Nest API with an **absolute** `VITE_API_URL`. Cross-origin browser requests rely on Nest CORS (`WEB_ORIGIN`), not a Vite proxy.
 
-| App | Port   | Env file                                                    | Key vars                             |
-| --- | ------ | ----------------------------------------------------------- | ------------------------------------ |
-| API | `4000` | `apps/api/.env`                                             | `WEB_ORIGIN=http://localhost:3000`   |
-| Web | `3000` | `apps/web/.env` (or `.env.development` / `.env.production`) | `VITE_API_URL=http://localhost:4000` |
+| App | Port   | Env file                                              | Key vars                             |
+| --- | ------ | ----------------------------------------------------- | ------------------------------------ |
+| API | `4000` | `apps/api/.env`                                       | `WEB_ORIGIN=http://localhost:3000`   |
+| Web | `3000` | `apps/web/.env` (+ tracked `.env.test` for Vitest/CI) | `VITE_API_URL=http://localhost:4000` |
 
 ```bash
 cp apps/api/.env.example apps/api/.env
