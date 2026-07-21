@@ -1,0 +1,6 @@
+{
+  "type": "https://banal.app/problems/internal",
+  "title": "Internal Server Error",
+  "status": 500,
+  "instance": "/api/v1/boom"
+}

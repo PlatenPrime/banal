@@ -1,0 +1,7 @@
+{
+  "type": "https://banal.app/problems/conflict",
+  "title": "Conflict",
+  "status": 409,
+  "detail": "Resource already exists",
+  "instance": "/api/v1/examples"
+}

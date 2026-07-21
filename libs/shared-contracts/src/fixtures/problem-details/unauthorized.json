@@ -1,0 +1,6 @@
+{
+  "type": "https://banal.app/problems/unauthorized",
+  "title": "Unauthorized",
+  "status": 401,
+  "instance": "/api/v1/examples"
+}

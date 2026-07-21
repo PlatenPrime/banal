@@ -1,0 +1,7 @@
+{
+  "type": "https://banal.app/problems/not-found",
+  "title": "Not Found",
+  "status": 404,
+  "detail": "Example not found",
+  "instance": "/api/v1/examples/missing"
+}

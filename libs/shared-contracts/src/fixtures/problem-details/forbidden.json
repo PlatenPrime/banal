@@ -1,0 +1,6 @@
+{
+  "type": "https://banal.app/problems/forbidden",
+  "title": "Forbidden",
+  "status": 403,
+  "instance": "/api/v1/examples"
+}

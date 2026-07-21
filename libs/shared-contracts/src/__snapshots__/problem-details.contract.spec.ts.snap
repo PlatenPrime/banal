@@ -1,0 +1,83 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Problem Details error JSON contract > locks canonical shape for conflict.json 1`] = `
+{
+  "detail": "Resource already exists",
+  "instance": "/api/v1/examples",
+  "status": 409,
+  "title": "Conflict",
+  "type": "https://banal.app/problems/conflict",
+}
+`;
+
+exports[`Problem Details error JSON contract > locks canonical shape for forbidden.json 1`] = `
+{
+  "instance": "/api/v1/examples",
+  "status": 403,
+  "title": "Forbidden",
+  "type": "https://banal.app/problems/forbidden",
+}
+`;
+
+exports[`Problem Details error JSON contract > locks canonical shape for internal.json 1`] = `
+{
+  "instance": "/api/v1/boom",
+  "status": 500,
+  "title": "Internal Server Error",
+  "type": "https://banal.app/problems/internal",
+}
+`;
+
+exports[`Problem Details error JSON contract > locks canonical shape for not-found-minimal.json 1`] = `
+{
+  "status": 404,
+  "title": "Not Found",
+  "type": "https://banal.app/problems/not-found",
+}
+`;
+
+exports[`Problem Details error JSON contract > locks canonical shape for not-found-with-instance.json 1`] = `
+{
+  "detail": "Example not found",
+  "instance": "/api/v1/examples/missing",
+  "status": 404,
+  "title": "Not Found",
+  "type": "https://banal.app/problems/not-found",
+}
+`;
+
+exports[`Problem Details error JSON contract > locks canonical shape for unauthorized.json 1`] = `
+{
+  "instance": "/api/v1/examples",
+  "status": 401,
+  "title": "Unauthorized",
+  "type": "https://banal.app/problems/unauthorized",
+}
+`;
+
+exports[`Problem Details error JSON contract > locks canonical shape for validation-failed.json 1`] = `
+{
+  "detail": "Validation failed",
+  "errors": {
+    "extra": [
+      "property extra should not exist",
+    ],
+    "name": [
+      "name should not be empty",
+    ],
+  },
+  "instance": "/api/v1/examples",
+  "status": 422,
+  "title": "Validation Failed",
+  "type": "https://banal.app/problems/validation-failed",
+}
+`;
+
+exports[`Problem Details error JSON contract > strips stack leaks so the contract surface stays safe 1`] = `
+{
+  "instance": "/api/v1/boom",
+  "status": 500,
+  "title": "Internal Server Error",
+  "type": "https://banal.app/problems/internal",
+}
+`;

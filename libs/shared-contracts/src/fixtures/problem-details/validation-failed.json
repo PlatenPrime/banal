@@ -1,0 +1,11 @@
+{
+  "type": "https://banal.app/problems/validation-failed",
+  "title": "Validation Failed",
+  "status": 422,
+  "detail": "Validation failed",
+  "instance": "/api/v1/examples",
+  "errors": {
+    "name": ["name should not be empty"],
+    "extra": ["property extra should not exist"]
+  }
+}
