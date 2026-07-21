@@ -692,10 +692,10 @@ const getGitDiffFiles = (command) =>
 | Поле             | Значение                         |
 | ---------------- | -------------------------------- |
 | Трек             | **T3 — API Platform**            |
-| Текущий шаг      | **047** — Correlation in logs    |
+| Текущий шаг      | **048** — Track 3 mini-checklist |
 | Статус шага      | `todo`                           |
-| Последний `done` | **046** — 422 validation mapping |
-| Закрыто шагов    | **46 / 96**                      |
+| Последний `done` | **047** — Correlation in logs    |
+| Закрыто шагов    | **47 / 96**                      |
 | Обновлено        | 2026-07-21                       |
 
 ### Сводка по трекам
@@ -705,7 +705,7 @@ const getGitDiffFiles = (command) =>
 | T0 Bootstrap       | 001–018 | 18   | `done` |
 | T1 Local quality   | 019–024 | 6    | `done` |
 | T2 Contracts       | 025–030 | 6    | `done` |
-| T3 API platform    | 031–048 | 16   | `wip`  |
+| T3 API platform    | 031–048 | 17   | `wip`  |
 | T4 Mongo           | 049–058 | 0    | `todo` |
 | T5 Web             | 059–068 | 0    | `todo` |
 | T6 Testing         | 069–076 | 0    | `todo` |
@@ -781,7 +781,7 @@ const getGitDiffFiles = (command) =>
 | 044  | Global API prefix config   | `done` | `API_URI_VERSION` + `apiV1Path` / `apiPrefixedPath`; controllers + unit/e2e DRY        |
 | 045  | 404 → Problem Details      | `done` | unknown route → `problem+json` + Zod; vitest include `*.e2e-spec.ts`                   |
 | 046  | 422 validation mapping     | `done` | `exceptionFactory` → 422 + `errors`; filter maps field errors; e2e problem+json        |
-| 047  | Correlation in logs        | `todo` |                                                                                        |
+| 047  | Correlation in logs        | `done` | `nestjs-pino`; `genReqId`/`customProps` ← `req.requestId`; `autoLogging: false`        |
 | 048  | Track 3 mini-checklist     | `todo` |                                                                                        |
 
 #### T4 — Mongo Data Skeleton (049–058)
