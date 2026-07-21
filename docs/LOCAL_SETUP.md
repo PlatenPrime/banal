@@ -169,4 +169,6 @@ npx nx run web:build        # vite build + asserts .output/server/index.mjs
 npx nx run web:test:smoke   # full rebuild via vitest.smoke.config.ts
 ```
 
+`apps/web/src/routeTree.gen.ts` is **committed** (not gitignored) so `web:typecheck` works on a fresh clone / CI without running Vite first. Vite/dev still regenerates it; leave the file out of prettier/eslint autofix.
+
 See [FOUNDATION-ROADMAP.md](./FOUNDATION-ROADMAP.md) for verification commands per step.
