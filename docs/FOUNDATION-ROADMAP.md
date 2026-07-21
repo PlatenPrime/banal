@@ -689,30 +689,30 @@ const getGitDiffFiles = (command) =>
 
 ### Текущий этап
 
-| Поле             | Значение                        |
-| ---------------- | ------------------------------- |
-| Трек             | **T6 — Testing Iron**           |
-| Текущий шаг      | **069** — Vitest api config     |
-| Статус шага      | `todo`                          |
-| Последний `done` | **068** — `web:build` SSR smoke |
-| Закрыто шагов    | **68 / 96**                     |
-| Обновлено        | 2026-07-21                      |
+| Поле             | Значение                           |
+| ---------------- | ---------------------------------- |
+| Трек             | **T6 — Testing Iron**              |
+| Текущий шаг      | **070** — Vitest api e2e config    |
+| Статус шага      | `todo`                             |
+| Последний `done` | **069** — Vitest api config (unit) |
+| Закрыто шагов    | **69 / 96**                        |
+| Обновлено        | 2026-07-21                         |
 
 ### Сводка по трекам
 
-| Track              | Steps   | Done | Status |
-| ------------------ | ------- | ---- | ------ |
-| T0 Bootstrap       | 001–018 | 18   | `done` |
-| T1 Local quality   | 019–024 | 6    | `done` |
-| T2 Contracts       | 025–030 | 6    | `done` |
-| T3 API platform    | 031–048 | 18   | `done` |
-| T4 Mongo           | 049–058 | 10   | `done` |
-| T5 Web             | 059–068 | 10   | `done` |
-| T6 Testing         | 069–076 | 0    | `todo` |
-| T7 CI/CD           | 077–084 | 0    | `todo` |
-| T8 Contract bridge | 085–088 | 0    | `todo` |
-| T9 Observability   | 089–092 | 0    | `todo` |
-| T10 Acceptance     | 093–096 | 0    | `todo` |
+| Track              | Steps   | Done | Status  |
+| ------------------ | ------- | ---- | ------- |
+| T0 Bootstrap       | 001–018 | 18   | `done`  |
+| T1 Local quality   | 019–024 | 6    | `done`  |
+| T2 Contracts       | 025–030 | 6    | `done`  |
+| T3 API platform    | 031–048 | 18   | `done`  |
+| T4 Mongo           | 049–058 | 10   | `done`  |
+| T5 Web             | 059–068 | 10   | `done`  |
+| T6 Testing         | 069–076 | 1    | `doing` |
+| T7 CI/CD           | 077–084 | 0    | `todo`  |
+| T8 Contract bridge | 085–088 | 0    | `todo`  |
+| T9 Observability   | 089–092 | 0    | `todo`  |
+| T10 Acceptance     | 093–096 | 0    | `todo`  |
 
 ### Чеклист шагов
 
@@ -816,16 +816,16 @@ const getGitDiffFiles = (command) =>
 
 #### T6 — Testing Iron (069–076)
 
-| Step | Title                     | Status | Notes                            |
-| ---- | ------------------------- | ------ | -------------------------------- |
-| 069  | Vitest api config         | `todo` | конфиг есть — DoD шага не закрыт |
-| 070  | Vitest api e2e config     | `todo` |                                  |
-| 071  | Vitest web config         | `todo` | конфиг есть — DoD шага не закрыт |
-| 072  | Coverage v8 all projects  | `todo` |                                  |
-| 073  | Tests-first in CI step    | `todo` |                                  |
-| 074  | Staged test runner        | `todo` |                                  |
-| 075  | Contract tests error JSON | `todo` |                                  |
-| 076  | Testing guide doc         | `todo` |                                  |
+| Step | Title                     | Status | Notes                                                                 |
+| ---- | ------------------------- | ------ | --------------------------------------------------------------------- |
+| 069  | Vitest api config         | `done` | unit-only `src/**`; `environment: 'node'`; `pool: 'forks'`; e2e → 070 |
+| 070  | Vitest api e2e config     | `todo` |                                                                       |
+| 071  | Vitest web config         | `todo` | конфиг есть — DoD шага не закрыт                                      |
+| 072  | Coverage v8 all projects  | `todo` |                                                                       |
+| 073  | Tests-first in CI step    | `todo` |                                                                       |
+| 074  | Staged test runner        | `todo` |                                                                       |
+| 075  | Contract tests error JSON | `todo` |                                                                       |
+| 076  | Testing guide doc         | `todo` |                                                                       |
 
 #### T7 — CI/CD (077–084)
 
