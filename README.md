@@ -2,7 +2,7 @@
 
 Nx monorepo foundation: NestJS API (`apps/api`), TanStack Start web (`apps/web`), and shared Zod contracts (`libs/shared-contracts`). Local MongoDB via Docker; shared-DB strangler with legacy is planned after Track 10.
 
-Roadmap (source of truth): [docs/FOUNDATION-ROADMAP.md](docs/FOUNDATION-ROADMAP.md). Detailed toolchain notes: [docs/LOCAL_SETUP.md](docs/LOCAL_SETUP.md).
+Roadmap (source of truth): [docs/FOUNDATION-ROADMAP.md](docs/FOUNDATION-ROADMAP.md). Detailed toolchain notes: [docs/LOCAL_SETUP.md](docs/LOCAL_SETUP.md). Testing norms: [docs/testing.md](docs/testing.md).
 
 ## Requirements
 
@@ -50,6 +50,8 @@ mongodb://127.0.0.1:27017/app_foundation_dev
 
 ## Quality scripts
 
+Layers, coverage thresholds, and tests-first rules: [docs/testing.md](docs/testing.md).
+
 ```bash
 npm run build
 npm run test
@@ -87,7 +89,7 @@ Runs the same quality order as the planned GitHub Actions job (Track 7):
 apps/api                 NestJS API
 apps/web                 TanStack Start
 libs/shared-contracts    Shared Zod + types (@app/shared-contracts)
-docs/                    Setup + foundation roadmap
+docs/                    Setup, testing guide, foundation roadmap
 ```
 
 Do not write to legacy Mongo collections until Track 10 is closed.

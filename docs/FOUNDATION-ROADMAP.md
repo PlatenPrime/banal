@@ -689,30 +689,30 @@ const getGitDiffFiles = (command) =>
 
 ### Текущий этап
 
-| Поле             | Значение                            |
-| ---------------- | ----------------------------------- |
-| Трек             | **T6 — Testing Iron**               |
-| Текущий шаг      | **076** — Testing guide doc         |
-| Статус шага      | `todo`                              |
-| Последний `done` | **075** — Contract tests error JSON |
-| Закрыто шагов    | **75 / 96**                         |
-| Обновлено        | 2026-07-21                          |
+| Поле             | Значение                    |
+| ---------------- | --------------------------- |
+| Трек             | **T7 — CI/CD**              |
+| Текущий шаг      | **077** — `ci.yml` baseline |
+| Статус шага      | `todo`                      |
+| Последний `done` | **076** — Testing guide doc |
+| Закрыто шагов    | **76 / 96**                 |
+| Обновлено        | 2026-07-21                  |
 
 ### Сводка по трекам
 
-| Track              | Steps   | Done | Status  |
-| ------------------ | ------- | ---- | ------- |
-| T0 Bootstrap       | 001–018 | 18   | `done`  |
-| T1 Local quality   | 019–024 | 6    | `done`  |
-| T2 Contracts       | 025–030 | 6    | `done`  |
-| T3 API platform    | 031–048 | 18   | `done`  |
-| T4 Mongo           | 049–058 | 10   | `done`  |
-| T5 Web             | 059–068 | 10   | `done`  |
-| T6 Testing         | 069–076 | 7    | `doing` |
-| T7 CI/CD           | 077–084 | 0    | `todo`  |
-| T8 Contract bridge | 085–088 | 0    | `todo`  |
-| T9 Observability   | 089–092 | 0    | `todo`  |
-| T10 Acceptance     | 093–096 | 0    | `todo`  |
+| Track              | Steps   | Done | Status |
+| ------------------ | ------- | ---- | ------ |
+| T0 Bootstrap       | 001–018 | 18   | `done` |
+| T1 Local quality   | 019–024 | 6    | `done` |
+| T2 Contracts       | 025–030 | 6    | `done` |
+| T3 API platform    | 031–048 | 18   | `done` |
+| T4 Mongo           | 049–058 | 10   | `done` |
+| T5 Web             | 059–068 | 10   | `done` |
+| T6 Testing         | 069–076 | 8    | `done` |
+| T7 CI/CD           | 077–084 | 0    | `todo` |
+| T8 Contract bridge | 085–088 | 0    | `todo` |
+| T9 Observability   | 089–092 | 0    | `todo` |
+| T10 Acceptance     | 093–096 | 0    | `todo` |
 
 ### Чеклист шагов
 
@@ -825,7 +825,7 @@ const getGitDiffFiles = (command) =>
 | 073  | Tests-first in CI step    | `done` | `validate:tests-first` first in `ci`; self-tests; no-bypass docs            |
 | 074  | Staged test runner        | `done` | `nx affected -t test --files`; dependents; self-tests; <1 min typical       |
 | 075  | Contract tests error JSON | `done` | golden fixtures + `problem-details.contract.spec.ts` (Zod + snapshot + URI) |
-| 076  | Testing guide doc         | `todo` |                                                                             |
+| 076  | Testing guide doc         | `done` | [`docs/testing.md`](testing.md); links from README + LOCAL_SETUP            |
 
 #### T7 — CI/CD (077–084)
 

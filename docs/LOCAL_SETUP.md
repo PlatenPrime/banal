@@ -74,6 +74,8 @@ Do not touch legacy MongoDB collections until **Track 10** is complete.
 
 ## Quality / CI locally
 
+Team testing guide (layers, coverage, gates, DoD): [testing.md](./testing.md).
+
 ```bash
 npm run build
 npm run test
