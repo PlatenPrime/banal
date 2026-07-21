@@ -689,30 +689,30 @@ const getGitDiffFiles = (command) =>
 
 ### Текущий этап
 
-| Поле             | Значение                      |
-| ---------------- | ----------------------------- |
-| Трек             | **T5 — Web Platform**         |
-| Текущий шаг      | **059** — Router file routes  |
-| Статус шага      | `todo`                        |
-| Последний `done` | **058** — Mongo e2e isolation |
-| Закрыто шагов    | **58 / 96**                   |
-| Обновлено        | 2026-07-21                    |
+| Поле             | Значение                       |
+| ---------------- | ------------------------------ |
+| Трек             | **T5 — Web Platform**          |
+| Текущий шаг      | **065** — Tailwind v4 setup    |
+| Статус шага      | `todo`                         |
+| Последний `done` | **064** — `/examples/new` Form |
+| Закрыто шагов    | **64 / 96**                    |
+| Обновлено        | 2026-07-21                     |
 
 ### Сводка по трекам
 
-| Track              | Steps   | Done | Status |
-| ------------------ | ------- | ---- | ------ |
-| T0 Bootstrap       | 001–018 | 18   | `done` |
-| T1 Local quality   | 019–024 | 6    | `done` |
-| T2 Contracts       | 025–030 | 6    | `done` |
-| T3 API platform    | 031–048 | 18   | `done` |
-| T4 Mongo           | 049–058 | 10   | `done` |
-| T5 Web             | 059–068 | 0    | `todo` |
-| T6 Testing         | 069–076 | 0    | `todo` |
-| T7 CI/CD           | 077–084 | 0    | `todo` |
-| T8 Contract bridge | 085–088 | 0    | `todo` |
-| T9 Observability   | 089–092 | 0    | `todo` |
-| T10 Acceptance     | 093–096 | 0    | `todo` |
+| Track              | Steps   | Done | Status  |
+| ------------------ | ------- | ---- | ------- |
+| T0 Bootstrap       | 001–018 | 18   | `done`  |
+| T1 Local quality   | 019–024 | 6    | `done`  |
+| T2 Contracts       | 025–030 | 6    | `done`  |
+| T3 API platform    | 031–048 | 18   | `done`  |
+| T4 Mongo           | 049–058 | 10   | `done`  |
+| T5 Web             | 059–068 | 6    | `doing` |
+| T6 Testing         | 069–076 | 0    | `todo`  |
+| T7 CI/CD           | 077–084 | 0    | `todo`  |
+| T8 Contract bridge | 085–088 | 0    | `todo`  |
+| T9 Observability   | 089–092 | 0    | `todo`  |
+| T10 Acceptance     | 093–096 | 0    | `todo`  |
 
 ### Чеклист шагов
 
@@ -801,18 +801,18 @@ const getGitDiffFiles = (command) =>
 
 #### T5 — Web Platform (059–068)
 
-| Step | Title                 | Status | Notes                              |
-| ---- | --------------------- | ------ | ---------------------------------- |
-| 059  | Router file routes    | `todo` | scaffold есть — DoD шага не закрыт |
-| 060  | QueryClient provider  | `todo` |                                    |
-| 061  | Env validation web    | `todo` |                                    |
-| 062  | API client wrapper    | `todo` |                                    |
-| 063  | `/examples` route     | `todo` |                                    |
-| 064  | `/examples/new` Form  | `todo` |                                    |
-| 065  | Tailwind v4 setup     | `todo` |                                    |
-| 066  | Error boundary route  | `todo` |                                    |
-| 067  | Dev proxy or CORS doc | `todo` |                                    |
-| 068  | `web:build` SSR smoke | `todo` |                                    |
+| Step | Title                 | Status | Notes                                                                |
+| ---- | --------------------- | ------ | -------------------------------------------------------------------- |
+| 059  | Router file routes    | `done` | nav links; `HomePage` + route test with RTL                          |
+| 060  | QueryClient provider  | `done` | `createQueryClient` + `@tanstack/react-router-ssr-query` integration |
+| 061  | Env validation web    | `done` | `config/env.schema.ts` — `VITE_API_URL` Zod fail-fast                |
+| 062  | API client wrapper    | `done` | `lib/api-client/client.ts` + examples + Problem Details              |
+| 063  | `/examples` route     | `done` | loader prefetch + `useSuspenseQuery`; errorComponent                 |
+| 064  | `/examples/new` Form  | `done` | TanStack Form + mutation + cache invalidation                        |
+| 065  | Tailwind v4 setup     | `todo` |                                                                      |
+| 066  | Error boundary route  | `todo` |                                                                      |
+| 067  | Dev proxy or CORS doc | `todo` |                                                                      |
+| 068  | `web:build` SSR smoke | `todo` |                                                                      |
 
 #### T6 — Testing Iron (069–076)
 

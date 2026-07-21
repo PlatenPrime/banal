@@ -1,6 +1,16 @@
-import { SHARED_CONTRACTS_READY } from '@app/shared-contracts';
-import { describe, expect, it } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import type { ReactNode } from 'react';
+import { describe, expect, it, vi } from 'vitest';
+import { HomePage } from './components/home-page';
 import { Route } from './routes/index';
+
+vi.mock('@tanstack/react-router', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@tanstack/react-router')>();
+  return {
+    ...actual,
+    Link: ({ to, children }: { to: string; children: ReactNode }) => <a href={to}>{children}</a>,
+  };
+});
 
 describe('index route', () => {
   it('exports a file route module', () => {
@@ -8,7 +18,13 @@ describe('index route', () => {
     expect(Route.options.component).toBeTypeOf('function');
   });
 
-  it('wires shared contracts into the web app', () => {
-    expect(SHARED_CONTRACTS_READY).toBe(true);
+  it('renders home with navigation links', () => {
+    render(<HomePage />);
+
+    expect(screen.getByRole('heading', { name: 'banal' })).toBeDefined();
+    expect(screen.getByRole('link', { name: 'Examples' }).getAttribute('href')).toBe('/examples');
+    expect(screen.getByRole('link', { name: 'New example' }).getAttribute('href')).toBe(
+      '/examples/new',
+    );
   });
 });

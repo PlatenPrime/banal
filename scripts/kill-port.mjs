@@ -33,7 +33,7 @@ function resolvePort() {
 function getListeningPids(port) {
   if (process.platform === 'win32') {
     try {
-      const output = execSync('netstat -ano -p tcp', { encoding: 'utf8' });
+      const output = execSync('netstat -ano', { encoding: 'utf8' });
       const portSuffix = `:${port}`;
       const pids = new Set();
 
@@ -42,12 +42,13 @@ function getListeningPids(port) {
           continue;
         }
 
-        const localAddress = line.trim().split(/\s+/)[1] ?? '';
+        const columns = line.trim().split(/\s+/);
+        const localAddress = columns[1] ?? '';
         if (!localAddress.endsWith(portSuffix)) {
           continue;
         }
 
-        const pid = Number(line.trim().split(/\s+/).at(-1));
+        const pid = Number(columns.at(-1));
         if (pid > 0) {
           pids.add(pid);
         }
