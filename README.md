@@ -58,6 +58,8 @@ npm run test:api          # api unit + coverage → apps/api/coverage/
 npm run test:contracts    # shared-contracts + coverage
 npm run test:api:e2e
 npm run test:web:smoke
+npm run test:scripts      # tests-first gate self-tests
+npm run validate:tests-first
 npm run lint
 npm run typecheck
 npm run format:check
@@ -68,11 +70,14 @@ npm run ci
 
 Runs the same quality order as the planned GitHub Actions job (Track 7):
 
-1. `validate-tests-first --ci`
+1. `validate:tests-first` (`--ci` mode) — **fail-closed, no bypass**
 2. `format:check`
 3. `lint` → `typecheck` → `build` → `test` (all projects via `nx run-many`)
+4. `test:scripts` (gate self-tests)
 
-**Parity vs future GHA (T7):** local `ci` uses `run-many` on every project. CI will switch to `nx affected` with `NX_BASE`/`NX_HEAD`, add `test:e2e` (Mongo service), and restore Nx cache. Until then, local `npm run ci` is the full green check.
+**Parity vs future GHA (T7):** local `ci` uses `run-many` on every project. CI will switch to `nx affected` with `NX_BASE`/`NX_HEAD`, add `test:e2e` (Mongo service), and restore Nx cache. Until then, local `npm run ci` is the full green check. GHA must call the same `validate:tests-first` step first without `continue-on-error`.
+
+**No bypass:** `--no-verify` only skips local husky hooks; it does not skip `npm run ci` / GHA. Production diffs without a co-committed unit test must fail the gate.
 
 **pre-commit:** lint-staged (prettier + eslint) → tests-first on staged → unit tests for touched projects. **pre-push:** `node scripts/husky-pre-push.mjs` (typecheck).
 

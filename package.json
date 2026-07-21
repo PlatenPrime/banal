@@ -22,9 +22,11 @@
     "typecheck": "nx run-many -t typecheck",
     "format:check": "prettier --check .",
     "format": "prettier --write .",
+    "validate:tests-first": "node scripts/validate-tests-first.mjs --ci",
+    "test:scripts": "node --test scripts/*.spec.mjs",
     "dev:api": "nx run api:build && node scripts/dev-api.mjs",
     "dev:web": "node scripts/dev-web.mjs",
-    "ci": "node scripts/validate-tests-first.mjs --ci && npm run format:check && nx run-many -t lint && nx run-many -t typecheck && nx run-many -t build && nx run-many -t test"
+    "ci": "npm run validate:tests-first && npm run format:check && nx run-many -t lint && nx run-many -t typecheck && nx run-many -t build && nx run-many -t test && npm run test:scripts"
   },
   "lint-staged": {
     "*.{js,mjs,cjs,ts,tsx,json,md,yml,yaml}": "prettier --write",

@@ -82,13 +82,17 @@ npm run test:api          # unit + coverage → apps/api/coverage/
 npm run test:contracts
 npm run test:api:e2e
 npm run test:web:smoke
+npm run test:scripts      # tests-first gate self-tests (node:test)
+npm run validate:tests-first
 npm run lint
 npm run typecheck
 npm run format:check
 npm run ci
 ```
 
-`npm run ci` mirrors the planned GHA order: tests-first (`--ci`) → format → lint → typecheck → build → test. Track 7 will add `nx affected`, e2e + Mongo, and cache; until then local `ci` runs all projects via `run-many`.
+`npm run ci` mirrors the planned GHA order: **`validate:tests-first` first** (fail-closed, no skip / `continue-on-error`) → format → lint → typecheck → build → test → `test:scripts`. Track 7 will add `nx affected`, e2e + Mongo, and cache; until then local `ci` runs all projects via `run-many`.
+
+**No bypass:** CI always runs `npm run validate:tests-first` before lint. Local `--no-verify` skips husky only and must never be used to land production changes without unit tests; it does not apply to `npm run ci` or future GHA.
 
 ## MongoDB (local)
 

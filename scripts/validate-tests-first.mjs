@@ -1,5 +1,5 @@
 /**
- * Tests-first gate (step 021). Spec: docs/FOUNDATION-ROADMAP.md §20.
+ * Tests-first gate (steps 021 / 073). Spec: docs/FOUNDATION-ROADMAP.md §20.
  *
  * Default (pre-commit): staged ACMR files.
  * --ci: git diff over a resolved range.
@@ -7,7 +7,7 @@
 /* global console, process */
 import { execSync } from 'node:child_process';
 
-const normalizePath = (p) => p.replaceAll('\\', '/');
+export const normalizePath = (p) => p.replaceAll('\\', '/');
 
 const getGitDiffFiles = (command) =>
   execSync(command, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] })
@@ -16,34 +16,34 @@ const getGitDiffFiles = (command) =>
     .filter(Boolean)
     .map(normalizePath);
 
-const isGeneratedSource = (file) => file.endsWith('.gen.ts') || file.endsWith('.gen.tsx');
+export const isGeneratedSource = (file) => file.endsWith('.gen.ts') || file.endsWith('.gen.tsx');
 
-const isApiUnitTest = (file) =>
+export const isApiUnitTest = (file) =>
   file.startsWith('apps/api/') &&
   (file.endsWith('.spec.ts') || file.endsWith('.test.ts')) &&
   !file.endsWith('.e2e-spec.ts');
 
-const isApiProduction = (file) =>
+export const isApiProduction = (file) =>
   file.startsWith('apps/api/src/') && !isApiUnitTest(file) && !isGeneratedSource(file);
 
-const isWebUnitTest = (file) =>
+export const isWebUnitTest = (file) =>
   file.startsWith('apps/web/') && /\.(spec|test)\.(ts|tsx|js|jsx)$/.test(file);
 
-const isWebProduction = (file) =>
+export const isWebProduction = (file) =>
   file.startsWith('apps/web/src/') && !isWebUnitTest(file) && !isGeneratedSource(file);
 
-const isContractsUnitTest = (file) =>
+export const isContractsUnitTest = (file) =>
   file.startsWith('libs/shared-contracts/') &&
   (file.endsWith('.spec.ts') || file.endsWith('.test.ts'));
 
-const isContractsProduction = (file) =>
+export const isContractsProduction = (file) =>
   file.startsWith('libs/shared-contracts/src/') && !isContractsUnitTest(file);
 
 /**
  * @param {string[]} argv
  * @returns {{ isCi: boolean, range: string | null }}
  */
-const parseArgs = (argv) => {
+export const parseArgs = (argv) => {
   let isCi = false;
   let range = null;
   for (const arg of argv) {
@@ -63,19 +63,22 @@ const parseArgs = (argv) => {
  * 2. PR: origin/$GITHUB_BASE_REF...$GITHUB_SHA
  * 3. push: $BEFORE_SHA...$GITHUB_SHA (non-zero BEFORE_SHA)
  * 4. HEAD~1...HEAD
+ *
+ * @param {string | null | undefined} explicitRange
+ * @param {NodeJS.ProcessEnv} [env]
  */
-const resolveCiRange = (explicitRange) => {
+export const resolveCiRange = (explicitRange, env = process.env) => {
   if (explicitRange) {
     return explicitRange;
   }
 
-  const baseRef = process.env.GITHUB_BASE_REF;
-  const sha = process.env.GITHUB_SHA;
+  const baseRef = env.GITHUB_BASE_REF;
+  const sha = env.GITHUB_SHA;
   if (baseRef && sha) {
     return `origin/${baseRef}...${sha}`;
   }
 
-  const before = process.env.BEFORE_SHA;
+  const before = env.BEFORE_SHA;
   const zero = '0000000000000000000000000000000000000000';
   if (before && before !== zero && sha) {
     return `${before}...${sha}`;
@@ -97,7 +100,7 @@ const getFiles = (isCi, explicitRange) => {
  * @param {string} label
  * @param {string[]} production
  * @param {string[]} tests
- * @param {string[]} failures
+ * @param {{ label: string, production: string[] }[]} failures
  */
 const checkPair = (label, production, tests, failures) => {
   if (production.length === 0) {
@@ -107,6 +110,31 @@ const checkPair = (label, production, tests, failures) => {
     return;
   }
   failures.push({ label, production });
+};
+
+/**
+ * Classify and evaluate a file list. Pure — no git I/O.
+ *
+ * @param {string[]} files
+ * @returns {{ ok: boolean, failures: { label: string, production: string[] }[] }}
+ */
+export const evaluateFiles = (files) => {
+  const normalized = files.map(normalizePath);
+
+  const apiProd = normalized.filter(isApiProduction);
+  const apiTests = normalized.filter(isApiUnitTest);
+  const webProd = normalized.filter(isWebProduction);
+  const webTests = normalized.filter(isWebUnitTest);
+  const contractsProd = normalized.filter(isContractsProduction);
+  const contractsTests = normalized.filter(isContractsUnitTest);
+
+  /** @type {{ label: string, production: string[] }[]} */
+  const failures = [];
+  checkPair('API', apiProd, apiTests, failures);
+  checkPair('Web', webProd, webTests, failures);
+  checkPair('Contracts', contractsProd, contractsTests, failures);
+
+  return { ok: failures.length === 0, failures };
 };
 
 const printFailure = (failures) => {
@@ -141,20 +169,9 @@ const main = () => {
     process.exit(0);
   }
 
-  const apiProd = files.filter(isApiProduction);
-  const apiTests = files.filter(isApiUnitTest);
-  const webProd = files.filter(isWebProduction);
-  const webTests = files.filter(isWebUnitTest);
-  const contractsProd = files.filter(isContractsProduction);
-  const contractsTests = files.filter(isContractsUnitTest);
+  const { ok, failures } = evaluateFiles(files);
 
-  /** @type {{ label: string, production: string[] }[]} */
-  const failures = [];
-  checkPair('API', apiProd, apiTests, failures);
-  checkPair('Web', webProd, webTests, failures);
-  checkPair('Contracts', contractsProd, contractsTests, failures);
-
-  if (failures.length > 0) {
+  if (!ok) {
     printFailure(failures);
     process.exit(1);
   }
@@ -162,4 +179,10 @@ const main = () => {
   process.exit(0);
 };
 
-main();
+const isDirectRun =
+  Boolean(process.argv[1]) &&
+  normalizePath(process.argv[1]).endsWith('scripts/validate-tests-first.mjs');
+
+if (isDirectRun) {
+  main();
+}
