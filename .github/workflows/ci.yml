@@ -1,0 +1,152 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: quality (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          filter: tree:0
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Restore Nx cache
+        uses: actions/cache@v4
+        with:
+          path: .nx/cache
+          key: nx-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            nx-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
+            nx-${{ runner.os }}-
+
+      - name: Derive SHAs for nx affected
+        id: setSHAs
+        uses: nrwl/nx-set-shas@v5
+
+      - name: Tests-first gate
+        run: npm run validate:tests-first
+
+      - name: Format check
+        run: npm run format:check
+
+      - name: Lint
+        shell: bash
+        run: |
+          if [ "${{ steps.setSHAs.outputs.noPreviousBuild }}" = "true" ]; then
+            npx nx run-many -t lint
+          else
+            npx nx affected -t lint --base="$NX_BASE" --head="$NX_HEAD"
+          fi
+
+      - name: Typecheck
+        shell: bash
+        run: |
+          if [ "${{ steps.setSHAs.outputs.noPreviousBuild }}" = "true" ]; then
+            npx nx run-many -t typecheck
+          else
+            npx nx affected -t typecheck --base="$NX_BASE" --head="$NX_HEAD"
+          fi
+
+      - name: Build
+        shell: bash
+        run: |
+          if [ "${{ steps.setSHAs.outputs.noPreviousBuild }}" = "true" ]; then
+            npx nx run-many -t build
+          else
+            npx nx affected -t build --base="$NX_BASE" --head="$NX_HEAD"
+          fi
+
+      - name: Unit tests
+        shell: bash
+        run: |
+          if [ "${{ steps.setSHAs.outputs.noPreviousBuild }}" = "true" ]; then
+            npx nx run-many -t test
+          else
+            npx nx affected -t test --base="$NX_BASE" --head="$NX_HEAD"
+          fi
+
+      - name: Script self-tests
+        run: npm run test:scripts
+
+  e2e:
+    name: e2e
+    runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo:7
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval \"db.adminCommand('ping')\""
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+          --health-start-period 10s
+    env:
+      MONGODB_URI: mongodb://127.0.0.1:27017/app_foundation_ci
+      WEB_ORIGIN: http://localhost:3000
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          filter: tree:0
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Restore Nx cache
+        uses: actions/cache@v4
+        with:
+          path: .nx/cache
+          key: nx-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            nx-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
+            nx-${{ runner.os }}-
+
+      - name: Derive SHAs for nx affected
+        id: setSHAs
+        uses: nrwl/nx-set-shas@v5
+
+      - name: API e2e
+        shell: bash
+        run: |
+          if [ "${{ steps.setSHAs.outputs.noPreviousBuild }}" = "true" ]; then
+            npx nx run-many -t test:e2e
+          else
+            npx nx affected -t test:e2e --base="$NX_BASE" --head="$NX_HEAD"
+          fi

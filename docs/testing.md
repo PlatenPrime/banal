@@ -30,7 +30,8 @@ npm run test:api:e2e         # api e2e (needs MONGODB_URI / local compose)
 npm run test:web:smoke       # web SSR build smoke
 npm run test:scripts         # validate-tests-first / staged-runner self-tests
 npm run validate:tests-first # gate in --ci mode
-npm run ci                   # full local quality mirror
+npm run ci                   # full local quality mirror (run-many)
+npm run ci:full              # ci + api e2e (needs Mongo)
 ```
 
 Per-project: `npx nx run <project>:test` (and `api:test:e2e`, `web:test:smoke` where defined).
@@ -49,7 +50,7 @@ Script: [`scripts/validate-tests-first.mjs`](../scripts/validate-tests-first.mjs
 - **pre-commit:** staged files (via husky → `validate-tests-first.mjs`)
 - **local / CI:** `npm run validate:tests-first` (`--ci`, after `NX_BASE` / GitHub range when available)
 
-**No bypass:** `--no-verify` skips husky only. It must not be used to land production changes without co-committed unit tests. `npm run ci` and future GHA always run the gate first (fail-closed, no `continue-on-error`).
+**No bypass:** `--no-verify` skips husky only. It must not be used to land production changes without co-committed unit tests. `npm run ci` and GitHub Actions always run the gate first (fail-closed, no `continue-on-error`).
 
 ## Coverage
 
@@ -84,6 +85,7 @@ Provider: `@vitest/coverage-v8`, **per-project** reports under each package’s 
 
 ## Related
 
-- [LOCAL_SETUP.md](./LOCAL_SETUP.md) — install, hooks, Mongo
-- [FOUNDATION-ROADMAP.md](./FOUNDATION-ROADMAP.md) — Track 6 (069–076), CI order (Track 7)
+- [LOCAL_SETUP.md](./LOCAL_SETUP.md) — install, hooks, Mongo, local ↔ GHA parity
+- [branch-protection.md](./branch-protection.md) — required Actions checks for `main`
+- [FOUNDATION-ROADMAP.md](./FOUNDATION-ROADMAP.md) — Track 6 (069–076), Track 7 CI/CD (077–084)
 - Vitest configs: `apps/api/vitest.config.ts`, `apps/api/vitest.e2e.config.ts`, `apps/web/vitest.config.ts`, `apps/web/vitest.smoke.config.ts`, `libs/shared-contracts/vitest.config.ts`

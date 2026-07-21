@@ -26,7 +26,8 @@
     "test:scripts": "node --test scripts/*.spec.mjs",
     "dev:api": "nx run api:build && node scripts/dev-api.mjs",
     "dev:web": "node scripts/dev-web.mjs",
-    "ci": "npm run validate:tests-first && npm run format:check && nx run-many -t lint && nx run-many -t typecheck && nx run-many -t build && nx run-many -t test && npm run test:scripts"
+    "ci": "npm run validate:tests-first && npm run format:check && nx run-many -t lint && nx run-many -t typecheck && nx run-many -t build && nx run-many -t test && npm run test:scripts",
+    "ci:full": "npm run ci && npm run test:api:e2e"
   },
   "lint-staged": {
     "*.{js,mjs,cjs,ts,tsx,json,md,yml,yaml}": "prettier --write",

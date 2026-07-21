@@ -89,12 +89,30 @@ npm run validate:tests-first
 npm run lint
 npm run typecheck
 npm run format:check
-npm run ci
+npm run ci                # quality gates (all projects via run-many)
+npm run ci:full           # ci + api e2e (needs local Mongo)
 ```
 
-`npm run ci` mirrors the planned GHA order: **`validate:tests-first` first** (fail-closed, no skip / `continue-on-error`) → format → lint → typecheck → build → test → `test:scripts`. Track 7 will add `nx affected`, e2e + Mongo, and cache; until then local `ci` runs all projects via `run-many`.
+`npm run ci`: **`validate:tests-first` first** (fail-closed, no skip / `continue-on-error`) → format → lint → typecheck → build → test → `test:scripts`. Uses `nx run-many` on every project so a laptop run is a full green check without needing `NX_BASE`/`NX_HEAD`.
 
-**No bypass:** CI always runs `npm run validate:tests-first` before lint. Local `--no-verify` skips husky only and must never be used to land production changes without unit tests; it does not apply to `npm run ci` or future GHA.
+**No bypass:** CI always runs `npm run validate:tests-first` before lint. Local `--no-verify` skips husky only and must never be used to land production changes without unit tests; it does not apply to `npm run ci` or GitHub Actions.
+
+### Local vs GitHub Actions parity
+
+Workflow: [`.github/workflows/ci.yml`](../.github/workflows/ci.yml). Branch protection checklist: [branch-protection.md](./branch-protection.md).
+
+| Concern                                  | Local (`npm run ci` / `ci:full`) | GitHub Actions                                                                           |
+| ---------------------------------------- | -------------------------------- | ---------------------------------------------------------------------------------------- |
+| OS                                       | your machine                     | matrix: `ubuntu-latest` + `windows-latest` (quality)                                     |
+| Node                                     | `.nvmrc` via nvm/fnm             | `setup-node` `node-version-file: .nvmrc` + npm cache                                     |
+| Nx task scope                            | `run-many` (all projects)        | `nx affected` via `nrwl/nx-set-shas` (fail-safe → `run-many` if no prior successful run) |
+| Nx cache                                 | local `.nx/cache`                | `actions/cache` on `.nx/cache`                                                           |
+| tests-first                              | yes (`--ci`)                     | yes (first quality step)                                                                 |
+| format / lint / typecheck / build / unit | yes                              | yes (quality job)                                                                        |
+| `test:scripts`                           | yes                              | yes (quality job)                                                                        |
+| API e2e + Mongo                          | `npm run ci:full` (compose)      | separate `e2e` job, `services: mongo:7` (ubuntu only)                                    |
+
+Use `npm run ci` before push for the same gate order as GHA quality (minus matrix/affected). Use `npm run ci:full` when you changed API HTTP/Mongo behavior.
 
 ## MongoDB (local)
 

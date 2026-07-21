@@ -150,6 +150,7 @@ flowchart LR
 | `docs/data/collections-inventory.md`                    | 056              |
 | `docs/testing.md`                                       | 076              |
 | `.github/workflows/ci.yml`                              | 077              |
+| `docs/branch-protection.md`                             | 083              |
 | `docs/adr/001-shared-mongodb-with-legacy.md`            | 093              |
 | `docs/track-foundation-acceptance.md`                   | 094              |
 
@@ -689,14 +690,14 @@ const getGitDiffFiles = (command) =>
 
 ### Текущий этап
 
-| Поле             | Значение                    |
-| ---------------- | --------------------------- |
-| Трек             | **T7 — CI/CD**              |
-| Текущий шаг      | **077** — `ci.yml` baseline |
-| Статус шага      | `todo`                      |
-| Последний `done` | **076** — Testing guide doc |
-| Закрыто шагов    | **76 / 96**                 |
-| Обновлено        | 2026-07-21                  |
+| Поле             | Значение                          |
+| ---------------- | --------------------------------- |
+| Трек             | **T8 — Contract Bridge**          |
+| Текущий шаг      | **085** — Export OpenAPI JSON     |
+| Статус шага      | `todo`                            |
+| Последний `done` | **084** — `npm run ci` = workflow |
+| Закрыто шагов    | **84 / 96**                       |
+| Обновлено        | 2026-07-21                        |
 
 ### Сводка по трекам
 
@@ -709,7 +710,7 @@ const getGitDiffFiles = (command) =>
 | T4 Mongo           | 049–058 | 10   | `done` |
 | T5 Web             | 059–068 | 10   | `done` |
 | T6 Testing         | 069–076 | 8    | `done` |
-| T7 CI/CD           | 077–084 | 0    | `todo` |
+| T7 CI/CD           | 077–084 | 8    | `done` |
 | T8 Contract bridge | 085–088 | 0    | `todo` |
 | T9 Observability   | 089–092 | 0    | `todo` |
 | T10 Acceptance     | 093–096 | 0    | `todo` |
@@ -829,16 +830,16 @@ const getGitDiffFiles = (command) =>
 
 #### T7 — CI/CD (077–084)
 
-| Step | Title                    | Status | Notes |
-| ---- | ------------------------ | ------ | ----- |
-| 077  | `ci.yml` baseline        | `todo` |       |
-| 078  | OS matrix                | `todo` |       |
-| 079  | Node from `.nvmrc`       | `todo` |       |
-| 080  | Nx cache in CI           | `todo` |       |
-| 081  | Nx affected range        | `todo` |       |
-| 082  | Mongo service in e2e job | `todo` |       |
-| 083  | Branch protection doc    | `todo` |       |
-| 084  | `npm run ci` = workflow  | `todo` |       |
+| Step | Title                    | Status | Notes                                                             |
+| ---- | ------------------------ | ------ | ----------------------------------------------------------------- |
+| 077  | `ci.yml` baseline        | `done` | [`.github/workflows/ci.yml`](../.github/workflows/ci.yml)         |
+| 078  | OS matrix                | `done` | quality: ubuntu-latest + windows-latest                           |
+| 079  | Node from `.nvmrc`       | `done` | setup-node `node-version-file` + npm cache                        |
+| 080  | Nx cache in CI           | `done` | `actions/cache` on `.nx/cache`                                    |
+| 081  | Nx affected range        | `done` | `nrwl/nx-set-shas@v5`; fail-safe → `run-many` if no prior success |
+| 082  | Mongo service in e2e job | `done` | ubuntu `e2e` job + `services: mongo:7`                            |
+| 083  | Branch protection doc    | `done` | [`docs/branch-protection.md`](branch-protection.md)               |
+| 084  | `npm run ci` = workflow  | `done` | parity in LOCAL_SETUP; `ci:full` = ci + e2e                       |
 
 #### T8 — Contract Bridge (085–088)
 
