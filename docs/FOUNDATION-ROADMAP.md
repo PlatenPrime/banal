@@ -692,11 +692,11 @@ const getGitDiffFiles = (command) =>
 | Поле             | Значение                         |
 | ---------------- | -------------------------------- |
 | Трек             | **T3 — API Platform**            |
-| Текущий шаг      | **046** — 422 validation mapping |
+| Текущий шаг      | **047** — Correlation in logs    |
 | Статус шага      | `todo`                           |
-| Последний `done` | **045** — 404 → Problem Details  |
-| Закрыто шагов    | **45 / 96**                      |
-| Обновлено        | 2026-07-20                       |
+| Последний `done` | **046** — 422 validation mapping |
+| Закрыто шагов    | **46 / 96**                      |
+| Обновлено        | 2026-07-21                       |
 
 ### Сводка по трекам
 
@@ -705,7 +705,7 @@ const getGitDiffFiles = (command) =>
 | T0 Bootstrap       | 001–018 | 18   | `done` |
 | T1 Local quality   | 019–024 | 6    | `done` |
 | T2 Contracts       | 025–030 | 6    | `done` |
-| T3 API platform    | 031–048 | 15   | `wip`  |
+| T3 API platform    | 031–048 | 16   | `wip`  |
 | T4 Mongo           | 049–058 | 0    | `todo` |
 | T5 Web             | 059–068 | 0    | `todo` |
 | T6 Testing         | 069–076 | 0    | `todo` |
@@ -763,26 +763,26 @@ const getGitDiffFiles = (command) =>
 
 #### T3 — API Platform (031–048)
 
-| Step | Title                      | Status | Notes                                                                                    |
-| ---- | -------------------------- | ------ | ---------------------------------------------------------------------------------------- |
-| 031  | ConfigModule + Zod env     | `done` | `@nestjs/config` + Zod; `env.schema` + validate; WEB_ORIGIN                              |
-| 032  | Global ValidationPipe      | `done` | `APP_PIPE` + whitelist/transform/forbidNonWhitelisted; vitest via unplugin-swc; e2e stub |
-| 033  | ApiExceptionFilter         | `done` | `problem+json`; unknown → 500 без stack; unit catch + e2e stub                           |
-| 034  | URI versioning             | `done` | `applyApiUriVersioning`; prefix `/api`, version `v1`; unit + e2e stub                    |
-| 035  | Helmet + security headers  | `done` | `applySecurityHeaders`; helmet defaults; unit fetch + e2e stub                           |
-| 036  | Terminus liveness          | `done` | `HealthModule`; `GET /health` via Terminus; VERSION_NEUTRAL; unit fetch + e2e stub       |
-| 037  | Readiness stub             | `done` | `GET /health/ready`; `StubMongoHealthIndicator` → 503 until T4                           |
-| 038  | Health DTOs from contracts | `done` | `health-response` mappers; Zod parse in controller spec                                  |
-| 039  | Request ID middleware      | `done` | `request-id.middleware`; `x-request-id` echo/generate; unit + e2e                        |
-| 040  | Swagger stub               | `done` | `applySwaggerDocs`; `/api/docs` + `/api/docs-json`; Helmet CSP for UI; smoke spec        |
-| 041  | ExamplesModule skeleton    | `done` | `GET /api/v1/examples` → `{ items: [], total: 0 }`; controller spec + Zod                |
-| 042  | CreateExampleDto           | `done` | class-validator DTO; POST stub 501; 400 cases in dto spec                                |
-| 043  | Graceful shutdown          | `done` | `enableShutdownHooks` in `main.ts`; SIGTERM clean exit verified (prod)                   |
-| 044  | Global API prefix config   | `done` | `API_URI_VERSION` + `apiV1Path` / `apiPrefixedPath`; controllers + unit/e2e DRY          |
-| 045  | 404 → Problem Details      | `done` | unknown route → `problem+json` + Zod; vitest include `*.e2e-spec.ts`                     |
-| 046  | 422 validation mapping     | `todo` |                                                                                          |
-| 047  | Correlation in logs        | `todo` |                                                                                          |
-| 048  | Track 3 mini-checklist     | `todo` |                                                                                          |
+| Step | Title                      | Status | Notes                                                                                  |
+| ---- | -------------------------- | ------ | -------------------------------------------------------------------------------------- |
+| 031  | ConfigModule + Zod env     | `done` | `@nestjs/config` + Zod; `env.schema` + validate; WEB_ORIGIN                            |
+| 032  | Global ValidationPipe      | `done` | `APP_PIPE` + whitelist/transform/forbidNonWhitelisted; status retargeted to 422 in 046 |
+| 033  | ApiExceptionFilter         | `done` | `problem+json`; unknown → 500 без stack; unit catch + e2e stub                         |
+| 034  | URI versioning             | `done` | `applyApiUriVersioning`; prefix `/api`, version `v1`; unit + e2e stub                  |
+| 035  | Helmet + security headers  | `done` | `applySecurityHeaders`; helmet defaults; unit fetch + e2e stub                         |
+| 036  | Terminus liveness          | `done` | `HealthModule`; `GET /health` via Terminus; VERSION_NEUTRAL; unit fetch + e2e stub     |
+| 037  | Readiness stub             | `done` | `GET /health/ready`; `StubMongoHealthIndicator` → 503 until T4                         |
+| 038  | Health DTOs from contracts | `done` | `health-response` mappers; Zod parse in controller spec                                |
+| 039  | Request ID middleware      | `done` | `request-id.middleware`; `x-request-id` echo/generate; unit + e2e                      |
+| 040  | Swagger stub               | `done` | `applySwaggerDocs`; `/api/docs` + `/api/docs-json`; Helmet CSP for UI; smoke spec      |
+| 041  | ExamplesModule skeleton    | `done` | `GET /api/v1/examples` → `{ items: [], total: 0 }`; controller spec + Zod              |
+| 042  | CreateExampleDto           | `done` | class-validator DTO; POST stub 501; 422 cases in dto spec (retarget 046)               |
+| 043  | Graceful shutdown          | `done` | `enableShutdownHooks` in `main.ts`; SIGTERM clean exit verified (prod)                 |
+| 044  | Global API prefix config   | `done` | `API_URI_VERSION` + `apiV1Path` / `apiPrefixedPath`; controllers + unit/e2e DRY        |
+| 045  | 404 → Problem Details      | `done` | unknown route → `problem+json` + Zod; vitest include `*.e2e-spec.ts`                   |
+| 046  | 422 validation mapping     | `done` | `exceptionFactory` → 422 + `errors`; filter maps field errors; e2e problem+json        |
+| 047  | Correlation in logs        | `todo` |                                                                                        |
+| 048  | Track 3 mini-checklist     | `todo` |                                                                                        |
 
 #### T4 — Mongo Data Skeleton (049–058)
 

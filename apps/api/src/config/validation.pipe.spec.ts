@@ -1,5 +1,11 @@
 import 'reflect-metadata';
-import { BadRequestException, Body, Controller, Post, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  UnprocessableEntityException,
+  ValidationPipe,
+} from '@nestjs/common';
 import { APP_PIPE } from '@nestjs/core';
 import { Test } from '@nestjs/testing';
 import { describe, expect, it } from 'vitest';
@@ -20,6 +26,15 @@ const bodyMetadata = {
   data: '',
 };
 
+function getExceptionResponse(error: unknown): Record<string, unknown> {
+  expect(error).toBeInstanceOf(UnprocessableEntityException);
+  const exception = error as UnprocessableEntityException;
+  const response = exception.getResponse();
+  expect(typeof response).toBe('object');
+  expect(response).not.toBeNull();
+  return response as Record<string, unknown>;
+}
+
 describe('createValidationPipe', () => {
   it('accepts a valid body', async () => {
     const pipe = createValidationPipe();
@@ -29,12 +44,22 @@ describe('createValidationPipe', () => {
     });
   });
 
-  it('rejects non-whitelisted fields with BadRequestException (HTTP 400)', async () => {
+  it('rejects non-whitelisted fields with UnprocessableEntityException (HTTP 422)', async () => {
     const pipe = createValidationPipe();
 
-    await expect(
-      pipe.transform({ name: 'alpha', extra: true }, bodyMetadata),
-    ).rejects.toBeInstanceOf(BadRequestException);
+    try {
+      await pipe.transform({ name: 'alpha', extra: true }, bodyMetadata);
+      expect.fail('expected UnprocessableEntityException');
+    } catch (error) {
+      const response = getExceptionResponse(error);
+      expect(response).toMatchObject({
+        error: 'Validation Failed',
+        message: 'Validation failed',
+      });
+      expect(response.errors).toMatchObject({
+        extra: expect.arrayContaining([expect.stringContaining('extra')]),
+      });
+    }
   });
 
   it('compiles a fixture controller with APP_PIPE provider', async () => {

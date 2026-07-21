@@ -53,18 +53,40 @@ function extractDetail(exception: HttpException): string | undefined {
   return undefined;
 }
 
+function isFieldErrors(value: unknown): value is Record<string, string[]> {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+    return false;
+  }
+
+  return Object.values(value).every(
+    (messages) => Array.isArray(messages) && messages.every((item) => typeof item === 'string'),
+  );
+}
+
+function extractErrors(exception: HttpException): Record<string, string[]> | undefined {
+  const response = exception.getResponse();
+  if (typeof response !== 'object' || response === null || !('errors' in response)) {
+    return undefined;
+  }
+
+  const errors = (response as { errors?: unknown }).errors;
+  return isFieldErrors(errors) ? errors : undefined;
+}
+
 /**
  * Maps Nest HTTP exceptions to RFC 9457 Problem Details from shared-contracts.
  * Unknown errors become a generic 500 — never leak stack or exception message.
  */
 export function toProblemDetails(exception: HttpException, instance?: string): ProblemDetails {
   const status = exception.getStatus();
+  const errors = extractErrors(exception);
   const problem = {
     type: resolveErrorType(status),
     title: extractTitle(exception, status),
     status,
     detail: extractDetail(exception),
     instance,
+    ...(errors ? { errors } : {}),
   };
 
   return problemDetailsSchema.parse(problem);
