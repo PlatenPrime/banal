@@ -7,9 +7,9 @@ export default defineConfig({
     tsconfigPaths: true,
   },
   test: {
-    environment: 'jsdom',
-    include: ['src/**/*.{test,spec}.{ts,tsx}'],
-    exclude: ['src/**/*.smoke.spec.ts'],
+    environment: 'node',
+    include: ['src/**/*.smoke.spec.ts'],
     pool: 'forks',
+    testTimeout: 120_000,
   },
 });

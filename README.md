@@ -34,6 +34,8 @@ npx nx serve api    # http://localhost:4000
 npx nx serve web    # http://localhost:3000 (Vite default)
 ```
 
+**Web ↔ API:** web uses absolute `VITE_API_URL=http://localhost:4000`; API allows the web origin via `WEB_ORIGIN=http://localhost:3000` (CORS). No Vite proxy — SSR and the browser share the same base URL. Details and a manual checklist: [docs/LOCAL_SETUP.md](docs/LOCAL_SETUP.md#web--api-local).
+
 Stop Mongo:
 
 ```bash

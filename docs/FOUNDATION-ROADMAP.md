@@ -691,28 +691,28 @@ const getGitDiffFiles = (command) =>
 
 | Поле             | Значение                        |
 | ---------------- | ------------------------------- |
-| Трек             | **T5 — Web Platform**           |
-| Текущий шаг      | **067** — Dev proxy or CORS doc |
+| Трек             | **T6 — Testing Iron**           |
+| Текущий шаг      | **069** — Vitest api config     |
 | Статус шага      | `todo`                          |
-| Последний `done` | **066** — Error boundary route  |
-| Закрыто шагов    | **66 / 96**                     |
+| Последний `done` | **068** — `web:build` SSR smoke |
+| Закрыто шагов    | **68 / 96**                     |
 | Обновлено        | 2026-07-21                      |
 
 ### Сводка по трекам
 
-| Track              | Steps   | Done | Status  |
-| ------------------ | ------- | ---- | ------- |
-| T0 Bootstrap       | 001–018 | 18   | `done`  |
-| T1 Local quality   | 019–024 | 6    | `done`  |
-| T2 Contracts       | 025–030 | 6    | `done`  |
-| T3 API platform    | 031–048 | 18   | `done`  |
-| T4 Mongo           | 049–058 | 10   | `done`  |
-| T5 Web             | 059–068 | 8    | `doing` |
-| T6 Testing         | 069–076 | 0    | `todo`  |
-| T7 CI/CD           | 077–084 | 0    | `todo`  |
-| T8 Contract bridge | 085–088 | 0    | `todo`  |
-| T9 Observability   | 089–092 | 0    | `todo`  |
-| T10 Acceptance     | 093–096 | 0    | `todo`  |
+| Track              | Steps   | Done | Status |
+| ------------------ | ------- | ---- | ------ |
+| T0 Bootstrap       | 001–018 | 18   | `done` |
+| T1 Local quality   | 019–024 | 6    | `done` |
+| T2 Contracts       | 025–030 | 6    | `done` |
+| T3 API platform    | 031–048 | 18   | `done` |
+| T4 Mongo           | 049–058 | 10   | `done` |
+| T5 Web             | 059–068 | 10   | `done` |
+| T6 Testing         | 069–076 | 0    | `todo` |
+| T7 CI/CD           | 077–084 | 0    | `todo` |
+| T8 Contract bridge | 085–088 | 0    | `todo` |
+| T9 Observability   | 089–092 | 0    | `todo` |
+| T10 Acceptance     | 093–096 | 0    | `todo` |
 
 ### Чеклист шагов
 
@@ -811,8 +811,8 @@ const getGitDiffFiles = (command) =>
 | 064  | `/examples/new` Form  | `done` | TanStack Form + mutation + cache invalidation                        |
 | 065  | Tailwind v4 setup     | `done` | `@tailwindcss/vite` + `styles.css`; shell utilities on home          |
 | 066  | Error boundary route  | `done` | `RouteError` + `defaultErrorComponent` + root `notFoundComponent`    |
-| 067  | Dev proxy or CORS doc | `todo` |                                                                      |
-| 068  | `web:build` SSR smoke | `todo` |                                                                      |
+| 067  | Dev proxy or CORS doc | `done` | CORS + absolute `VITE_API_URL` in LOCAL_SETUP/README; no Vite proxy  |
+| 068  | `web:build` SSR smoke | `done` | assert after build + `web:test:smoke`; `.output/server/index.mjs`    |
 
 #### T6 — Testing Iron (069–076)
 

@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build",
+    "build": "vite build && node ./scripts/assert-web-build-output.mjs",
     "preview": "vite preview",
     "start": "node .output/server/index.mjs",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:smoke": "vitest run --config vitest.smoke.config.ts"
   },
   "dependencies": {
     "@app/shared-contracts": "*",

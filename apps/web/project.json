@@ -8,7 +8,7 @@
       "executor": "nx:run-commands",
       "outputs": ["{projectRoot}/.output"],
       "options": {
-        "command": "vite build",
+        "command": "vite build && node ./scripts/assert-web-build-output.mjs",
         "cwd": "{projectRoot}"
       }
     },
@@ -23,6 +23,13 @@
       "executor": "nx:run-commands",
       "options": {
         "command": "vitest run",
+        "cwd": "{projectRoot}"
+      }
+    },
+    "test:smoke": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "vitest run --config vitest.smoke.config.ts",
         "cwd": "{projectRoot}"
       }
     },

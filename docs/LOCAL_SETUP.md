@@ -106,4 +106,38 @@ Stop:
 docker compose down
 ```
 
+## Web ↔ API (local)
+
+Browser and SSR both call the Nest API with an **absolute** `VITE_API_URL`. Cross-origin browser requests rely on Nest CORS (`WEB_ORIGIN`), not a Vite proxy.
+
+| App | Port   | Env file                                                    | Key vars                             |
+| --- | ------ | ----------------------------------------------------------- | ------------------------------------ |
+| API | `4000` | `apps/api/.env`                                             | `WEB_ORIGIN=http://localhost:3000`   |
+| Web | `3000` | `apps/web/.env` (or `.env.development` / `.env.production`) | `VITE_API_URL=http://localhost:4000` |
+
+```bash
+cp apps/api/.env.example apps/api/.env
+cp apps/web/.env.example apps/web/.env
+
+npx nx serve api    # http://localhost:4000
+npx nx serve web    # http://localhost:3000
+```
+
+### Manual check
+
+1. Open `http://localhost:3000/examples` — list loads from the API (empty or seeded).
+2. Browser DevTools → Network: requests go to `http://localhost:4000/...` with `Origin: http://localhost:3000`.
+3. Preflight `OPTIONS` succeeds when `WEB_ORIGIN` matches the web origin exactly.
+
+### Why no Vite proxy
+
+A `server.proxy` would only rewrite **browser** same-origin calls. SSR loaders and the shared fetch client already use absolute `VITE_API_URL`, so a proxy would split SSR vs CSR base URLs. Keep CORS + absolute API URL for both.
+
+### Production build smoke
+
+```bash
+npx nx run web:build        # vite build + asserts .output/server/index.mjs
+npx nx run web:test:smoke   # full rebuild via vitest.smoke.config.ts
+```
+
 See [FOUNDATION-ROADMAP.md](./FOUNDATION-ROADMAP.md) for verification commands per step.
