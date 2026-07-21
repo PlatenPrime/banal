@@ -77,6 +77,11 @@ Do not touch legacy MongoDB collections until **Track 10** is complete.
 ```bash
 npm run build
 npm run test
+npm run test:web          # unit + coverage → apps/web/coverage/
+npm run test:api          # unit + coverage → apps/api/coverage/
+npm run test:contracts
+npm run test:api:e2e
+npm run test:web:smoke
 npm run lint
 npm run typecheck
 npm run format:check

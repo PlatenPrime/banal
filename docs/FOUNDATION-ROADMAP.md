@@ -692,10 +692,10 @@ const getGitDiffFiles = (command) =>
 | Поле             | Значение                           |
 | ---------------- | ---------------------------------- |
 | Трек             | **T6 — Testing Iron**              |
-| Текущий шаг      | **072** — Coverage v8 all projects |
+| Текущий шаг      | **073** — Tests-first in CI step   |
 | Статус шага      | `todo`                             |
-| Последний `done` | **071** — Vitest web config        |
-| Закрыто шагов    | **71 / 96**                        |
+| Последний `done` | **072** — Coverage v8 all projects |
+| Закрыто шагов    | **72 / 96**                        |
 | Обновлено        | 2026-07-21                         |
 
 ### Сводка по трекам
@@ -708,7 +708,7 @@ const getGitDiffFiles = (command) =>
 | T3 API platform    | 031–048 | 18   | `done`  |
 | T4 Mongo           | 049–058 | 10   | `done`  |
 | T5 Web             | 059–068 | 10   | `done`  |
-| T6 Testing         | 069–076 | 3    | `doing` |
+| T6 Testing         | 069–076 | 4    | `doing` |
 | T7 CI/CD           | 077–084 | 0    | `todo`  |
 | T8 Contract bridge | 085–088 | 0    | `todo`  |
 | T9 Observability   | 089–092 | 0    | `todo`  |
@@ -821,7 +821,7 @@ const getGitDiffFiles = (command) =>
 | 069  | Vitest api config         | `done` | unit-only `src/**`; `environment: 'node'`; `pool: 'forks'`; e2e → 070 |
 | 070  | Vitest api e2e config     | `done` | `vitest.e2e.config.ts`; sequential; `nx run api:test:e2e`             |
 | 071  | Vitest web config         | `done` | `happy-dom`; unit-only; smoke → `test:smoke`; `setupFiles` cleanup    |
-| 072  | Coverage v8 all projects  | `todo` |                                                                       |
+| 072  | Coverage v8 all projects  | `done` | per-project v8; scoped thresholds on unit `test`                      |
 | 073  | Tests-first in CI step    | `todo` |                                                                       |
 | 074  | Staged test runner        | `todo` |                                                                       |
 | 075  | Contract tests error JSON | `todo` |                                                                       |

@@ -14,5 +14,20 @@ export default defineConfig({
     include: ['src/**/*.{spec,test}.ts'],
     exclude: ['dist/**', 'node_modules/**', '**/*.e2e-spec.ts'],
     pool: 'forks',
+    coverage: {
+      provider: 'v8',
+      reportsDirectory: './coverage',
+      include: [
+        '**/examples/example.service.ts',
+        '**/examples/example.repository.ts',
+        '**/compat/mappers/**/*.ts',
+      ],
+      exclude: ['**/*.{spec,test}.ts'],
+      thresholds: {
+        lines: 80,
+        branches: 75,
+        functions: 80,
+      },
+    },
   },
 });

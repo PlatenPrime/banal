@@ -53,6 +53,11 @@ mongodb://127.0.0.1:27017/app_foundation_dev
 ```bash
 npm run build
 npm run test
+npm run test:web          # web unit + coverage → apps/web/coverage/
+npm run test:api          # api unit + coverage → apps/api/coverage/
+npm run test:contracts    # shared-contracts + coverage
+npm run test:api:e2e
+npm run test:web:smoke
 npm run lint
 npm run typecheck
 npm run format:check

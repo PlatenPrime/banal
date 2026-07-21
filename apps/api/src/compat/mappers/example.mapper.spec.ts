@@ -38,6 +38,39 @@ describe('example.mapper', () => {
     expect(dto.description).toBeNull();
   });
 
+  it('maps undefined description to null in DTO', () => {
+    const dto = toExampleDto({
+      _id: '1',
+      name: 'Missing description',
+      createdAt: '2024-01-01T00:00:00.000Z',
+    });
+
+    expect(dto.description).toBeNull();
+  });
+
+  it('stringifies object _id via toString', () => {
+    const dto = toExampleDto({
+      _id: { toString: () => 'object-id-42' },
+      name: 'Object id',
+      description: null,
+      createdAt: '2024-01-01T00:00:00.000Z',
+    });
+
+    expect(dto.id).toBe('object-id-42');
+  });
+
+  it('formats Date createdAt as ISO string', () => {
+    const createdAt = new Date('2024-06-01T12:00:00.000Z');
+    const dto = toExampleDto({
+      _id: '2',
+      name: 'Date created',
+      description: null,
+      createdAt,
+    });
+
+    expect(dto.createdAt).toBe('2024-06-01T12:00:00.000Z');
+  });
+
   it('maps create request to legacy write document', () => {
     const writeDoc = toWriteDoc({ name: 'New', description: 'Optional' });
 
