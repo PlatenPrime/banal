@@ -1,12 +1,14 @@
 import { livenessResponseSchema, readinessResponseSchema } from '@app/shared-contracts';
+import { ServiceUnavailableException } from '@nestjs/common';
+import { MongooseHealthIndicator, TerminusModule } from '@nestjs/terminus';
 import { Test } from '@nestjs/testing';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { apiPrefixedPath, apiV1Path, applyApiUriVersioning } from '../config/api-versioning';
-import { HealthModule } from './health.module';
-import { STUB_MONGO_NOT_CONFIGURED } from './stub-mongo.health-indicator';
+import { HealthController } from './health.controller';
 
 describe('HealthController', () => {
   let closeApp: (() => Promise<void>) | undefined;
+  let mongoosePingCheck: ReturnType<typeof vi.fn>;
 
   afterEach(async () => {
     if (closeApp) {
@@ -15,9 +17,31 @@ describe('HealthController', () => {
     }
   });
 
-  async function createHealthApp() {
+  async function createHealthApp(options?: { mongoUp?: boolean }) {
+    mongoosePingCheck = vi.fn();
+
+    if (options?.mongoUp ?? true) {
+      mongoosePingCheck.mockResolvedValue({ mongodb: { status: 'up' } });
+    } else {
+      mongoosePingCheck.mockRejectedValue(
+        new ServiceUnavailableException({
+          status: 'error',
+          info: {},
+          error: { mongodb: { status: 'down', message: 'Connection failed' } },
+          details: { mongodb: { status: 'down', message: 'Connection failed' } },
+        }),
+      );
+    }
+
     const moduleRef = await Test.createTestingModule({
-      imports: [HealthModule],
+      imports: [TerminusModule],
+      controllers: [HealthController],
+      providers: [
+        {
+          provide: MongooseHealthIndicator,
+          useValue: { pingCheck: mongoosePingCheck },
+        },
+      ],
     }).compile();
 
     const app = moduleRef.createNestApplication();
@@ -38,21 +62,30 @@ describe('HealthController', () => {
     expect(livenessResponseSchema.parse(body)).toEqual({ status: 'ok' });
   });
 
-  it('GET /health/ready returns 503 stub until Mongo is wired', async () => {
-    const baseUrl = await createHealthApp();
+  it('GET /health/ready returns 200 when Mongo ping succeeds', async () => {
+    const baseUrl = await createHealthApp({ mongoUp: true });
+
+    const response = await fetch(`${baseUrl}/health/ready`);
+    const body: unknown = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(readinessResponseSchema.parse(body)).toMatchObject({
+      status: 'ok',
+      info: { mongodb: { status: 'ok' } },
+    });
+    expect(mongoosePingCheck).toHaveBeenCalledWith('mongodb');
+  });
+
+  it('GET /health/ready returns 503 when Mongo ping fails', async () => {
+    const baseUrl = await createHealthApp({ mongoUp: false });
 
     const response = await fetch(`${baseUrl}/health/ready`);
     const body: unknown = await response.json();
 
     expect(response.status).toBe(503);
-    expect(readinessResponseSchema.parse(body)).toEqual({
+    expect(readinessResponseSchema.parse(body)).toMatchObject({
       status: 'error',
-      error: {
-        mongodb: { status: 'error', detail: STUB_MONGO_NOT_CONFIGURED },
-      },
-      details: {
-        mongodb: { status: 'error', detail: STUB_MONGO_NOT_CONFIGURED },
-      },
+      error: { mongodb: { status: 'error' } },
     });
   });
 

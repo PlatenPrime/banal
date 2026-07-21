@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import type { ExampleListResponse } from '@app/shared-contracts';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import type { ExampleDto, ExampleListResponse } from '@app/shared-contracts';
 import { API_DEFAULT_VERSION } from '../config/api-versioning';
 import { CreateExampleDto } from './create-example.dto';
 import { ExamplesService } from './example.service';
@@ -9,12 +9,13 @@ export class ExamplesController {
   constructor(private readonly examplesService: ExamplesService) {}
 
   @Get()
-  findAll(): ExampleListResponse {
+  findAll(): Promise<ExampleListResponse> {
     return this.examplesService.findAll();
   }
 
   @Post()
-  create(@Body() dto: CreateExampleDto): never {
+  @HttpCode(HttpStatus.CREATED)
+  create(@Body() dto: CreateExampleDto): Promise<ExampleDto> {
     return this.examplesService.create(dto);
   }
 }

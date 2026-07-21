@@ -1,21 +1,29 @@
-import { Injectable, NotImplementedException } from '@nestjs/common';
-import type { ExampleListResponse } from '@app/shared-contracts';
+import { Injectable } from '@nestjs/common';
+import type { ExampleDto, ExampleListResponse } from '@app/shared-contracts';
+import type { ExampleMappableDocument } from '../compat/legacy-types/example.document';
+import { toExampleDto, toWriteDoc } from '../compat/mappers/example.mapper';
 import type { CreateExampleDto } from './create-example.dto';
+import { ExampleRepository } from './example.repository';
 
-/** Service contract for the examples resource (persistence lands in T4). */
+/** Service contract for the examples resource. */
 export interface IExamplesService {
   findAll(): ExampleListResponse | Promise<ExampleListResponse>;
-  create(dto: CreateExampleDto): never | Promise<never>;
+  create(dto: CreateExampleDto): ExampleDto | Promise<ExampleDto>;
 }
 
 @Injectable()
 export class ExamplesService implements IExamplesService {
-  findAll(): ExampleListResponse {
-    return { items: [], total: 0 };
+  constructor(private readonly repository: ExampleRepository) {}
+
+  async findAll(): Promise<ExampleListResponse> {
+    const docs = await this.repository.findAll();
+    const items = docs.map((doc) => toExampleDto(doc as unknown as ExampleMappableDocument));
+
+    return { items, total: items.length };
   }
 
-  /** Persistence lands in step 055; validation of `dto` is the 042 concern. */
-  create(_dto: CreateExampleDto): never {
-    throw new NotImplementedException('Example create is not implemented yet');
+  async create(dto: CreateExampleDto): Promise<ExampleDto> {
+    const doc = await this.repository.create(toWriteDoc(dto));
+    return toExampleDto(doc as unknown as ExampleMappableDocument);
   }
 }

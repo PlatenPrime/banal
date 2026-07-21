@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import type { HealthCheckResult } from '@nestjs/terminus';
 import { toLivenessResponse, toReadinessResponse } from './health-response';
-import { STUB_MONGO_NOT_CONFIGURED } from './stub-mongo.health-indicator';
+
+const MONGO_DOWN_MESSAGE = 'MongoDB connection failed';
 
 describe('health-response mappers', () => {
   it('maps ok Terminus liveness to { status: ok }', () => {
@@ -30,10 +31,10 @@ describe('health-response mappers', () => {
       status: 'error',
       info: {},
       error: {
-        mongodb: { status: 'down', message: STUB_MONGO_NOT_CONFIGURED },
+        mongodb: { status: 'down', message: MONGO_DOWN_MESSAGE },
       },
       details: {
-        mongodb: { status: 'down', message: STUB_MONGO_NOT_CONFIGURED },
+        mongodb: { status: 'down', message: MONGO_DOWN_MESSAGE },
       },
     };
 
@@ -41,10 +42,10 @@ describe('health-response mappers', () => {
       status: 'error',
       info: undefined,
       error: {
-        mongodb: { status: 'error', detail: STUB_MONGO_NOT_CONFIGURED },
+        mongodb: { status: 'error', detail: MONGO_DOWN_MESSAGE },
       },
       details: {
-        mongodb: { status: 'error', detail: STUB_MONGO_NOT_CONFIGURED },
+        mongodb: { status: 'error', detail: MONGO_DOWN_MESSAGE },
       },
     });
   });

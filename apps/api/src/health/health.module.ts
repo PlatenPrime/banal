@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TerminusModule } from '@nestjs/terminus';
+import { DatabaseModule } from '../database/database.module';
 import { HealthController } from './health.controller';
-import { StubMongoHealthIndicator } from './stub-mongo.health-indicator';
 
 @Module({
-  imports: [TerminusModule],
+  imports: [TerminusModule, DatabaseModule],
   controllers: [HealthController],
-  providers: [StubMongoHealthIndicator],
 })
 export class HealthModule {}

@@ -689,14 +689,14 @@ const getGitDiffFiles = (command) =>
 
 ### Текущий этап
 
-| Поле             | Значение                         |
-| ---------------- | -------------------------------- |
-| Трек             | **T3 — API Platform**            |
-| Текущий шаг      | **048** — Track 3 mini-checklist |
-| Статус шага      | `todo`                           |
-| Последний `done` | **047** — Correlation in logs    |
-| Закрыто шагов    | **47 / 96**                      |
-| Обновлено        | 2026-07-21                       |
+| Поле             | Значение                      |
+| ---------------- | ----------------------------- |
+| Трек             | **T5 — Web Platform**         |
+| Текущий шаг      | **059** — Router file routes  |
+| Статус шага      | `todo`                        |
+| Последний `done` | **058** — Mongo e2e isolation |
+| Закрыто шагов    | **58 / 96**                   |
+| Обновлено        | 2026-07-21                    |
 
 ### Сводка по трекам
 
@@ -705,8 +705,8 @@ const getGitDiffFiles = (command) =>
 | T0 Bootstrap       | 001–018 | 18   | `done` |
 | T1 Local quality   | 019–024 | 6    | `done` |
 | T2 Contracts       | 025–030 | 6    | `done` |
-| T3 API platform    | 031–048 | 17   | `wip`  |
-| T4 Mongo           | 049–058 | 0    | `todo` |
+| T3 API platform    | 031–048 | 18   | `done` |
+| T4 Mongo           | 049–058 | 10   | `done` |
 | T5 Web             | 059–068 | 0    | `todo` |
 | T6 Testing         | 069–076 | 0    | `todo` |
 | T7 CI/CD           | 077–084 | 0    | `todo` |
@@ -782,22 +782,22 @@ const getGitDiffFiles = (command) =>
 | 045  | 404 → Problem Details      | `done` | unknown route → `problem+json` + Zod; vitest include `*.e2e-spec.ts`                   |
 | 046  | 422 validation mapping     | `done` | `exceptionFactory` → 422 + `errors`; filter maps field errors; e2e problem+json        |
 | 047  | Correlation in logs        | `done` | `nestjs-pino`; `genReqId`/`customProps` ← `req.requestId`; `autoLogging: false`        |
-| 048  | Track 3 mini-checklist     | `todo` |                                                                                        |
+| 048  | Track 3 mini-checklist     | `done` | [`docs/track-3-api-platform-checklist.md`](track-3-api-platform-checklist.md)          |
 
 #### T4 — Mongo Data Skeleton (049–058)
 
-| Step | Title                         | Status | Notes |
-| ---- | ----------------------------- | ------ | ----- |
-| 049  | MongooseModule                | `todo` |       |
-| 050  | Connection health indicator   | `todo` |       |
-| 051  | `_foundation_examples` schema | `todo` |       |
-| 052  | ExampleRepository             | `todo` |       |
-| 053  | Compat mapper pattern         | `todo` |       |
-| 054  | Legacy fixture samples        | `todo` |       |
-| 055  | ExamplesService + HTTP        | `todo` |       |
-| 056  | Inventory stub                | `todo` |       |
-| 057  | Index policy doc              | `todo` |       |
-| 058  | Mongo e2e isolation           | `todo` |       |
+| Step | Title                         | Status | Notes                                                                 |
+| ---- | ----------------------------- | ------ | --------------------------------------------------------------------- |
+| 049  | MongooseModule                | `done` | `DatabaseModule` + `forRootAsync` from `MONGODB_URI`                  |
+| 050  | Connection health indicator   | `done` | `MongooseHealthIndicator`; stub removed; unit + e2e readiness         |
+| 051  | `_foundation_examples` schema | `done` | `ExampleEntity` / `ExampleSchema`; collection `_foundation_examples`  |
+| 052  | ExampleRepository             | `done` | `findAll` + `create`; mock model spec                                 |
+| 053  | Compat mapper pattern         | `done` | `compat/mappers/example.mapper.ts` + `legacy-types/` + README         |
+| 054  | Legacy fixture samples        | `done` | `test/fixtures/legacy-example.json`; mapper spec                      |
+| 055  | ExamplesService + HTTP        | `done` | GET list + POST 201; service/controller/e2e specs                     |
+| 056  | Inventory stub                | `done` | [`docs/data/collections-inventory.md`](data/collections-inventory.md) |
+| 057  | Index policy doc              | `done` | Index policy in inventory + `compat/README.md`                        |
+| 058  | Mongo e2e isolation           | `done` | `test/helpers/mongo-test-uri.ts` — unique `vitest_*` db per run       |
 
 #### T5 — Web Platform (059–068)
 
