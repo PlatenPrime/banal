@@ -9,10 +9,7 @@
       "outputs": ["{projectRoot}/.output"],
       "options": {
         "command": "vite build",
-        "cwd": "{projectRoot}",
-        "env": {
-          "VITE_API_URL": "http://localhost:4000"
-        }
+        "cwd": "{projectRoot}"
       }
     },
     "serve": {

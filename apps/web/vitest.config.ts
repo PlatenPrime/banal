@@ -9,9 +9,6 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     include: ['src/**/*.{test,spec}.{ts,tsx}'],
-    env: {
-      VITE_API_URL: 'http://localhost:4000',
-    },
     pool: 'forks',
   },
 });
