@@ -12,6 +12,16 @@ Required status checks for merges into `main`. Apply these in the GitHub UI — 
 
 Exact check names must match the job `name:` fields in `.github/workflows/ci.yml`.
 
+## Enabled
+
+- Date: **2026-07-22**
+- Branch: `main`
+- Required checks: `quality (ubuntu-latest)`, `quality (windows-latest)`, `e2e`
+- Require PR before merging: yes
+- Require branches up to date: yes
+- Enforce for admins: yes
+- Verified via GitHub API (`gh api repos/PlatenPrime/banal/branches/main/protection`)
+
 ## Settings checklist (repo admin)
 
 1. **Settings → Branches → Add/Edit branch protection rule** for `main`.
