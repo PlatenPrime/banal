@@ -6,6 +6,15 @@ import { REQUEST_ID_HEADER, resolveRequestId, type RequestWithId } from './reque
 
 export type NodeEnv = Env['NODE_ENV'];
 
+/** Censor string written in place of redacted fields. */
+export const PINO_REDACT_CENSOR = '[Redacted]';
+
+/**
+ * Pino redact paths so Mongo credentials never land in JSON logs
+ * (top-level env dumps and nested config objects).
+ */
+export const PINO_REDACT_PATHS = ['MONGODB_URI', '*.MONGODB_URI'] as const;
+
 /**
  * Resolves the correlation id for pino-http from the request-id middleware field,
  * falling back to the same header resolution rules as step 039.
@@ -29,8 +38,8 @@ export function resolvePinoLevel(nodeEnv: NodeEnv): 'debug' | 'info' {
 }
 
 /**
- * Structured JSON pino-http options (correlation + level).
- * Redact (090) and per-request auto lines (091) stay out of this step.
+ * Structured JSON pino-http options (correlation, level, redact).
+ * Per-request auto lines stay for step 091.
  */
 export function createPinoHttpOptions(nodeEnv: NodeEnv = 'production'): PinoHttpOptions {
   return {
@@ -40,6 +49,10 @@ export function createPinoHttpOptions(nodeEnv: NodeEnv = 'production'): PinoHttp
     customProps: (req) => ({
       requestId: resolveLogRequestId(req),
     }),
+    redact: {
+      paths: [...PINO_REDACT_PATHS],
+      censor: PINO_REDACT_CENSOR,
+    },
   };
 }
 

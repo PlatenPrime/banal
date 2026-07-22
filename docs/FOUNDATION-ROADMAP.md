@@ -690,14 +690,14 @@ const getGitDiffFiles = (command) =>
 
 ### Текущий этап
 
-| Поле             | Значение                        |
-| ---------------- | ------------------------------- |
-| Трек             | **T9 — Observability Stub**     |
-| Текущий шаг      | **090** — Redact `MONGODB_URI`  |
-| Статус шага      | `todo`                          |
-| Последний `done` | **089** — nestjs-pino JSON logs |
-| Закрыто шагов    | **89 / 96**                     |
-| Обновлено        | 2026-07-22                      |
+| Поле             | Значение                              |
+| ---------------- | ------------------------------------- |
+| Трек             | **T9 — Observability Stub**           |
+| Текущий шаг      | **091** — Request logging interceptor |
+| Статус шага      | `todo`                                |
+| Последний `done` | **090** — Redact `MONGODB_URI`        |
+| Закрыто шагов    | **90 / 96**                           |
+| Обновлено        | 2026-07-22                            |
 
 ### Сводка по трекам
 
@@ -712,7 +712,7 @@ const getGitDiffFiles = (command) =>
 | T6 Testing         | 069–076 | 8    | `done`  |
 | T7 CI/CD           | 077–084 | 8    | `done`  |
 | T8 Contract bridge | 085–088 | 4    | `done`  |
-| T9 Observability   | 089–092 | 1    | `doing` |
+| T9 Observability   | 089–092 | 2    | `doing` |
 | T10 Acceptance     | 093–096 | 0    | `todo`  |
 
 ### Чеклист шагов
@@ -855,7 +855,7 @@ const getGitDiffFiles = (command) =>
 | Step | Title                       | Status | Notes                                                             |
 | ---- | --------------------------- | ------ | ----------------------------------------------------------------- |
 | 089  | nestjs-pino                 | `done` | JSON sink; level by NODE_ENV; `forRootAsync`; parseable-line spec |
-| 090  | Redact `MONGODB_URI`        | `todo` |                                                                   |
+| 090  | Redact `MONGODB_URI`        | `done` | pino redact paths + censor; credentials absent in log line        |
 | 091  | Request logging interceptor | `todo` |                                                                   |
 | 092  | OTel noop stub              | `todo` |                                                                   |
 

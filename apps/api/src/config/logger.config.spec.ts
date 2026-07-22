@@ -5,6 +5,8 @@ import { describe, expect, it } from 'vitest';
 import {
   createLoggerModuleParams,
   createPinoHttpOptions,
+  PINO_REDACT_CENSOR,
+  PINO_REDACT_PATHS,
   resolveLogRequestId,
   resolvePinoLevel,
 } from './logger.config';
@@ -110,6 +112,63 @@ describe('createPinoHttpOptions', () => {
     expect(parsed.requestId).toBe('parse-me-1');
     expect(typeof parsed.level).toBe('number');
   });
+
+  it('configures redact paths for MONGODB_URI (top-level and nested)', () => {
+    const options = createPinoHttpOptions('production');
+
+    expect(options.redact).toEqual({
+      paths: [...PINO_REDACT_PATHS],
+      censor: PINO_REDACT_CENSOR,
+    });
+    expect(PINO_REDACT_PATHS).toEqual(['MONGODB_URI', '*.MONGODB_URI']);
+  });
+
+  it('redacts MONGODB_URI credentials from JSON log lines', async () => {
+    const secretUri = 'mongodb://user:super-secret-pass@db.example:27017/app';
+    const chunks: Buffer[] = [];
+    const destination = new Writable({
+      write(chunk, _encoding, callback) {
+        chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+        callback();
+      },
+    });
+
+    const options = createPinoHttpOptions('production');
+    const logger = pino(
+      {
+        level: options.level as string,
+        redact: options.redact,
+      },
+      destination,
+    );
+
+    logger.info(
+      {
+        MONGODB_URI: secretUri,
+        config: { MONGODB_URI: secretUri },
+      },
+      'env-dump-smoke',
+    );
+
+    await new Promise<void>((resolve, reject) => {
+      logger.flush((err) => (err ? reject(err) : resolve()));
+    });
+
+    const line = Buffer.concat(chunks).toString('utf8').trim().split('\n')[0];
+    expect(line).toBeTruthy();
+    expect(line).not.toContain('super-secret-pass');
+    expect(line).not.toContain(secretUri);
+
+    const parsed = JSON.parse(line!) as {
+      MONGODB_URI: string;
+      config: { MONGODB_URI: string };
+      msg: string;
+    };
+
+    expect(parsed.msg).toBe('env-dump-smoke');
+    expect(parsed.MONGODB_URI).toBe(PINO_REDACT_CENSOR);
+    expect(parsed.config.MONGODB_URI).toBe(PINO_REDACT_CENSOR);
+  });
 });
 
 describe('createLoggerModuleParams', () => {
@@ -118,6 +177,10 @@ describe('createLoggerModuleParams', () => {
     expect(params.pinoHttp).toMatchObject({
       autoLogging: false,
       level: 'debug',
+      redact: {
+        paths: [...PINO_REDACT_PATHS],
+        censor: PINO_REDACT_CENSOR,
+      },
     });
   });
 });
