@@ -1,8 +1,8 @@
 # banal
 
-Nx monorepo foundation: NestJS API (`apps/api`), TanStack Start web (`apps/web`), and shared Zod contracts (`libs/shared-contracts`). Local MongoDB via Docker; shared-DB strangler with legacy is planned after Track 10.
+Nx monorepo foundation: NestJS API (`apps/api`), TanStack Start web (`apps/web`), and shared Zod contracts (`libs/shared-contracts`). Local MongoDB via Docker; shared-DB strangler with legacy after foundation.
 
-Roadmap (source of truth): [docs/FOUNDATION-ROADMAP.md](docs/FOUNDATION-ROADMAP.md). Detailed toolchain notes: [docs/LOCAL_SETUP.md](docs/LOCAL_SETUP.md). Testing norms: [docs/testing.md](docs/testing.md). Branch protection: [docs/branch-protection.md](docs/branch-protection.md).
+Roadmaps: [docs/FOUNDATION-ROADMAP.md](docs/FOUNDATION-ROADMAP.md) (`foundation-v1.0.0`, T0–T10) → [docs/PLATFORM-ROADMAP.md](docs/PLATFORM-ROADMAP.md) (auth + Railway/Vercel/Atlas, T11–T25 → `platform-v1.0.0`). Setup: [docs/LOCAL_SETUP.md](docs/LOCAL_SETUP.md). Testing: [docs/testing.md](docs/testing.md). Branch protection: [docs/branch-protection.md](docs/branch-protection.md).
 
 ## Requirements
 

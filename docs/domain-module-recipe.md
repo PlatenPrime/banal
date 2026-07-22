@@ -2,7 +2,7 @@
 
 Practical checklist for the **first domain module** after foundation (`foundation-v1.0.0`). Narrative source: [FOUNDATION-ROADMAP.md §19](FOUNDATION-ROADMAP.md#19-после-фундамента-первый-доменный-модуль).
 
-**Do not start** domain work on legacy collections until T10 is closed (see [`track-foundation-acceptance.md`](track-foundation-acceptance.md)).
+**Do not start** domain work on legacy collections until foundation T10 is closed (see [`track-foundation-acceptance.md`](track-foundation-acceptance.md)). Prefer completing platform auth/deploy ([`PLATFORM-ROADMAP.md`](PLATFORM-ROADMAP.md) → `platform-v1.0.0`) before legacy writes; read-only domain modules may proceed in parallel with platform tracks.
 
 Default mode: **read-only** against a legacy collection. Writes require a new ADR (see [ADR-001](adr/001-shared-mongodb-with-legacy.md)).
 

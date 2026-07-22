@@ -76,6 +76,8 @@
 - Подключение к **production** Mongo из CI (только dev/CI URI).
 - Cloud deploy (Railway/Vercel/Fly) — отдельный track после T10.
 
+**После фундамента:** auth (JWT cookies), Railway + Vercel + Atlas, ops freeze — см. [PLATFORM-ROADMAP.md](PLATFORM-ROADMAP.md) (T11–T25, шаги 097–246 → `platform-v1.0.0`).
+
 ---
 
 ## 2. Целевая архитектура
@@ -532,6 +534,8 @@ Mongo, а не SQL: продукт уже живёт на shared MongoDB со с
 ---
 
 ## 19. После фундамента: первый доменный модуль
+
+Сначала закрой платформенный слой ([PLATFORM-ROADMAP.md](PLATFORM-ROADMAP.md): auth, deploy, ops). Доменные legacy-коллекции — по рецепту ниже и [`domain-module-recipe.md`](domain-module-recipe.md), предпочтительно после `platform-v1.0.0` (или параллельно только read-only, без блокировки T11–T25).
 
 ### Рецепт (read-only legacy collection)
 
