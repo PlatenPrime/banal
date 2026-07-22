@@ -17,7 +17,10 @@ export function createIsolatedMongoUri(
   return `${host}/${dbName}${query}`;
 }
 
-export function createE2eEnv(mongoUri: string) {
+export function createE2eEnv(
+  mongoUri: string,
+  overrides: Record<string, string> = {},
+): Record<string, string> {
   return {
     NODE_ENV: 'test',
     PORT: '4000',
@@ -25,7 +28,10 @@ export function createE2eEnv(mongoUri: string) {
     WEB_ORIGIN: 'http://localhost:3000',
     JWT_ACCESS_SECRET: 'ci-dummy-access-secret-min-32-chars!!',
     JWT_REFRESH_SECRET: 'ci-dummy-refresh-secret-min-32-chars!',
-  } as const;
+    AUTH_REGISTRATION_ENABLED: 'false',
+    AUTH_COOKIE_SAMESITE: 'lax',
+    ...overrides,
+  };
 }
 
 export async function isMongoReachable(uri: string): Promise<boolean> {

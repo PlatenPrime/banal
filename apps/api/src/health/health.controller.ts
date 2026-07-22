@@ -19,9 +19,11 @@ import {
   type HealthCheckResult,
 } from '@nestjs/terminus';
 import type { Response } from 'express';
+import { Public } from '../auth/public.decorator';
 import { toLivenessResponse, toReadinessResponse } from './health-response';
 import { LivenessResponseDto, ReadinessResponseDto } from './health-response.dto';
 
+@Public()
 @ApiTags('health')
 @Controller({ path: 'health', version: VERSION_NEUTRAL })
 export class HealthController {

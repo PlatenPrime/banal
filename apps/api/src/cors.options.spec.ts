@@ -23,6 +23,14 @@ function resolveOrigin(
 }
 
 describe('getCorsOptions', () => {
+  it('enables credentials for cookie auth', () => {
+    const options = getCorsOptions({
+      WEB_ORIGIN: 'http://localhost:3000',
+    });
+
+    expect(options.credentials).toBe(true);
+  });
+
   it('allows the primary WEB_ORIGIN', async () => {
     const options = getCorsOptions({
       WEB_ORIGIN: 'http://localhost:3000',

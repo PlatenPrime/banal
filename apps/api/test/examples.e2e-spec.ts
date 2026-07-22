@@ -5,7 +5,9 @@ import {
   readinessResponseSchema,
 } from '@app/shared-contracts';
 import { afterEach, beforeAll, describe, expect, it } from 'vitest';
+import { ACCESS_TOKEN_COOKIE } from '../src/auth/auth-cookies';
 import { apiV1Path } from '../src/config/api-versioning';
+import { cookieHeader, mergeCookies } from './helpers/cookie-jar';
 import { createE2eApp } from './helpers/create-e2e-app';
 import { createE2eEnv, createIsolatedMongoUri, isMongoReachable } from './helpers/mongo-test-uri';
 
@@ -82,12 +84,30 @@ describe('Examples (e2e)', () => {
       return;
     }
 
-    const { baseUrl, close } = await createE2eApp(createE2eEnv(isolatedMongoUri));
+    const { baseUrl, close } = await createE2eApp(
+      createE2eEnv(isolatedMongoUri, { AUTH_REGISTRATION_ENABLED: 'true' }),
+    );
     closeApp = close;
+
+    const registerResponse = await fetch(`${baseUrl}${apiV1Path('auth/register')}`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        email: 'examples-e2e@example.com',
+        username: 'examples_e2e',
+        password: 'password1',
+      }),
+    });
+    expect(registerResponse.status).toBe(201);
+
+    const jar = mergeCookies(new Map(), registerResponse.headers);
 
     const createResponse = await fetch(`${baseUrl}${apiV1Path('examples')}`, {
       method: 'POST',
-      headers: { 'content-type': 'application/json' },
+      headers: {
+        'content-type': 'application/json',
+        cookie: cookieHeader(jar, [ACCESS_TOKEN_COOKIE]),
+      },
       body: JSON.stringify({ name: 'E2E example', description: 'Created in test' }),
     });
     const created: unknown = await createResponse.json();

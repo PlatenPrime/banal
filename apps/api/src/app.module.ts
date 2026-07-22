@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { LoggerModule } from 'nestjs-pino';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import type { Env } from './config/env.schema';
 import { validate } from './config/env.validation';
 import { createLoggerModuleParams } from './config/logger.config';
@@ -13,6 +15,7 @@ import { ApiExceptionFilter } from './errors/api-exception.filter';
 import { ExamplesModule } from './examples/examples.module';
 import { HealthModule } from './health/health.module';
 import { RequestLoggingInterceptor } from './logging/request-logging.interceptor';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -27,6 +30,8 @@ import { RequestLoggingInterceptor } from './logging/request-logging.interceptor
         createLoggerModuleParams(config.get('NODE_ENV', { infer: true })),
     }),
     DatabaseModule,
+    UsersModule,
+    AuthModule,
     HealthModule,
     ExamplesModule,
   ],
@@ -36,6 +41,10 @@ import { RequestLoggingInterceptor } from './logging/request-logging.interceptor
     {
       provide: APP_FILTER,
       useClass: ApiExceptionFilter,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
     },
     {
       provide: APP_INTERCEPTOR,

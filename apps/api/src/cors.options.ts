@@ -45,6 +45,7 @@ export function getCorsOptions(env: CorsEnv): CorsOptions {
   const previewRegex = compilePreviewRegex(env.WEB_ORIGIN_PREVIEW_REGEX);
 
   return {
+    credentials: true,
     origin(origin, callback) {
       if (!origin) {
         callback(null, true);
