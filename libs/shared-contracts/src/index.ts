@@ -25,4 +25,13 @@ export {
   type ExampleListResponse,
 } from './examples';
 
+export {
+  loginRequestSchema,
+  registerRequestSchema,
+  authUserSchema,
+  type LoginRequest,
+  type RegisterRequest,
+  type AuthUser,
+} from './auth';
+
 export { ERROR_TYPE_URIS, errorTypeUriSchema, type ErrorTypeUri } from './error-codes';

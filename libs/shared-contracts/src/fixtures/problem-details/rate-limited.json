@@ -1,0 +1,7 @@
+{
+  "type": "https://banal.app/problems/rate-limited",
+  "title": "Too Many Requests",
+  "status": 429,
+  "detail": "Rate limit exceeded. Try again later.",
+  "instance": "/api/v1/auth/login"
+}
