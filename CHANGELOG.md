@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented in this file.
 
+## Tag rules
+
+- Baseline freezes use **annotated** git tags: `foundation-vX.Y.Z`, later `platform-vX.Y.Z`.
+- Each freeze tag must have a matching section in this file before the tag is created.
+- **Do not** rewrite, delete, or force-move a tag that already exists on `origin`.
+- Push tags explicitly (`git push origin refs/tags/<name>`); do not rely on accidental `--tags` from unrelated pushes.
+
 ## [foundation-v1.0.0] — 2026-07-22
 
 Foundation baseline frozen (Tracks T0–T10, steps 001–096).

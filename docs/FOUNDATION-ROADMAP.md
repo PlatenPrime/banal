@@ -694,14 +694,14 @@ const getGitDiffFiles = (command) =>
 
 ### Текущий этап
 
-| Поле             | Значение                                                |
-| ---------------- | ------------------------------------------------------- |
-| Трек             | **Foundation complete**                                 |
-| Текущий шаг      | **096** — Tag `foundation-v1.0.0`                       |
-| Статус шага      | `done`                                                  |
-| Последний `done` | **096** — Tag `foundation-v1.0.0` (local; push pending) |
-| Закрыто шагов    | **96 / 96**                                             |
-| Обновлено        | 2026-07-22                                              |
+| Поле             | Значение                                             |
+| ---------------- | ---------------------------------------------------- |
+| Трек             | **Foundation complete**                              |
+| Текущий шаг      | **096** — Tag `foundation-v1.0.0`                    |
+| Статус шага      | `done`                                               |
+| Последний `done` | **096** — Tag `foundation-v1.0.0` (remote on origin) |
+| Закрыто шагов    | **96 / 96**                                          |
+| Обновлено        | 2026-07-22                                           |
 
 ### Сводка по трекам
 
@@ -865,12 +865,12 @@ const getGitDiffFiles = (command) =>
 
 #### T10 — Acceptance (093–096)
 
-| Step | Title                           | Status | Notes                                                                                  |
-| ---- | ------------------------------- | ------ | -------------------------------------------------------------------------------------- |
-| 093  | ADR-001 shared Mongo            | `done` | [`docs/adr/001-shared-mongodb-with-legacy.md`](adr/001-shared-mongodb-with-legacy.md)  |
-| 094  | Foundation acceptance checklist | `done` | [`docs/track-foundation-acceptance.md`](track-foundation-acceptance.md)                |
-| 095  | Domain module recipe            | `done` | [`docs/domain-module-recipe.md`](domain-module-recipe.md); §19 + concrete repo paths   |
-| 096  | Tag `foundation-v1.0.0`         | `done` | [`CHANGELOG.md`](../CHANGELOG.md); local annotated tag; push pending until explicit ok |
+| Step | Title                           | Status | Notes                                                                                 |
+| ---- | ------------------------------- | ------ | ------------------------------------------------------------------------------------- |
+| 093  | ADR-001 shared Mongo            | `done` | [`docs/adr/001-shared-mongodb-with-legacy.md`](adr/001-shared-mongodb-with-legacy.md) |
+| 094  | Foundation acceptance checklist | `done` | [`docs/track-foundation-acceptance.md`](track-foundation-acceptance.md)               |
+| 095  | Domain module recipe            | `done` | [`docs/domain-module-recipe.md`](domain-module-recipe.md); §19 + concrete repo paths  |
+| 096  | Tag `foundation-v1.0.0`         | `done` | [`CHANGELOG.md`](../CHANGELOG.md); annotated tag on origin (pushed in T11 step 101)   |
 
 ---
 
