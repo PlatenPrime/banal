@@ -18,6 +18,7 @@ const CANONICAL_FIXTURES = [
   'unauthorized.json',
   'forbidden.json',
   'conflict.json',
+  'rate-limited.json',
 ] as const;
 
 describe('Problem Details error JSON contract', () => {

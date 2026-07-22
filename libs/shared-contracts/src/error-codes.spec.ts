@@ -9,6 +9,7 @@ describe('ERROR_TYPE_URIS', () => {
         "forbidden": "https://banal.app/problems/forbidden",
         "internal": "https://banal.app/problems/internal",
         "notFound": "https://banal.app/problems/not-found",
+        "rateLimited": "https://banal.app/problems/rate-limited",
         "unauthorized": "https://banal.app/problems/unauthorized",
         "validationFailed": "https://banal.app/problems/validation-failed",
       }

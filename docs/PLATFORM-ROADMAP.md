@@ -144,7 +144,7 @@ sequenceDiagram
 
   Browser->>Web: GET /login
   Browser->>API: POST /api/v1/auth/login credentials
-  API->>Atlas: find _app_users + verify Argon2id
+  API->>Atlas: find a_users + verify Argon2id
   API->>Atlas: store refresh jti hash
   API-->>Browser: Set-Cookie access + refresh HttpOnly
   Browser->>API: GET /api/v1/auth/me Cookie access
@@ -180,7 +180,7 @@ sequenceDiagram
 
 | Тема            | Решение                                                                                                       |
 | --------------- | ------------------------------------------------------------------------------------------------------------- |
-| Users           | **1C** — коллекция `_app_users` (не legacy); inventory + ADR закладывают будущую dual-read с legacy `users`   |
+| Users           | **1C** — коллекция `a_users` (не legacy); inventory + ADR закладывают будущую dual-read с legacy `users`      |
 | Session         | **JWT access + refresh в httpOnly cookies** (не localStorage; не server session store)                        |
 | Register        | `AUTH_REGISTRATION_ENABLED=false` в prod; bootstrap CLI для первого admin                                     |
 | CSRF            | Origin allowlist (= `WEB_ORIGIN` + preview list) на mutating methods; optional double-submit `csrf` cookie    |
@@ -189,11 +189,11 @@ sequenceDiagram
 
 ### Cookie shape
 
-| Cookie            | TTL     | Path           | Notes                                       |
-| ----------------- | ------- | -------------- | ------------------------------------------- |
-| `access_token`    | ~15m    | `/`            | short-lived JWT                             |
-| `refresh_token`   | ~7d     | `/api/v1/auth` | rotation; jti hash in `_app_refresh_tokens` |
-| `csrf` (optional) | session | `/`            | not HttpOnly if double-submit               |
+| Cookie            | TTL     | Path           | Notes                                    |
+| ----------------- | ------- | -------------- | ---------------------------------------- |
+| `access_token`    | ~15m    | `/`            | short-lived JWT                          |
+| `refresh_token`   | ~7d     | `/api/v1/auth` | rotation; jti hash in `a_refresh_tokens` |
+| `csrf` (optional) | session | `/`            | not HttpOnly if double-submit            |
 
 ### Endpoints (под `/api/v1`)
 
@@ -289,16 +289,16 @@ T25 Acceptance + tag platform-v1.0.0
 
 ## Track 13 — Atlas & Network (115–122)
 
-| Step | Title                           | Что создать                                                                                              | Verification       | DoD                     | Тесты |
-| ---- | ------------------------------- | -------------------------------------------------------------------------------------------------------- | ------------------ | ----------------------- | ----- |
-| 115  | Atlas connection policy         | секция в [`docs/deploy/atlas.md`](deploy/atlas.md): URI params (`retryWrites`, `appName`), no prod in CI | review             | doc exists              | —     |
-| 116  | Network access                  | Atlas IP allowlist / Railway egress notes; 0.0.0.0/0 только если unavoidable + risk note                 | review             | staging+prod documented | —     |
-| 117  | Inventory `_app_users`          | строка в [`docs/data/collections-inventory.md`](data/collections-inventory.md)                           | review             | mode read/write new API | —     |
-| 118  | Inventory `_app_refresh_tokens` | TTL / indexes note                                                                                       | review             | inventory updated       | —     |
-| 119  | Legacy `users` row              | keep `read-only until ADR-004`; no new-app write                                                         | review             | ADR-001 consistent      | —     |
-| 120  | Index policy app collections    | unique email/username on `_app_users`; jti unique on refresh                                             | doc + later schema | policy clear            | —     |
-| 121  | Readiness timeout note          | document Mongo ping failure → 503; boot fail-fast optional                                               | health docs        | ops clear               | —     |
-| 122  | T13 freeze                      | progress                                                                                                 | 115–121 done       | track closed            | —     |
+| Step | Title                        | Что создать                                                                                              | Verification       | DoD                     | Тесты |
+| ---- | ---------------------------- | -------------------------------------------------------------------------------------------------------- | ------------------ | ----------------------- | ----- |
+| 115  | Atlas connection policy      | секция в [`docs/deploy/atlas.md`](deploy/atlas.md): URI params (`retryWrites`, `appName`), no prod in CI | review             | doc exists              | —     |
+| 116  | Network access               | Atlas IP allowlist / Railway egress notes; 0.0.0.0/0 только если unavoidable + risk note                 | review             | staging+prod documented | —     |
+| 117  | Inventory `a_users`          | строка в [`docs/data/collections-inventory.md`](data/collections-inventory.md)                           | review             | mode read/write new API | —     |
+| 118  | Inventory `a_refresh_tokens` | TTL / indexes note                                                                                       | review             | inventory updated       | —     |
+| 119  | Legacy `users` row           | keep `read-only until ADR-004`; no new-app write                                                         | review             | ADR-001 consistent      | —     |
+| 120  | Index policy app collections | unique email/username on `a_users`; jti unique on refresh                                                | doc + later schema | policy clear            | —     |
+| 121  | Readiness timeout note       | document Mongo ping failure → 503; boot fail-fast optional                                               | health docs        | ops clear               | —     |
+| 122  | T13 freeze                   | progress                                                                                                 | 115–121 done       | track closed            | —     |
 
 ---
 
@@ -319,8 +319,8 @@ T25 Acceptance + tag platform-v1.0.0
 
 | Step | Title                      | Что создать                                                            | Verification    | DoD                          | Тесты         |
 | ---- | -------------------------- | ---------------------------------------------------------------------- | --------------- | ---------------------------- | ------------- |
-| 129  | UsersModule schema         | `_app_users` Mongoose schema + unique indexes                          | unit            | collection name exact        | schema spec   |
-| 130  | RefreshToken schema        | `_app_refresh_tokens` + TTL index optional                             | unit            | jti hash stored              | schema spec   |
+| 129  | UsersModule schema         | `a_users` Mongoose schema + unique indexes                             | unit            | collection name exact        | schema spec   |
+| 130  | RefreshToken schema        | `a_refresh_tokens` + TTL index optional                                | unit            | jti hash stored              | schema spec   |
 | 131  | Argon2id service           | hash + verify wrappers                                                 | unit            | timing-safe verify           | password.spec |
 | 132  | Jwt module config          | access/refresh secrets + expires from env                              | boot            | fail without secrets in prod | config spec   |
 | 133  | Cookie helpers             | `setAuthCookies` / `clearAuthCookies` (Domain, SameSite, Secure, Path) | unit            | flags correct                | cookies.spec  |
@@ -514,7 +514,7 @@ T25 Acceptance + tag platform-v1.0.0
 
 | Решение                              | Почему                                                       | Альтернатива отклонена       |
 | ------------------------------------ | ------------------------------------------------------------ | ---------------------------- |
-| App-owned `_app_users` (1C)          | нет риска сломать legacy hash/schema; путь к dual-read позже | login сразу в legacy `users` |
+| App-owned `a_users` (1C)             | нет риска сломать legacy hash/schema; путь к dual-read позже | login сразу в legacy `users` |
 | JWT cookies (не Bearer localStorage) | XSS не читает token; SSR-friendly credentials                | localStorage JWT             |
 | Refresh rotation + jti store         | revoke/logout real; reuse detection possible                 | stateless refresh only       |
 | Argon2id                             | modern password hashing                                      | bcrypt-only                  |
@@ -570,7 +570,7 @@ T25 Acceptance + tag platform-v1.0.0
 
 1. Первый legacy read-only модуль — [`domain-module-recipe.md`](domain-module-recipe.md).
 2. Writes в legacy — новый ADR + `ALLOW_LEGACY_WRITE_*` + inventory.
-3. Связка `_app_users` ↔ legacy `users` — **ADR-004** (вне этого roadmap).
+3. Связка `a_users` ↔ legacy `users` — **ADR-004** (вне этого roadmap).
 4. OAuth / RBAC / email — отдельные roadmap’ы после `platform-v1.0.0`.
 
 ---
@@ -581,14 +581,14 @@ T25 Acceptance + tag platform-v1.0.0
 
 ### Текущий этап
 
-| Поле             | Значение                      |
-| ---------------- | ----------------------------- |
-| Трек             | **T14 — Auth Data & ADR**     |
-| Текущий шаг      | **123** — ADR-002 JWT cookies |
-| Статус шага      | `todo`                        |
-| Последний `done` | **122** — T13 freeze          |
-| Закрыто шагов    | **26 / 150** (097–246)        |
-| Обновлено        | 2026-07-22                    |
+| Поле             | Значение                     |
+| ---------------- | ---------------------------- |
+| Трек             | **T15 — Auth API**           |
+| Текущий шаг      | **129** — UsersModule schema |
+| Статус шага      | `todo`                       |
+| Последний `done` | **128** — T14 freeze         |
+| Закрыто шагов    | **32 / 150** (097–246)       |
+| Обновлено        | 2026-07-22                   |
 
 ### Сводка по трекам
 
@@ -597,7 +597,7 @@ T25 Acceptance + tag platform-v1.0.0
 | T11 Repo ops          | 097–104 | 8    | `done` |
 | T12 Env & secrets     | 105–114 | 10   | `done` |
 | T13 Atlas & network   | 115–122 | 8    | `done` |
-| T14 Auth data & ADR   | 123–128 | 0    | `todo` |
+| T14 Auth data & ADR   | 123–128 | 6    | `done` |
 | T15 Auth API          | 129–145 | 0    | `todo` |
 | T16 Auth security     | 146–155 | 0    | `todo` |
 | T17 Auth web          | 156–168 | 0    | `todo` |
@@ -642,27 +642,27 @@ T25 Acceptance + tag platform-v1.0.0
 
 #### T13 — Atlas & Network (115–122)
 
-| Step | Title                           | Status | Notes                                                                                     |
-| ---- | ------------------------------- | ------ | ----------------------------------------------------------------------------------------- |
-| 115  | Atlas connection policy         | `done` | [`deploy/atlas.md`](deploy/atlas.md) — URI params, no prod in CI                          |
-| 116  | Network access                  | `done` | allowlist policy + `0.0.0.0/0` risk note; Railway detail T21-197                          |
-| 117  | Inventory `_app_users`          | `done` | read/write new API; fields in [`collections-inventory.md`](data/collections-inventory.md) |
-| 118  | Inventory `_app_refresh_tokens` | `done` | jti hash + TTL note                                                                       |
-| 119  | Legacy `users` row              | `done` | `read-only until ADR-004`; ADR-001 `_app_*` row                                           |
-| 120  | Index policy app collections    | `done` | unique email/username; unique jti; `_app_*` indexes after inventory                       |
-| 121  | Readiness timeout note          | `done` | Mongo ping → 503; boot fail-fast optional in atlas.md                                     |
-| 122  | T13 freeze                      | `done` | [`track-13-atlas-network-freeze.md`](track-13-atlas-network-freeze.md)                    |
+| Step | Title                        | Status | Notes                                                                                     |
+| ---- | ---------------------------- | ------ | ----------------------------------------------------------------------------------------- |
+| 115  | Atlas connection policy      | `done` | [`deploy/atlas.md`](deploy/atlas.md) — URI params, no prod in CI                          |
+| 116  | Network access               | `done` | allowlist policy + `0.0.0.0/0` risk note; Railway detail T21-197                          |
+| 117  | Inventory `a_users`          | `done` | read/write new API; fields in [`collections-inventory.md`](data/collections-inventory.md) |
+| 118  | Inventory `a_refresh_tokens` | `done` | jti hash + TTL note                                                                       |
+| 119  | Legacy `users` row           | `done` | `read-only until ADR-004`; ADR-001 `a_*` row                                              |
+| 120  | Index policy app collections | `done` | unique email/username; unique jti; `a_*` indexes after inventory                          |
+| 121  | Readiness timeout note       | `done` | Mongo ping → 503; boot fail-fast optional in atlas.md                                     |
+| 122  | T13 freeze                   | `done` | [`track-13-atlas-network-freeze.md`](track-13-atlas-network-freeze.md)                    |
 
 #### T14 — Auth Data & ADR (123–128)
 
-| Step | Title                | Status | Notes |
-| ---- | -------------------- | ------ | ----- |
-| 123  | ADR-002 JWT cookies  | `todo` |       |
-| 124  | ADR-003 app users    | `todo` |       |
-| 125  | ADR-004 stub pointer | `todo` |       |
-| 126  | Contracts auth DTOs  | `todo` |       |
-| 127  | Problem Details auth | `todo` |       |
-| 128  | T14 freeze           | `todo` |       |
+| Step | Title                | Status | Notes                                                                                          |
+| ---- | -------------------- | ------ | ---------------------------------------------------------------------------------------------- |
+| 123  | ADR-002 JWT cookies  | `done` | [`adr/002-auth-jwt-cookies.md`](adr/002-auth-jwt-cookies.md) — username login; examples policy |
+| 124  | ADR-003 app users    | `done` | [`adr/003-app-users-collection.md`](adr/003-app-users-collection.md)                           |
+| 125  | ADR-004 stub pointer | `done` | [`adr/004-legacy-users-dual-read.md`](adr/004-legacy-users-dual-read.md) — Deferred            |
+| 126  | Contracts auth DTOs  | `done` | `libs/shared-contracts` Login / Register / AuthUser                                            |
+| 127  | Problem Details auth | `done` | `rateLimited` URI + fixture; unauthorized/forbidden retained                                   |
+| 128  | T14 freeze           | `done` | [`track-14-auth-data-adr-freeze.md`](track-14-auth-data-adr-freeze.md)                         |
 
 #### T15 — Auth API (129–145)
 
