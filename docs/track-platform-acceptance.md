@@ -8,17 +8,17 @@ Predecessor: [track-foundation-acceptance.md](track-foundation-acceptance.md) (`
 
 ## «Платформа готова»
 
-| Criterion                                    | Status  | Evidence                                                                                                                                                            |
-| -------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Staging API on Railway + Web on Vercel       | ⬜ todo | URLs recorded in this file / [`docs/deploy/README.md`](deploy/README.md) after T21–T22                                                                              |
-| Prod custom domains + cookies `SameSite=Lax` | ⬜ todo | T23; login → me → logout on `app.` / `api.`                                                                                                                         |
-| Atlas only via env; CI without prod URI      | ⬜ todo | T12–T13; [`.github/workflows/ci.yml`](../.github/workflows/ci.yml) still uses `mongo:7`                                                                             |
-| Auth e2e + Playwright login                  | ⬜ todo | T15–T16, T19; CI green                                                                                                                                              |
-| Branch protection + Dependabot               | ✅ done | T11; [`docs/branch-protection.md`](branch-protection.md), [`.github/dependabot.yml`](../.github/dependabot.yml), [`track-11-ops-freeze.md`](track-11-ops-freeze.md) |
-| OpenAPI drift + tests-first                  | ⬜ todo | foundation gates unchanged; auth paths in OpenAPI                                                                                                                   |
-| Runbooks deploy / rollback / secrets         | ⬜ todo | `docs/deploy/`, [`docs/ops/incident-rollback.md`](ops/incident-rollback.md) (T12, T21–T25; rollback stub from T11)                                                  |
-| ADR-002 + ADR-003 accepted                   | ⬜ todo | [`docs/adr/002-auth-jwt-cookies.md`](adr/002-auth-jwt-cookies.md), [`docs/adr/003-app-users-collection.md`](adr/003-app-users-collection.md)                        |
-| Tag `platform-v1.0.0`                        | ⬜ todo | [`CHANGELOG.md`](../CHANGELOG.md); remote tag (steps 244–245)                                                                                                       |
+| Criterion                                    | Status     | Evidence                                                                                                                                                                                       |
+| -------------------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Staging API on Railway + Web on Vercel       | ⬜ todo    | URLs recorded in this file / [`docs/deploy/README.md`](deploy/README.md) after T21–T22                                                                                                         |
+| Prod custom domains + cookies `SameSite=Lax` | ⬜ todo    | T23; login → me → logout on `app.` / `api.`                                                                                                                                                    |
+| Atlas only via env; CI without prod URI      | 🟡 partial | T12 env matrix + naming; CI still `mongo:7` / `app_foundation_ci` — Atlas network policy in T13 ([`ops/environments.md`](ops/environments.md))                                                 |
+| Auth e2e + Playwright login                  | ⬜ todo    | T15–T16, T19; CI green                                                                                                                                                                         |
+| Branch protection + Dependabot               | ✅ done    | T11; [`docs/branch-protection.md`](branch-protection.md), [`.github/dependabot.yml`](../.github/dependabot.yml), [`track-11-ops-freeze.md`](track-11-ops-freeze.md)                            |
+| OpenAPI drift + tests-first                  | ⬜ todo    | foundation gates unchanged; auth paths in OpenAPI                                                                                                                                              |
+| Runbooks deploy / rollback / secrets         | 🟡 partial | T12: [`ops/secrets-checklist.md`](ops/secrets-checklist.md), [`deploy/`](deploy/README.md) stubs; full Railway/Vercel runbooks T21–T25; [`ops/incident-rollback.md`](ops/incident-rollback.md) |
+| ADR-002 + ADR-003 accepted                   | ⬜ todo    | [`docs/adr/002-auth-jwt-cookies.md`](adr/002-auth-jwt-cookies.md), [`docs/adr/003-app-users-collection.md`](adr/003-app-users-collection.md)                                                   |
+| Tag `platform-v1.0.0`                        | ⬜ todo    | [`CHANGELOG.md`](../CHANGELOG.md); remote tag (steps 244–245)                                                                                                                                  |
 
 Fill statuses to ✅ as tracks close. Do not mark this checklist complete until step **246**.
 
@@ -27,7 +27,7 @@ Fill statuses to ✅ as tracks close. Do not mark this checklist complete until 
 | Track                 | Steps   | Status |
 | --------------------- | ------- | ------ |
 | T11 Repo ops          | 097–104 | `done` |
-| T12 Env & secrets     | 105–114 | `todo` |
+| T12 Env & secrets     | 105–114 | `done` |
 | T13 Atlas & network   | 115–122 | `todo` |
 | T14 Auth data & ADR   | 123–128 | `todo` |
 | T15 Auth API          | 129–145 | `todo` |

@@ -581,21 +581,21 @@ T25 Acceptance + tag platform-v1.0.0
 
 ### Текущий этап
 
-| Поле             | Значение                         |
-| ---------------- | -------------------------------- |
-| Трек             | **T12 — Environments & Secrets** |
-| Текущий шаг      | **105** — Env matrix doc         |
-| Статус шага      | `todo`                           |
-| Последний `done` | **104** — T11 checklist          |
-| Закрыто шагов    | **8 / 150** (097–246)            |
-| Обновлено        | 2026-07-22                       |
+| Поле             | Значение                          |
+| ---------------- | --------------------------------- |
+| Трек             | **T13 — Atlas & Network**         |
+| Текущий шаг      | **115** — Atlas connection policy |
+| Статус шага      | `todo`                            |
+| Последний `done` | **114** — T12 freeze              |
+| Закрыто шагов    | **18 / 150** (097–246)            |
+| Обновлено        | 2026-07-22                        |
 
 ### Сводка по трекам
 
 | Track                 | Steps   | Done | Status |
 | --------------------- | ------- | ---- | ------ |
 | T11 Repo ops          | 097–104 | 8    | `done` |
-| T12 Env & secrets     | 105–114 | 0    | `todo` |
+| T12 Env & secrets     | 105–114 | 10   | `done` |
 | T13 Atlas & network   | 115–122 | 0    | `todo` |
 | T14 Auth data & ADR   | 123–128 | 0    | `todo` |
 | T15 Auth API          | 129–145 | 0    | `todo` |
@@ -627,18 +627,18 @@ T25 Acceptance + tag platform-v1.0.0
 
 #### T12 — Environments & Secrets (105–114)
 
-| Step | Title                   | Status | Notes |
-| ---- | ----------------------- | ------ | ----- |
-| 105  | Env matrix doc          | `todo` |       |
-| 106  | API env Zod expand      | `todo` |       |
-| 107  | Web env policy          | `todo` |       |
-| 108  | `.env.example` sync     | `todo` |       |
-| 109  | Secrets checklist       | `todo` |       |
-| 110  | Atlas DB naming         | `todo` |       |
-| 111  | Preview origins         | `todo` |       |
-| 112  | TRUST_PROXY doc         | `todo` |       |
-| 113  | Secret rotation runbook | `todo` |       |
-| 114  | T12 freeze              | `todo` |       |
+| Step | Title                   | Status | Notes                                                                        |
+| ---- | ----------------------- | ------ | ---------------------------------------------------------------------------- |
+| 105  | Env matrix doc          | `done` | [`ops/environments.md`](ops/environments.md)                                 |
+| 106  | API env Zod expand      | `done` | JWT/cookie/TRUST_PROXY/OTEL + preview vars; `env.schema.spec.ts`             |
+| 107  | Web env policy          | `done` | LOCAL_SETUP «Secrets never in Vite»; web schema spec                         |
+| 108  | `.env.example` sync     | `done` | root + apps/api + apps/web placeholders                                      |
+| 109  | Secrets checklist       | `done` | [`ops/secrets-checklist.md`](ops/secrets-checklist.md)                       |
+| 110  | Atlas DB naming         | `done` | `app_foundation_dev` / `_ci` / `app_staging` / `app_prod` in environments.md |
+| 111  | Preview origins         | `done` | `WEB_ORIGIN_PREVIEW_REGEX` + `LIST` in `cors.options.ts`                     |
+| 112  | TRUST_PROXY doc         | `done` | LOCAL_SETUP + [`deploy/railway.md`](deploy/railway.md)                       |
+| 113  | Secret rotation runbook | `done` | JWT rotation in secrets-checklist                                            |
+| 114  | T12 freeze              | `done` | [`track-12-env-secrets-freeze.md`](track-12-env-secrets-freeze.md)           |
 
 #### T13 — Atlas & Network (115–122)
 

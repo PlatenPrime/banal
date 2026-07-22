@@ -159,6 +159,14 @@ npx nx serve api    # http://localhost:4000
 npx nx serve web    # http://localhost:3000
 ```
 
+### Secrets never in Vite
+
+Vite embeds every `VITE_*` variable into the client bundle. Put **only** public configuration on the web app (today: `VITE_API_URL`). JWT secrets, `MONGODB_URI`, cookie secrets, and other API credentials belong in `apps/api/.env` (local) or Railway — never in `apps/web/.env` or Vercel. See [SECURITY.md](../SECURITY.md) and [ops/secrets-checklist.md](./ops/secrets-checklist.md). Env matrix: [ops/environments.md](./ops/environments.md).
+
+### TRUST_PROXY
+
+Nest runs behind Railway’s reverse proxy in staging/production. Set **`TRUST_PROXY=1`** on Railway so Secure cookies and client IP behave correctly (wiring lands in Track 16). Locally leave `TRUST_PROXY=0` / unset. Details: [deploy/railway.md](./deploy/railway.md).
+
 ### Manual check
 
 1. Open `http://localhost:3000/examples` — list loads from the API (empty or seeded).

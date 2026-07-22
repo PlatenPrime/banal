@@ -32,10 +32,12 @@ When Vercel is configured (T22):
 
 - **Do not** point CI or local compose at production Atlas URI.
 - DB schema/data rollbacks are out of scope for this stub; auth/user collections follow ADRs once present.
-- Cookie/session issues after API rollback: users may need to re-login (JWT secret rotation invalidates sessions — see secrets runbook in T12).
+- Cookie/session issues after API rollback: users may need to re-login (JWT secret rotation invalidates sessions — see [secrets-checklist.md](secrets-checklist.md)#jwt-secret-rotation).
 
 ## Related
 
 - [PLATFORM-ROADMAP.md](../PLATFORM-ROADMAP.md) — T21 Railway, T22 Vercel, T25 runbooks
+- [environments.md](environments.md) — env matrix
+- [secrets-checklist.md](secrets-checklist.md) — secret placement + rotation
 - [branch-protection.md](../branch-protection.md) — required checks before merge
 - [SECURITY.md](../../SECURITY.md) — vulnerability reporting
