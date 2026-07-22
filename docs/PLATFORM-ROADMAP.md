@@ -581,34 +581,34 @@ T25 Acceptance + tag platform-v1.0.0
 
 ### Текущий этап
 
-| Поле             | Значение                  |
-| ---------------- | ------------------------- |
-| Трек             | **T11 — Repo Ops Freeze** |
-| Текущий шаг      | **099** — Dependabot      |
-| Статус шага      | `todo`                    |
-| Последний `done` | **098**                   |
-| Закрыто шагов    | **2 / 150** (097–246)     |
-| Обновлено        | 2026-07-22                |
+| Поле             | Значение                         |
+| ---------------- | -------------------------------- |
+| Трек             | **T12 — Environments & Secrets** |
+| Текущий шаг      | **105** — Env matrix doc         |
+| Статус шага      | `todo`                           |
+| Последний `done` | **104** — T11 checklist          |
+| Закрыто шагов    | **8 / 150** (097–246)            |
+| Обновлено        | 2026-07-22                       |
 
 ### Сводка по трекам
 
-| Track                 | Steps   | Done | Status  |
-| --------------------- | ------- | ---- | ------- |
-| T11 Repo ops          | 097–104 | 2    | `doing` |
-| T12 Env & secrets     | 105–114 | 0    | `todo`  |
-| T13 Atlas & network   | 115–122 | 0    | `todo`  |
-| T14 Auth data & ADR   | 123–128 | 0    | `todo`  |
-| T15 Auth API          | 129–145 | 0    | `todo`  |
-| T16 Auth security     | 146–155 | 0    | `todo`  |
-| T17 Auth web          | 156–168 | 0    | `todo`  |
-| T18 Feature flags     | 169–174 | 0    | `todo`  |
-| T19 Quality expansion | 175–182 | 0    | `todo`  |
-| T20 Observability     | 183–190 | 0    | `todo`  |
-| T21 Railway API       | 191–205 | 0    | `todo`  |
-| T22 Vercel web        | 206–218 | 0    | `todo`  |
-| T23 Custom domains    | 219–226 | 0    | `todo`  |
-| T24 CI/CD deploy      | 227–236 | 0    | `todo`  |
-| T25 Runbooks & freeze | 237–246 | 0    | `todo`  |
+| Track                 | Steps   | Done | Status |
+| --------------------- | ------- | ---- | ------ |
+| T11 Repo ops          | 097–104 | 8    | `done` |
+| T12 Env & secrets     | 105–114 | 0    | `todo` |
+| T13 Atlas & network   | 115–122 | 0    | `todo` |
+| T14 Auth data & ADR   | 123–128 | 0    | `todo` |
+| T15 Auth API          | 129–145 | 0    | `todo` |
+| T16 Auth security     | 146–155 | 0    | `todo` |
+| T17 Auth web          | 156–168 | 0    | `todo` |
+| T18 Feature flags     | 169–174 | 0    | `todo` |
+| T19 Quality expansion | 175–182 | 0    | `todo` |
+| T20 Observability     | 183–190 | 0    | `todo` |
+| T21 Railway API       | 191–205 | 0    | `todo` |
+| T22 Vercel web        | 206–218 | 0    | `todo` |
+| T23 Custom domains    | 219–226 | 0    | `todo` |
+| T24 CI/CD deploy      | 227–236 | 0    | `todo` |
+| T25 Runbooks & freeze | 237–246 | 0    | `todo` |
 
 ### Чеклист шагов
 
@@ -618,12 +618,12 @@ T25 Acceptance + tag platform-v1.0.0
 | ---- | ---------------------- | ------ | ---------------------------------------------------------------------------------------------------- |
 | 097  | Branch protection live | `done` | Enabled 2026-07-22 on public repo; see [`branch-protection.md`](branch-protection.md)#enabled        |
 | 098  | CODEOWNERS             | `done` | [`.github/CODEOWNERS`](../.github/CODEOWNERS) — `@PlatenPrime` for apps/, libs/, .github/, docs/adr/ |
-| 099  | Dependabot             | `todo` |                                                                                                      |
-| 100  | SECURITY.md            | `todo` |                                                                                                      |
-| 101  | Tag remote policy      | `todo` |                                                                                                      |
-| 102  | Coverage policy note   | `todo` |                                                                                                      |
-| 103  | Incident rollback stub | `todo` |                                                                                                      |
-| 104  | T11 checklist          | `todo` |                                                                                                      |
+| 099  | Dependabot             | `done` | [`.github/dependabot.yml`](../.github/dependabot.yml) — npm + github-actions weekly                  |
+| 100  | SECURITY.md            | `done` | [`SECURITY.md`](../SECURITY.md); linked from README                                                  |
+| 101  | Tag remote policy      | `done` | `foundation-v1.0.0` on origin; tag rules in CHANGELOG header                                         |
+| 102  | Coverage policy note   | `done` | [`testing.md`](testing.md) — platform expand-include policy (T19 executes)                           |
+| 103  | Incident rollback stub | `done` | [`ops/incident-rollback.md`](ops/incident-rollback.md)                                               |
+| 104  | T11 checklist          | `done` | [`track-11-ops-freeze.md`](track-11-ops-freeze.md)                                                   |
 
 #### T12 — Environments & Secrets (105–114)
 

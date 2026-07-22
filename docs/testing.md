@@ -64,6 +64,12 @@ Provider: `@vitest/coverage-v8`, **per-project** reports under each package’s 
 
 **Rule:** thresholds only increase. A regression fails CI / local `test`.
 
+### Platform modules (expand include)
+
+Foundation coverage is intentionally **scoped** (services, mappers, api-client, contracts). When platform work lands new production surfaces (auth API/web, feature flags, deploy-related libs), **expand** each project's Vitest coverage `include` to cover those paths and keep or raise thresholds — never shrink them.
+
+Actual include expansion and threshold bumps are Track **T19** (steps 175–176). Until then, new platform modules must still ship unit tests (tests-first gate); coverage gates apply once paths are added to `include`.
+
 ## Where files live
 
 | Kind                       | Path pattern                                                             |
