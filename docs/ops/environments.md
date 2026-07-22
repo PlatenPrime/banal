@@ -39,7 +39,7 @@ CI (GitHub Actions e2e) uses Docker `mongo:7` and DB name **`app_foundation_ci`*
 | Staging     | `app_staging`        | Railway staging `MONGODB_URI`    |
 | Production  | `app_prod`           | Railway production `MONGODB_URI` |
 
-**Rule:** CI and local **never** use Atlas URIs that point at `app_prod` or `app_staging`. Aligns with ADR-001 (prod Mongo not in CI).
+**Rule:** CI and local **never** use Atlas URIs that point at `app_prod` or `app_staging`. Aligns with ADR-001 (prod Mongo not in CI). Full Atlas URI params and network allowlist: [deploy/atlas.md](../deploy/atlas.md).
 
 ## Secrets placement
 

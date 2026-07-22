@@ -581,14 +581,14 @@ T25 Acceptance + tag platform-v1.0.0
 
 ### Текущий этап
 
-| Поле             | Значение                          |
-| ---------------- | --------------------------------- |
-| Трек             | **T13 — Atlas & Network**         |
-| Текущий шаг      | **115** — Atlas connection policy |
-| Статус шага      | `todo`                            |
-| Последний `done` | **114** — T12 freeze              |
-| Закрыто шагов    | **18 / 150** (097–246)            |
-| Обновлено        | 2026-07-22                        |
+| Поле             | Значение                      |
+| ---------------- | ----------------------------- |
+| Трек             | **T14 — Auth Data & ADR**     |
+| Текущий шаг      | **123** — ADR-002 JWT cookies |
+| Статус шага      | `todo`                        |
+| Последний `done` | **122** — T13 freeze          |
+| Закрыто шагов    | **26 / 150** (097–246)        |
+| Обновлено        | 2026-07-22                    |
 
 ### Сводка по трекам
 
@@ -596,7 +596,7 @@ T25 Acceptance + tag platform-v1.0.0
 | --------------------- | ------- | ---- | ------ |
 | T11 Repo ops          | 097–104 | 8    | `done` |
 | T12 Env & secrets     | 105–114 | 10   | `done` |
-| T13 Atlas & network   | 115–122 | 0    | `todo` |
+| T13 Atlas & network   | 115–122 | 8    | `done` |
 | T14 Auth data & ADR   | 123–128 | 0    | `todo` |
 | T15 Auth API          | 129–145 | 0    | `todo` |
 | T16 Auth security     | 146–155 | 0    | `todo` |
@@ -642,16 +642,16 @@ T25 Acceptance + tag platform-v1.0.0
 
 #### T13 — Atlas & Network (115–122)
 
-| Step | Title                           | Status | Notes |
-| ---- | ------------------------------- | ------ | ----- |
-| 115  | Atlas connection policy         | `todo` |       |
-| 116  | Network access                  | `todo` |       |
-| 117  | Inventory `_app_users`          | `todo` |       |
-| 118  | Inventory `_app_refresh_tokens` | `todo` |       |
-| 119  | Legacy `users` row              | `todo` |       |
-| 120  | Index policy app collections    | `todo` |       |
-| 121  | Readiness timeout note          | `todo` |       |
-| 122  | T13 freeze                      | `todo` |       |
+| Step | Title                           | Status | Notes                                                                                     |
+| ---- | ------------------------------- | ------ | ----------------------------------------------------------------------------------------- |
+| 115  | Atlas connection policy         | `done` | [`deploy/atlas.md`](deploy/atlas.md) — URI params, no prod in CI                          |
+| 116  | Network access                  | `done` | allowlist policy + `0.0.0.0/0` risk note; Railway detail T21-197                          |
+| 117  | Inventory `_app_users`          | `done` | read/write new API; fields in [`collections-inventory.md`](data/collections-inventory.md) |
+| 118  | Inventory `_app_refresh_tokens` | `done` | jti hash + TTL note                                                                       |
+| 119  | Legacy `users` row              | `done` | `read-only until ADR-004`; ADR-001 `_app_*` row                                           |
+| 120  | Index policy app collections    | `done` | unique email/username; unique jti; `_app_*` indexes after inventory                       |
+| 121  | Readiness timeout note          | `done` | Mongo ping → 503; boot fail-fast optional in atlas.md                                     |
+| 122  | T13 freeze                      | `done` | [`track-13-atlas-network-freeze.md`](track-13-atlas-network-freeze.md)                    |
 
 #### T14 — Auth Data & ADR (123–128)
 

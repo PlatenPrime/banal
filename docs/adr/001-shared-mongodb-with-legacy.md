@@ -17,14 +17,15 @@ Related artifacts:
 
 ### 1. Who writes which collections
 
-| Collection pattern         | New app (`apps/api`)                  | Legacy app           |
-| -------------------------- | ------------------------------------- | -------------------- |
-| `_foundation_*`            | **read/write** (foundation demo only) | no write             |
-| Legacy product collections | **read-only** until a dedicated ADR   | authoritative writer |
+| Collection pattern         | New app (`apps/api`)                       | Legacy app           |
+| -------------------------- | ------------------------------------------ | -------------------- |
+| `_foundation_*`            | **read/write** (foundation demo only)      | no write             |
+| `_app_*`                   | **read/write** (platform auth / app-owned) | no write             |
+| Legacy product collections | **read-only** until a dedicated ADR        | authoritative writer |
 
-- Inventory is the source of truth for writers/readers/mode per collection.
-- The foundation write demo uses only `_foundation_examples`.
-- No `createCollection` / index changes on legacy collections from the new app without an ADR.
+- Inventory is the source of truth for writers/readers/mode per collection ([collections-inventory.md](../data/collections-inventory.md)).
+- The foundation write demo uses only `_foundation_examples`; platform auth uses `_app_users` / `_app_refresh_tokens` (ADR-003).
+- No `createCollection` / index changes on legacy collections from the new app without an ADR. App-owned `_foundation_*` / `_app_*` indexes are managed by the new app after inventory approval.
 
 ### 2. Additive schema policy
 

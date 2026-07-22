@@ -18,6 +18,7 @@ See the Railway table in [secrets-checklist.md](../ops/secrets-checklist.md). St
 
 ## Related
 
+- [atlas.md](atlas.md) — Atlas URI params, network allowlist policy, readiness
 - [LOCAL_SETUP.md](../LOCAL_SETUP.md)#trust_proxy
 - [PLATFORM-ROADMAP.md](../PLATFORM-ROADMAP.md) — T21 Railway API
 - [incident-rollback.md](../ops/incident-rollback.md)
