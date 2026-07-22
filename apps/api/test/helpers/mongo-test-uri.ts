@@ -23,6 +23,8 @@ export function createE2eEnv(mongoUri: string) {
     PORT: '4000',
     MONGODB_URI: mongoUri,
     WEB_ORIGIN: 'http://localhost:3000',
+    JWT_ACCESS_SECRET: 'ci-dummy-access-secret-min-32-chars!!',
+    JWT_REFRESH_SECRET: 'ci-dummy-refresh-secret-min-32-chars!',
   } as const;
 }
 

@@ -8,10 +8,9 @@ export async function createE2eApp(env: Record<string, string>): Promise<{
   baseUrl: string;
   close: () => Promise<void>;
 }> {
-  process.env.NODE_ENV = env.NODE_ENV;
-  process.env.PORT = env.PORT;
-  process.env.MONGODB_URI = env.MONGODB_URI;
-  process.env.WEB_ORIGIN = env.WEB_ORIGIN;
+  for (const [key, value] of Object.entries(env)) {
+    process.env[key] = value;
+  }
 
   const moduleRef = await Test.createTestingModule({
     imports: [AppModule],

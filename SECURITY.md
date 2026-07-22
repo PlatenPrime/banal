@@ -23,5 +23,5 @@ We aim to acknowledge reports within **7 days** and to share a remediation plan 
 
 ## Scope notes
 
-- Secrets must never land in the repo, Vite client bundles, or public docs. See [docs/testing.md](docs/testing.md) and upcoming ops secrets docs under `docs/ops/`.
+- Secrets must never land in the repo, Vite client bundles, or public docs. See [docs/ops/secrets-checklist.md](docs/ops/secrets-checklist.md) and [docs/ops/environments.md](docs/ops/environments.md).
 - Dependency updates are managed via Dependabot (`.github/dependabot.yml`).

@@ -24,7 +24,13 @@ async function bootstrap() {
 
   applyApiUriVersioning(app);
   applySwaggerDocs(app);
-  app.enableCors(getCorsOptions({ WEB_ORIGIN: config.get('WEB_ORIGIN', { infer: true }) }));
+  app.enableCors(
+    getCorsOptions({
+      WEB_ORIGIN: config.get('WEB_ORIGIN', { infer: true }),
+      WEB_ORIGIN_PREVIEW_REGEX: config.get('WEB_ORIGIN_PREVIEW_REGEX', { infer: true }),
+      WEB_ORIGIN_PREVIEW_LIST: config.get('WEB_ORIGIN_PREVIEW_LIST', { infer: true }),
+    }),
+  );
   await app.listen(config.get('PORT', { infer: true }));
 }
 

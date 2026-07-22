@@ -24,4 +24,4 @@ git ls-remote --tags origin | findstr foundation-v1.0.0   # or: grep foundation-
 ## Related
 
 - Platform acceptance: [`track-platform-acceptance.md`](track-platform-acceptance.md)
-- Next track: **T12 — Environments & Secrets** (105–114)
+- Next track: **T13 — Atlas & Network** (115–122); T12 closed in [`track-12-env-secrets-freeze.md`](track-12-env-secrets-freeze.md)

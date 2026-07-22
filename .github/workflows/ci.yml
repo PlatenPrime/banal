@@ -121,6 +121,8 @@ jobs:
     env:
       MONGODB_URI: mongodb://127.0.0.1:27017/app_foundation_ci
       WEB_ORIGIN: http://localhost:3000
+      JWT_ACCESS_SECRET: ci-dummy-access-secret-min-32-chars!!
+      JWT_REFRESH_SECRET: ci-dummy-refresh-secret-min-32-chars!
     steps:
       - name: Checkout
         uses: actions/checkout@v7

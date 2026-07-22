@@ -21,4 +21,16 @@ describe('webEnvSchema', () => {
       VITE_API_URL: 'https://api.example.com',
     });
   });
+
+  it('does not expose secret-like keys in the parsed web env', () => {
+    const parsed = parseWebEnv({
+      VITE_API_URL: 'http://localhost:4000',
+      JWT_ACCESS_SECRET: 'should-not-appear-in-web-env!!!!!!!!!!!',
+      SECRET_KEY: 'also-not-a-web-env-field',
+    });
+
+    expect(parsed).toEqual({ VITE_API_URL: 'http://localhost:4000' });
+    expect(parsed).not.toHaveProperty('JWT_ACCESS_SECRET');
+    expect(parsed).not.toHaveProperty('SECRET_KEY');
+  });
 });
