@@ -12,6 +12,8 @@ export default tseslint.config(
       '**/*.tsbuildinfo',
       'package-lock.json',
       'apps/web/src/routeTree.gen.ts',
+      'apps/web/src/lib/api/generated/**',
+      'apps/api/openapi/**',
       'apps/web/.output/**',
       'libs/shared-contracts/src/**/*.{js,js.map,d.ts}',
     ],

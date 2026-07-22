@@ -65,6 +65,9 @@ npm run validate:tests-first
 npm run lint
 npm run typecheck
 npm run format:check
+npm run openapi:export
+npm run openapi:generate
+npm run openapi:check     # regen + fail on drift
 npm run ci
 npm run ci:full           # ci + api e2e (needs Docker Mongo)
 ```
@@ -77,8 +80,11 @@ Same gate **order** as the GitHub Actions `quality` job ([`.github/workflows/ci.
 2. `format:check`
 3. `lint` → `typecheck` → `build` → `test` (all projects via `nx run-many`)
 4. `test:scripts` (gate self-tests)
+5. `openapi:check` (export + generate + fail on drift)
 
 **Parity vs GHA:** local `ci` uses `run-many` (full tree). Actions uses `nx affected` (`NX_BASE`/`NX_HEAD`), OS matrix (ubuntu + windows), Nx cache restore, and a separate ubuntu `e2e` job with `mongo:7`. Full table: [docs/LOCAL_SETUP.md](docs/LOCAL_SETUP.md#local-vs-github-actions-parity). Required checks: [docs/branch-protection.md](docs/branch-protection.md).
+
+**OpenAPI:** change API Swagger/DTO surface → `npm run openapi:export` && `npm run openapi:generate` → commit artifacts under `apps/api/openapi/` and `apps/web/src/lib/api/generated/`.
 
 **No bypass:** `--no-verify` only skips local husky hooks; it does not skip `npm run ci` / GHA. Production diffs without a co-committed unit test must fail the gate.
 

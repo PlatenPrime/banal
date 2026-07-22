@@ -7,6 +7,12 @@ import {
   VERSION_NEUTRAL,
 } from '@nestjs/common';
 import {
+  ApiOkResponse,
+  ApiOperation,
+  ApiServiceUnavailableResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import {
   HealthCheck,
   HealthCheckService,
   MongooseHealthIndicator,
@@ -14,7 +20,9 @@ import {
 } from '@nestjs/terminus';
 import type { Response } from 'express';
 import { toLivenessResponse, toReadinessResponse } from './health-response';
+import { LivenessResponseDto, ReadinessResponseDto } from './health-response.dto';
 
+@ApiTags('health')
 @Controller({ path: 'health', version: VERSION_NEUTRAL })
 export class HealthController {
   constructor(
@@ -24,6 +32,8 @@ export class HealthController {
 
   @Get()
   @HealthCheck()
+  @ApiOperation({ summary: 'Liveness probe' })
+  @ApiOkResponse({ type: LivenessResponseDto })
   async liveness() {
     const result = await this.health.check([]);
     return toLivenessResponse(result);
@@ -31,6 +41,9 @@ export class HealthController {
 
   @Get('ready')
   @HealthCheck()
+  @ApiOperation({ summary: 'Readiness probe (Mongo ping)' })
+  @ApiOkResponse({ type: ReadinessResponseDto })
+  @ApiServiceUnavailableResponse({ type: ReadinessResponseDto })
   async readiness(@Res({ passthrough: true }) res: Response) {
     try {
       const result = await this.health.check([() => this.mongoose.pingCheck('mongodb')]);

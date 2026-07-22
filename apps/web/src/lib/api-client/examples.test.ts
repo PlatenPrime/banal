@@ -66,12 +66,12 @@ describe('examples api-client', () => {
       name: 'Beta',
     });
 
-    expect(fetch).toHaveBeenCalledWith(
-      'http://localhost:4000/api/v1/examples',
-      expect.objectContaining({
-        method: 'POST',
-        body: JSON.stringify({ name: 'Beta' }),
-      }),
+    const [request] = vi.mocked(fetch).mock.calls[0] ?? [];
+    expect(request).toBeInstanceOf(Request);
+    expect((request as Request).url).toBe('http://localhost:4000/api/v1/examples');
+    expect((request as Request).method).toBe('POST');
+    await expect((request as Request).clone().text()).resolves.toBe(
+      JSON.stringify({ name: 'Beta' }),
     );
   });
 });

@@ -101,6 +101,9 @@ jobs:
       - name: Script self-tests
         run: npm run test:scripts
 
+      - name: OpenAPI drift check
+        run: npm run openapi:check
+
   e2e:
     name: e2e
     runs-on: ubuntu-latest

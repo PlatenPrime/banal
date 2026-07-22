@@ -46,6 +46,13 @@
         "command": "tsc -p tsconfig.json --noEmit",
         "cwd": "{projectRoot}"
       }
+    },
+    "openapi:export": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node scripts/export-openapi.mjs",
+        "cwd": "{workspaceRoot}"
+      }
     }
   }
 }

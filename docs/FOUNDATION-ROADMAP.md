@@ -690,14 +690,14 @@ const getGitDiffFiles = (command) =>
 
 ### Текущий этап
 
-| Поле             | Значение                          |
-| ---------------- | --------------------------------- |
-| Трек             | **T8 — Contract Bridge**          |
-| Текущий шаг      | **085** — Export OpenAPI JSON     |
-| Статус шага      | `todo`                            |
-| Последний `done` | **084** — `npm run ci` = workflow |
-| Закрыто шагов    | **84 / 96**                       |
-| Обновлено        | 2026-07-21                        |
+| Поле             | Значение                    |
+| ---------------- | --------------------------- |
+| Трек             | **T9 — Observability Stub** |
+| Текущий шаг      | **089** — nestjs-pino       |
+| Статус шага      | `todo`                      |
+| Последний `done` | **088** — CI drift check    |
+| Закрыто шагов    | **88 / 96**                 |
+| Обновлено        | 2026-07-22                  |
 
 ### Сводка по трекам
 
@@ -711,7 +711,7 @@ const getGitDiffFiles = (command) =>
 | T5 Web             | 059–068 | 10   | `done` |
 | T6 Testing         | 069–076 | 8    | `done` |
 | T7 CI/CD           | 077–084 | 8    | `done` |
-| T8 Contract bridge | 085–088 | 0    | `todo` |
+| T8 Contract bridge | 085–088 | 4    | `done` |
 | T9 Observability   | 089–092 | 0    | `todo` |
 | T10 Acceptance     | 093–096 | 0    | `todo` |
 
@@ -843,12 +843,12 @@ const getGitDiffFiles = (command) =>
 
 #### T8 — Contract Bridge (085–088)
 
-| Step | Title                          | Status | Notes |
-| ---- | ------------------------------ | ------ | ----- |
-| 085  | Export OpenAPI JSON            | `todo` |       |
-| 086  | `openapi-typescript` client    | `todo` |       |
-| 087  | Replace hand fetch on examples | `todo` |       |
-| 088  | CI drift check                 | `todo` |       |
+| Step | Title                          | Status | Notes                                                           |
+| ---- | ------------------------------ | ------ | --------------------------------------------------------------- |
+| 085  | Export OpenAPI JSON            | `done` | `openapi:export` → `apps/api/openapi/openapi.json` (Mongo-free) |
+| 086  | `openapi-typescript` client    | `done` | `apps/web/src/lib/api/generated/schema.d.ts`                    |
+| 087  | Replace hand fetch on examples | `done` | `openapi-fetch` + Zod; `create-api-client.ts`                   |
+| 088  | CI drift check                 | `done` | `openapi:check` in `npm run ci` + GHA quality                   |
 
 #### T9 — Observability Stub (089–092)
 

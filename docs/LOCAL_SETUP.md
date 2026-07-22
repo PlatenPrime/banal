@@ -91,12 +91,16 @@ npm run validate:tests-first
 npm run lint
 npm run typecheck
 npm run format:check
+npm run openapi:export    # Nest → apps/api/openapi/openapi.json
+npm run openapi:generate  # → apps/web/src/lib/api/generated
+npm run openapi:check     # regen + fail on drift
 npm run ci                # quality gates (all projects via run-many)
 npm run ci:full           # ci + api e2e (needs local Mongo)
 ```
 
-`npm run ci`: **`validate:tests-first` first** (fail-closed, no skip / `continue-on-error`) → format → lint → typecheck → build → test → `test:scripts`. Uses `nx run-many` on every project so a laptop run is a full green check without needing `NX_BASE`/`NX_HEAD`.
+`npm run ci`: **`validate:tests-first` first** (fail-closed, no skip / `continue-on-error`) → format → lint → typecheck → build → test → `test:scripts` → `openapi:check`. Uses `nx run-many` on every project so a laptop run is a full green check without needing `NX_BASE`/`NX_HEAD`.
 
+**OpenAPI contract bridge:** after changing Nest controllers/DTOs/Swagger metadata, run `npm run openapi:export` and `npm run openapi:generate`, then commit `apps/api/openapi/openapi.json` and `apps/web/src/lib/api/generated/*`. `npm run openapi:check` (also in CI) regenerates and fails if those artifacts drifted.
 **No bypass:** CI always runs `npm run validate:tests-first` before lint. Local `--no-verify` skips husky only and must never be used to land production changes without unit tests; it does not apply to `npm run ci` or GitHub Actions.
 
 ### Local vs GitHub Actions parity
@@ -112,6 +116,7 @@ Workflow: [`.github/workflows/ci.yml`](../.github/workflows/ci.yml). Branch prot
 | tests-first                              | yes (`--ci`)                     | yes (first quality step)                                                                 |
 | format / lint / typecheck / build / unit | yes                              | yes (quality job)                                                                        |
 | `test:scripts`                           | yes                              | yes (quality job)                                                                        |
+| OpenAPI drift (`openapi:check`)          | yes                              | yes (quality job)                                                                        |
 | API e2e + Mongo                          | `npm run ci:full` (compose)      | separate `e2e` job, `services: mongo:7` (ubuntu only)                                    |
 
 Use `npm run ci` before push for the same gate order as GHA quality (minus matrix/affected). Use `npm run ci:full` when you changed API HTTP/Mongo behavior.

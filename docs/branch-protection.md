@@ -4,11 +4,11 @@ Required status checks for merges into `main`. Apply these in the GitHub UI — 
 
 ## Required checks
 
-| Check name (Actions)       | Job / matrix                                    | Why                                               |
-| -------------------------- | ----------------------------------------------- | ------------------------------------------------- |
-| `quality (ubuntu-latest)`  | [ci.yml](../.github/workflows/ci.yml) `quality` | Linux gates: format, lint, typecheck, build, unit |
-| `quality (windows-latest)` | same workflow, Windows matrix                   | Cross-platform parity                             |
-| `e2e`                      | ubuntu-only job + `mongo:7` service             | API e2e against isolated Mongo                    |
+| Check name (Actions)       | Job / matrix                                    | Why                                                        |
+| -------------------------- | ----------------------------------------------- | ---------------------------------------------------------- |
+| `quality (ubuntu-latest)`  | [ci.yml](../.github/workflows/ci.yml) `quality` | Linux gates: format, lint, typecheck, build, unit, openapi |
+| `quality (windows-latest)` | same workflow, Windows matrix                   | Cross-platform parity                                      |
+| `e2e`                      | ubuntu-only job + `mongo:7` service             | API e2e against isolated Mongo                             |
 
 Exact check names must match the job `name:` fields in `.github/workflows/ci.yml`.
 
