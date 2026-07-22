@@ -27,4 +27,4 @@ npx nx run web:test
 
 - Platform acceptance: [`track-platform-acceptance.md`](track-platform-acceptance.md)
 - Previous: [`track-11-ops-freeze.md`](track-11-ops-freeze.md)
-- Next track: **T13 — Atlas & Network** (115–122)
+- Next track: **T13 — Atlas & Network** (115–122) — closed: [`track-13-atlas-network-freeze.md`](track-13-atlas-network-freeze.md)

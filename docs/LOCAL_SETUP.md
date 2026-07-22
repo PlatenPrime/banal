@@ -136,6 +136,8 @@ Connection (no auth, for local/dev only):
 mongodb://127.0.0.1:27017/app_foundation_dev
 ```
 
+Atlas staging/prod connection and network policy (not for local CI): [deploy/atlas.md](deploy/atlas.md). Health probes: `GET /health` (liveness), `GET /health/ready` (Mongo ping → **503** if down).
+
 Stop:
 
 ```bash
