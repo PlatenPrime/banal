@@ -13,9 +13,9 @@ export const livenessResponseSchema = z.object({
 
 export const readinessResponseSchema = z.object({
   status: healthStatusSchema,
-  info: z.record(healthCheckResultSchema).optional(),
-  error: z.record(healthCheckResultSchema).optional(),
-  details: z.record(healthCheckResultSchema).optional(),
+  info: z.record(z.string(), healthCheckResultSchema).optional(),
+  error: z.record(z.string(), healthCheckResultSchema).optional(),
+  details: z.record(z.string(), healthCheckResultSchema).optional(),
 });
 
 export type HealthStatus = z.infer<typeof healthStatusSchema>;

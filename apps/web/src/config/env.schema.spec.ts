@@ -15,4 +15,10 @@ describe('webEnvSchema', () => {
   it('rejects invalid API URL', () => {
     expect(() => parseWebEnv({ VITE_API_URL: 'not-a-url' })).toThrow();
   });
+
+  it('accepts https URLs via z.url()', () => {
+    expect(parseWebEnv({ VITE_API_URL: 'https://api.example.com' })).toEqual({
+      VITE_API_URL: 'https://api.example.com',
+    });
+  });
 });

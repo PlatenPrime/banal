@@ -40,4 +40,16 @@ describe('health schemas', () => {
   it('rejects invalid check result status', () => {
     expect(() => healthCheckResultSchema.parse({ status: 'degraded' })).toThrow();
   });
+
+  it('parses readiness check maps as string-keyed records', () => {
+    const payload = {
+      status: 'ok' as const,
+      info: {
+        mongodb: { status: 'ok' as const },
+        redis: { status: 'ok' as const, detail: 'pong' },
+      },
+    };
+
+    expect(readinessResponseSchema.parse(payload)).toEqual(payload);
+  });
 });

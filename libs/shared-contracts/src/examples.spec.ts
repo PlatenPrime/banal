@@ -45,4 +45,14 @@ describe('example schemas', () => {
 
     expect(() => exampleListResponseSchema.parse({ items: [], total: -1 })).toThrow();
   });
+
+  it('accepts ISO-8601 createdAt via z.iso.datetime()', () => {
+    const item = {
+      id: 'ex_2',
+      name: 'ISO',
+      createdAt: '2026-07-22T09:30:00.000Z',
+    };
+
+    expect(exampleDtoSchema.parse(item).createdAt).toBe('2026-07-22T09:30:00.000Z');
+  });
 });
