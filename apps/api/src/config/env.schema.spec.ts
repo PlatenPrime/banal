@@ -47,6 +47,12 @@ describe('envSchema', () => {
   it('rejects invalid WEB_ORIGIN', () => {
     expect(() => envSchema.parse({ ...validEnv, WEB_ORIGIN: 'not-a-url' })).toThrow(ZodError);
   });
+
+  it('accepts WEB_ORIGIN via z.url()', () => {
+    expect(envSchema.parse({ ...validEnv, WEB_ORIGIN: 'https://app.example.com' }).WEB_ORIGIN).toBe(
+      'https://app.example.com',
+    );
+  });
 });
 
 describe('validate', () => {

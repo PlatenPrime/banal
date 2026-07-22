@@ -57,4 +57,18 @@ describe('problemDetailsSchema', () => {
       }),
     ).toThrow();
   });
+
+  it('parses field errors as a string-keyed record via z.url()', () => {
+    const payload = {
+      type: 'https://banal.app/problems/validation-failed',
+      title: 'Validation Failed',
+      status: 422,
+      errors: {
+        name: ['Required'],
+        description: ['Too long'],
+      },
+    };
+
+    expect(problemDetailsSchema.parse(payload)).toEqual(payload);
+  });
 });

@@ -9,7 +9,7 @@ export const exampleDtoSchema = z.object({
   id: z.string().min(1),
   name: z.string().min(1).max(200),
   description: z.string().max(2000).nullable().optional(),
-  createdAt: z.string().datetime(),
+  createdAt: z.iso.datetime(),
 });
 
 export const exampleListResponseSchema = z.object({
