@@ -690,30 +690,30 @@ const getGitDiffFiles = (command) =>
 
 ### Текущий этап
 
-| Поле             | Значение                    |
-| ---------------- | --------------------------- |
-| Трек             | **T9 — Observability Stub** |
-| Текущий шаг      | **089** — nestjs-pino       |
-| Статус шага      | `todo`                      |
-| Последний `done` | **088** — CI drift check    |
-| Закрыто шагов    | **88 / 96**                 |
-| Обновлено        | 2026-07-22                  |
+| Поле             | Значение                        |
+| ---------------- | ------------------------------- |
+| Трек             | **T9 — Observability Stub**     |
+| Текущий шаг      | **090** — Redact `MONGODB_URI`  |
+| Статус шага      | `todo`                          |
+| Последний `done` | **089** — nestjs-pino JSON logs |
+| Закрыто шагов    | **89 / 96**                     |
+| Обновлено        | 2026-07-22                      |
 
 ### Сводка по трекам
 
-| Track              | Steps   | Done | Status |
-| ------------------ | ------- | ---- | ------ |
-| T0 Bootstrap       | 001–018 | 18   | `done` |
-| T1 Local quality   | 019–024 | 6    | `done` |
-| T2 Contracts       | 025–030 | 6    | `done` |
-| T3 API platform    | 031–048 | 18   | `done` |
-| T4 Mongo           | 049–058 | 10   | `done` |
-| T5 Web             | 059–068 | 10   | `done` |
-| T6 Testing         | 069–076 | 8    | `done` |
-| T7 CI/CD           | 077–084 | 8    | `done` |
-| T8 Contract bridge | 085–088 | 4    | `done` |
-| T9 Observability   | 089–092 | 0    | `todo` |
-| T10 Acceptance     | 093–096 | 0    | `todo` |
+| Track              | Steps   | Done | Status  |
+| ------------------ | ------- | ---- | ------- |
+| T0 Bootstrap       | 001–018 | 18   | `done`  |
+| T1 Local quality   | 019–024 | 6    | `done`  |
+| T2 Contracts       | 025–030 | 6    | `done`  |
+| T3 API platform    | 031–048 | 18   | `done`  |
+| T4 Mongo           | 049–058 | 10   | `done`  |
+| T5 Web             | 059–068 | 10   | `done`  |
+| T6 Testing         | 069–076 | 8    | `done`  |
+| T7 CI/CD           | 077–084 | 8    | `done`  |
+| T8 Contract bridge | 085–088 | 4    | `done`  |
+| T9 Observability   | 089–092 | 1    | `doing` |
+| T10 Acceptance     | 093–096 | 0    | `todo`  |
 
 ### Чеклист шагов
 
@@ -852,12 +852,12 @@ const getGitDiffFiles = (command) =>
 
 #### T9 — Observability Stub (089–092)
 
-| Step | Title                       | Status | Notes |
-| ---- | --------------------------- | ------ | ----- |
-| 089  | nestjs-pino                 | `todo` |       |
-| 090  | Redact `MONGODB_URI`        | `todo` |       |
-| 091  | Request logging interceptor | `todo` |       |
-| 092  | OTel noop stub              | `todo` |       |
+| Step | Title                       | Status | Notes                                                             |
+| ---- | --------------------------- | ------ | ----------------------------------------------------------------- |
+| 089  | nestjs-pino                 | `done` | JSON sink; level by NODE_ENV; `forRootAsync`; parseable-line spec |
+| 090  | Redact `MONGODB_URI`        | `todo` |                                                                   |
+| 091  | Request logging interceptor | `todo` |                                                                   |
+| 092  | OTel noop stub              | `todo` |                                                                   |
 
 #### T10 — Acceptance (093–096)
 

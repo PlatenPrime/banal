@@ -1,7 +1,10 @@
 import type { IncomingMessage } from 'node:http';
 import type { Params } from 'nestjs-pino';
 import type { Options as PinoHttpOptions } from 'pino-http';
+import type { Env } from './env.schema';
 import { REQUEST_ID_HEADER, resolveRequestId, type RequestWithId } from './request-id.middleware';
+
+export type NodeEnv = Env['NODE_ENV'];
 
 /**
  * Resolves the correlation id for pino-http from the request-id middleware field,
@@ -18,11 +21,20 @@ export function resolveLogRequestId(req: IncomingMessage): string {
 }
 
 /**
- * Minimal pino-http options for correlation only.
- * Full structured ops logging / redact / auto request lines land in Track 9.
+ * Pino log level by NODE_ENV: verbose locally, quieter in test/prod.
+ * No transport → newline-delimited JSON (ops-parseable).
  */
-export function createPinoHttpOptions(): PinoHttpOptions {
+export function resolvePinoLevel(nodeEnv: NodeEnv): 'debug' | 'info' {
+  return nodeEnv === 'development' ? 'debug' : 'info';
+}
+
+/**
+ * Structured JSON pino-http options (correlation + level).
+ * Redact (090) and per-request auto lines (091) stay out of this step.
+ */
+export function createPinoHttpOptions(nodeEnv: NodeEnv = 'production'): PinoHttpOptions {
   return {
+    level: resolvePinoLevel(nodeEnv),
     autoLogging: false,
     genReqId: (req) => resolveLogRequestId(req),
     customProps: (req) => ({
@@ -31,8 +43,8 @@ export function createPinoHttpOptions(): PinoHttpOptions {
   };
 }
 
-export function createLoggerModuleParams(): Params {
+export function createLoggerModuleParams(nodeEnv: NodeEnv): Params {
   return {
-    pinoHttp: createPinoHttpOptions(),
+    pinoHttp: createPinoHttpOptions(nodeEnv),
   };
 }
