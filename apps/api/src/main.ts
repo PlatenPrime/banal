@@ -8,8 +8,11 @@ import { applyRequestIdMiddleware } from './config/request-id.middleware';
 import { applySecurityHeaders } from './config/security-headers';
 import { applySwaggerDocs } from './config/swagger';
 import { getCorsOptions } from './cors.options';
+import { initOtelNoop } from './observability/otel-noop';
 
 async function bootstrap() {
+  initOtelNoop();
+
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
   app.useLogger(app.get(Logger));
   app.enableShutdownHooks();

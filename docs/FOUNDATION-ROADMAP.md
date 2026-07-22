@@ -690,30 +690,30 @@ const getGitDiffFiles = (command) =>
 
 ### Текущий этап
 
-| Поле             | Значение                              |
-| ---------------- | ------------------------------------- |
-| Трек             | **T9 — Observability Stub**           |
-| Текущий шаг      | **091** — Request logging interceptor |
-| Статус шага      | `todo`                                |
-| Последний `done` | **090** — Redact `MONGODB_URI`        |
-| Закрыто шагов    | **90 / 96**                           |
-| Обновлено        | 2026-07-22                            |
+| Поле             | Значение                       |
+| ---------------- | ------------------------------ |
+| Трек             | **T10 — Acceptance**           |
+| Текущий шаг      | **093** — ADR-001 shared Mongo |
+| Статус шага      | `todo`                         |
+| Последний `done` | **092** — OTel noop stub       |
+| Закрыто шагов    | **92 / 96**                    |
+| Обновлено        | 2026-07-22                     |
 
 ### Сводка по трекам
 
-| Track              | Steps   | Done | Status  |
-| ------------------ | ------- | ---- | ------- |
-| T0 Bootstrap       | 001–018 | 18   | `done`  |
-| T1 Local quality   | 019–024 | 6    | `done`  |
-| T2 Contracts       | 025–030 | 6    | `done`  |
-| T3 API platform    | 031–048 | 18   | `done`  |
-| T4 Mongo           | 049–058 | 10   | `done`  |
-| T5 Web             | 059–068 | 10   | `done`  |
-| T6 Testing         | 069–076 | 8    | `done`  |
-| T7 CI/CD           | 077–084 | 8    | `done`  |
-| T8 Contract bridge | 085–088 | 4    | `done`  |
-| T9 Observability   | 089–092 | 2    | `doing` |
-| T10 Acceptance     | 093–096 | 0    | `todo`  |
+| Track              | Steps   | Done | Status |
+| ------------------ | ------- | ---- | ------ |
+| T0 Bootstrap       | 001–018 | 18   | `done` |
+| T1 Local quality   | 019–024 | 6    | `done` |
+| T2 Contracts       | 025–030 | 6    | `done` |
+| T3 API platform    | 031–048 | 18   | `done` |
+| T4 Mongo           | 049–058 | 10   | `done` |
+| T5 Web             | 059–068 | 10   | `done` |
+| T6 Testing         | 069–076 | 8    | `done` |
+| T7 CI/CD           | 077–084 | 8    | `done` |
+| T8 Contract bridge | 085–088 | 4    | `done` |
+| T9 Observability   | 089–092 | 4    | `done` |
+| T10 Acceptance     | 093–096 | 0    | `todo` |
 
 ### Чеклист шагов
 
@@ -856,8 +856,8 @@ const getGitDiffFiles = (command) =>
 | ---- | --------------------------- | ------ | ----------------------------------------------------------------- |
 | 089  | nestjs-pino                 | `done` | JSON sink; level by NODE_ENV; `forRootAsync`; parseable-line spec |
 | 090  | Redact `MONGODB_URI`        | `done` | pino redact paths + censor; credentials absent in log line        |
-| 091  | Request logging interceptor | `todo` |                                                                   |
-| 092  | OTel noop stub              | `todo` |                                                                   |
+| 091  | Request logging interceptor | `done` | `APP_INTERCEPTOR`; method/url/statusCode/durationMs; unit spec    |
+| 092  | OTel noop stub              | `done` | `@opentelemetry/api` ProxyTracerProvider; init before Nest boot   |
 
 #### T10 — Acceptance (093–096)
 

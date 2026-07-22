@@ -47,7 +47,7 @@ describe('resolvePinoLevel', () => {
 });
 
 describe('createPinoHttpOptions', () => {
-  it('disables autoLogging so step 091 can own request lines', () => {
+  it('disables autoLogging so RequestLoggingInterceptor owns request lines', () => {
     expect(createPinoHttpOptions('production').autoLogging).toBe(false);
   });
 

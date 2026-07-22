@@ -39,7 +39,7 @@ export function resolvePinoLevel(nodeEnv: NodeEnv): 'debug' | 'info' {
 
 /**
  * Structured JSON pino-http options (correlation, level, redact).
- * Per-request auto lines stay for step 091.
+ * Per-request lines come from RequestLoggingInterceptor (`autoLogging: false`).
  */
 export function createPinoHttpOptions(nodeEnv: NodeEnv = 'production'): PinoHttpOptions {
   return {

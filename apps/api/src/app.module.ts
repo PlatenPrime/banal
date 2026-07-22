@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { APP_FILTER, APP_PIPE } from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { LoggerModule } from 'nestjs-pino';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -12,6 +12,7 @@ import { DatabaseModule } from './database/database.module';
 import { ApiExceptionFilter } from './errors/api-exception.filter';
 import { ExamplesModule } from './examples/examples.module';
 import { HealthModule } from './health/health.module';
+import { RequestLoggingInterceptor } from './logging/request-logging.interceptor';
 
 @Module({
   imports: [
@@ -35,6 +36,10 @@ import { HealthModule } from './health/health.module';
     {
       provide: APP_FILTER,
       useClass: ApiExceptionFilter,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: RequestLoggingInterceptor,
     },
     {
       provide: APP_PIPE,
