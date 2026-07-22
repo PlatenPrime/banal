@@ -690,14 +690,14 @@ const getGitDiffFiles = (command) =>
 
 ### Текущий этап
 
-| Поле             | Значение                       |
-| ---------------- | ------------------------------ |
-| Трек             | **T10 — Acceptance**           |
-| Текущий шаг      | **093** — ADR-001 shared Mongo |
-| Статус шага      | `todo`                         |
-| Последний `done` | **092** — OTel noop stub       |
-| Закрыто шагов    | **92 / 96**                    |
-| Обновлено        | 2026-07-22                     |
+| Поле             | Значение                                                |
+| ---------------- | ------------------------------------------------------- |
+| Трек             | **Foundation complete**                                 |
+| Текущий шаг      | **096** — Tag `foundation-v1.0.0`                       |
+| Статус шага      | `done`                                                  |
+| Последний `done` | **096** — Tag `foundation-v1.0.0` (local; push pending) |
+| Закрыто шагов    | **96 / 96**                                             |
+| Обновлено        | 2026-07-22                                              |
 
 ### Сводка по трекам
 
@@ -713,7 +713,7 @@ const getGitDiffFiles = (command) =>
 | T7 CI/CD           | 077–084 | 8    | `done` |
 | T8 Contract bridge | 085–088 | 4    | `done` |
 | T9 Observability   | 089–092 | 4    | `done` |
-| T10 Acceptance     | 093–096 | 0    | `todo` |
+| T10 Acceptance     | 093–096 | 4    | `done` |
 
 ### Чеклист шагов
 
@@ -861,12 +861,12 @@ const getGitDiffFiles = (command) =>
 
 #### T10 — Acceptance (093–096)
 
-| Step | Title                           | Status | Notes |
-| ---- | ------------------------------- | ------ | ----- |
-| 093  | ADR-001 shared Mongo            | `todo` |       |
-| 094  | Foundation acceptance checklist | `todo` |       |
-| 095  | Domain module recipe            | `todo` |       |
-| 096  | Tag `foundation-v1.0.0`         | `todo` |       |
+| Step | Title                           | Status | Notes                                                                                  |
+| ---- | ------------------------------- | ------ | -------------------------------------------------------------------------------------- |
+| 093  | ADR-001 shared Mongo            | `done` | [`docs/adr/001-shared-mongodb-with-legacy.md`](adr/001-shared-mongodb-with-legacy.md)  |
+| 094  | Foundation acceptance checklist | `done` | [`docs/track-foundation-acceptance.md`](track-foundation-acceptance.md)                |
+| 095  | Domain module recipe            | `done` | [`docs/domain-module-recipe.md`](domain-module-recipe.md); §19 + concrete repo paths   |
+| 096  | Tag `foundation-v1.0.0`         | `done` | [`CHANGELOG.md`](../CHANGELOG.md); local annotated tag; push pending until explicit ok |
 
 ---
 
