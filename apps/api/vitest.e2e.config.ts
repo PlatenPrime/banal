@@ -13,6 +13,7 @@ export default defineConfig({
     environment: 'node',
     include: ['test/**/*.e2e-spec.ts'],
     exclude: ['dist/**', 'node_modules/**'],
+    setupFiles: ['./test/setup-e2e-env.ts'],
     pool: 'forks',
     fileParallelism: false,
     maxWorkers: 1,

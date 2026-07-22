@@ -58,6 +58,15 @@ describe('evaluateFiles', () => {
     assert.equal(result.ok, true);
   });
 
+  it('ignores OpenAPI-generated web client as production', () => {
+    const result = evaluateFiles([
+      'apps/web/src/lib/api/generated/schema.d.ts',
+      'apps/web/src/lib/api/generated/index.ts',
+      'apps/api/openapi/openapi.json',
+    ]);
+    assert.equal(result.ok, true);
+  });
+
   it('fails when Contracts production has no unit test', () => {
     const result = evaluateFiles(['libs/shared-contracts/src/problem-details.ts']);
     assert.equal(result.ok, false);

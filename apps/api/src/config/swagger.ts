@@ -1,5 +1,7 @@
 import { type INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule, type OpenAPIObject } from '@nestjs/swagger';
+import { ACCESS_TOKEN_COOKIE } from '../auth/auth-cookies';
+import { AuthUserResponseDto } from '../auth/auth.dto';
 import { ExampleListResponseDto, ExampleResponseDto } from '../examples/example-response.dto';
 import { HealthCheckResultDto } from '../health/health-response.dto';
 
@@ -16,12 +18,18 @@ export const SWAGGER_VERSION = '1';
 export function buildOpenApiDocument(app: INestApplication): OpenAPIObject {
   const config = new DocumentBuilder()
     .setTitle(SWAGGER_TITLE)
-    .setDescription('Foundation API OpenAPI stub')
+    .setDescription('Platform API (auth via httpOnly cookies)')
     .setVersion(SWAGGER_VERSION)
+    .addCookieAuth(ACCESS_TOKEN_COOKIE)
     .build();
 
   return SwaggerModule.createDocument(app, config, {
-    extraModels: [ExampleResponseDto, ExampleListResponseDto, HealthCheckResultDto],
+    extraModels: [
+      ExampleResponseDto,
+      ExampleListResponseDto,
+      HealthCheckResultDto,
+      AuthUserResponseDto,
+    ],
   });
 }
 

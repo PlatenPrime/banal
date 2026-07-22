@@ -16,7 +16,11 @@ const getGitDiffFiles = (command) =>
     .filter(Boolean)
     .map(normalizePath);
 
-export const isGeneratedSource = (file) => file.endsWith('.gen.ts') || file.endsWith('.gen.tsx');
+/** Generated OpenAPI client + `*.gen.ts(x)` — not hand-written production. */
+export const isGeneratedSource = (file) =>
+  file.endsWith('.gen.ts') ||
+  file.endsWith('.gen.tsx') ||
+  file.startsWith('apps/web/src/lib/api/generated/');
 
 export const isApiUnitTest = (file) =>
   file.startsWith('apps/api/') &&

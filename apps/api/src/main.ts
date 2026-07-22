@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { Logger } from 'nestjs-pino';
 import { AppModule } from './app.module';
 import { applyApiUriVersioning } from './config/api-versioning';
+import { applyCookieParser } from './config/cookie-parser';
 import type { Env } from './config/env.schema';
 import { applyRequestIdMiddleware } from './config/request-id.middleware';
 import { applySecurityHeaders } from './config/security-headers';
@@ -19,6 +20,7 @@ async function bootstrap() {
   applySecurityHeaders(app);
   // Before nestjs-pino's pino-http middleware so req.requestId is already set.
   applyRequestIdMiddleware(app);
+  applyCookieParser(app);
 
   const config = app.get(ConfigService<Env, true>);
 

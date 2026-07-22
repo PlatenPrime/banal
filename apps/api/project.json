@@ -55,6 +55,14 @@
         "command": "node scripts/export-openapi.mjs",
         "cwd": "{workspaceRoot}"
       }
+    },
+    "bootstrap-admin": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["build"],
+      "options": {
+        "command": "node dist/auth/bootstrap-admin.cli.js",
+        "cwd": "{projectRoot}"
+      }
     }
   }
 }

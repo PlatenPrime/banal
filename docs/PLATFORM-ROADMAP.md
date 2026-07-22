@@ -581,14 +581,14 @@ T25 Acceptance + tag platform-v1.0.0
 
 ### Текущий этап
 
-| Поле             | Значение                     |
-| ---------------- | ---------------------------- |
-| Трек             | **T15 — Auth API**           |
-| Текущий шаг      | **129** — UsersModule schema |
-| Статус шага      | `todo`                       |
-| Последний `done` | **128** — T14 freeze         |
-| Закрыто шагов    | **32 / 150** (097–246)       |
-| Обновлено        | 2026-07-22                   |
+| Поле             | Значение                          |
+| ---------------- | --------------------------------- |
+| Трек             | **T16 — Auth Security Hardening** |
+| Текущий шаг      | **146** — Throttler global + auth |
+| Статус шага      | `todo`                            |
+| Последний `done` | **145** — T15 freeze              |
+| Закрыто шагов    | **49 / 150** (097–246)            |
+| Обновлено        | 2026-07-22                        |
 
 ### Сводка по трекам
 
@@ -598,7 +598,7 @@ T25 Acceptance + tag platform-v1.0.0
 | T12 Env & secrets     | 105–114 | 10   | `done` |
 | T13 Atlas & network   | 115–122 | 8    | `done` |
 | T14 Auth data & ADR   | 123–128 | 6    | `done` |
-| T15 Auth API          | 129–145 | 0    | `todo` |
+| T15 Auth API          | 129–145 | 17   | `done` |
 | T16 Auth security     | 146–155 | 0    | `todo` |
 | T17 Auth web          | 156–168 | 0    | `todo` |
 | T18 Feature flags     | 169–174 | 0    | `todo` |
@@ -666,25 +666,25 @@ T25 Acceptance + tag platform-v1.0.0
 
 #### T15 — Auth API (129–145)
 
-| Step | Title                      | Status | Notes |
-| ---- | -------------------------- | ------ | ----- |
-| 129  | UsersModule schema         | `todo` |       |
-| 130  | RefreshToken schema        | `todo` |       |
-| 131  | Argon2id service           | `todo` |       |
-| 132  | Jwt module config          | `todo` |       |
-| 133  | Cookie helpers             | `todo` |       |
-| 134  | AuthService login/register | `todo` |       |
-| 135  | AuthService refresh/logout | `todo` |       |
-| 136  | AuthController             | `todo` |       |
-| 137  | JwtAuthGuard + `@Public()` | `todo` |       |
-| 138  | GET `/auth/me`             | `todo` |       |
-| 139  | Examples POST auth         | `todo` |       |
-| 140  | Bootstrap admin CLI        | `todo` |       |
-| 141  | Register behind flag       | `todo` |       |
-| 142  | OpenAPI export auth        | `todo` |       |
-| 143  | Web client types regen     | `todo` |       |
-| 144  | Auth e2e suite             | `todo` |       |
-| 145  | T15 freeze                 | `todo` |       |
+| Step | Title                      | Status | Notes                                                        |
+| ---- | -------------------------- | ------ | ------------------------------------------------------------ |
+| 129  | UsersModule schema         | `done` | `a_users` unique email/username                              |
+| 130  | RefreshToken schema        | `done` | `a_refresh_tokens` jti hash + TTL                            |
+| 131  | Argon2id service           | `done` | `@node-rs/argon2` PasswordService                            |
+| 132  | Jwt module config          | `done` | access 15m / refresh 7d from env secrets                     |
+| 133  | Cookie helpers             | `done` | httpOnly cookies + CORS credentials                          |
+| 134  | AuthService login/register | `done` | issue cookies; no tokens in JSON                             |
+| 135  | AuthService refresh/logout | `done` | rotate + revoke                                              |
+| 136  | AuthController             | `done` | `/api/v1/auth/*`                                             |
+| 137  | JwtAuthGuard + `@Public()` | `done` | global APP_GUARD                                             |
+| 138  | GET `/auth/me`             | `done` | 401 without cookie                                           |
+| 139  | Examples POST auth         | `done` | GET public; POST authenticated                               |
+| 140  | Bootstrap admin CLI        | `done` | `nx run api:bootstrap-admin`                                 |
+| 141  | Register behind flag       | `done` | disabled → **403**                                           |
+| 142  | OpenAPI export auth        | `done` | auth paths in openapi.json                                   |
+| 143  | Web client types regen     | `done` | `openapi:generate`                                           |
+| 144  | Auth e2e suite             | `done` | `test/auth.e2e-spec.ts`                                      |
+| 145  | T15 freeze                 | `done` | [`track-15-auth-api-freeze.md`](track-15-auth-api-freeze.md) |
 
 #### T16 — Auth Security Hardening (146–155)
 
