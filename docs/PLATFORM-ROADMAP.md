@@ -584,17 +584,17 @@ T25 Acceptance + tag platform-v1.0.0
 | Поле             | Значение                  |
 | ---------------- | ------------------------- |
 | Трек             | **T11 — Repo Ops Freeze** |
-| Текущий шаг      | **098** — CODEOWNERS      |
+| Текущий шаг      | **099** — Dependabot      |
 | Статус шага      | `todo`                    |
-| Последний `done` | **097**                   |
-| Закрыто шагов    | **1 / 150** (097–246)     |
+| Последний `done` | **098**                   |
+| Закрыто шагов    | **2 / 150** (097–246)     |
 | Обновлено        | 2026-07-22                |
 
 ### Сводка по трекам
 
 | Track                 | Steps   | Done | Status  |
 | --------------------- | ------- | ---- | ------- |
-| T11 Repo ops          | 097–104 | 1    | `doing` |
+| T11 Repo ops          | 097–104 | 2    | `doing` |
 | T12 Env & secrets     | 105–114 | 0    | `todo`  |
 | T13 Atlas & network   | 115–122 | 0    | `todo`  |
 | T14 Auth data & ADR   | 123–128 | 0    | `todo`  |
@@ -614,16 +614,16 @@ T25 Acceptance + tag platform-v1.0.0
 
 #### T11 — Repo Ops Freeze (097–104)
 
-| Step | Title                  | Status | Notes                                                                                         |
-| ---- | ---------------------- | ------ | --------------------------------------------------------------------------------------------- |
-| 097  | Branch protection live | `done` | Enabled 2026-07-22 on public repo; see [`branch-protection.md`](branch-protection.md)#enabled |
-| 098  | CODEOWNERS             | `todo` |                                                                                               |
-| 099  | Dependabot             | `todo` |                                                                                               |
-| 100  | SECURITY.md            | `todo` |                                                                                               |
-| 101  | Tag remote policy      | `todo` |                                                                                               |
-| 102  | Coverage policy note   | `todo` |                                                                                               |
-| 103  | Incident rollback stub | `todo` |                                                                                               |
-| 104  | T11 checklist          | `todo` |                                                                                               |
+| Step | Title                  | Status | Notes                                                                                                |
+| ---- | ---------------------- | ------ | ---------------------------------------------------------------------------------------------------- |
+| 097  | Branch protection live | `done` | Enabled 2026-07-22 on public repo; see [`branch-protection.md`](branch-protection.md)#enabled        |
+| 098  | CODEOWNERS             | `done` | [`.github/CODEOWNERS`](../.github/CODEOWNERS) — `@PlatenPrime` for apps/, libs/, .github/, docs/adr/ |
+| 099  | Dependabot             | `todo` |                                                                                                      |
+| 100  | SECURITY.md            | `todo` |                                                                                                      |
+| 101  | Tag remote policy      | `todo` |                                                                                                      |
+| 102  | Coverage policy note   | `todo` |                                                                                                      |
+| 103  | Incident rollback stub | `todo` |                                                                                                      |
+| 104  | T11 checklist          | `todo` |                                                                                                      |
 
 #### T12 — Environments & Secrets (105–114)
 

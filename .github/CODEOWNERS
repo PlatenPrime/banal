@@ -1,0 +1,5 @@
+# Default owners for critical paths (step 098)
+/apps/       @PlatenPrime
+/libs/       @PlatenPrime
+/.github/    @PlatenPrime
+/docs/adr/   @PlatenPrime
