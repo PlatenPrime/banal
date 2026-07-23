@@ -21,8 +21,17 @@ export default defineConfig({
         '**/examples/example.service.ts',
         '**/examples/example.repository.ts',
         '**/compat/mappers/**/*.ts',
+        '**/auth/**/*.ts',
+        '**/users/**/*.ts',
       ],
-      exclude: ['**/*.{spec,test}.ts'],
+      exclude: [
+        '**/*.{spec,test}.ts',
+        '**/*.module.ts',
+        '**/*.controller.ts',
+        '**/*.dto.ts',
+        '**/*.decorator.ts',
+        '**/bootstrap-admin.cli.ts',
+      ],
       thresholds: {
         lines: 80,
         branches: 75,

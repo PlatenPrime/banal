@@ -59,6 +59,7 @@ npm run test:web          # web unit + coverage → apps/web/coverage/
 npm run test:api          # api unit + coverage → apps/api/coverage/
 npm run test:contracts    # shared-contracts + coverage
 npm run test:api:e2e
+npm run test:web:e2e       # Playwright (Mongo + api + web must be up)
 npm run test:web:smoke
 npm run test:scripts      # tests-first gate self-tests
 npm run validate:tests-first
@@ -69,8 +70,10 @@ npm run openapi:export
 npm run openapi:generate
 npm run openapi:check     # regen + fail on drift
 npm run ci
-npm run ci:full           # ci + api e2e (needs Docker Mongo)
+npm run ci:full           # ci + api e2e + Playwright (needs Docker Mongo + stack)
 ```
+
+Playwright details: [docs/testing.md](docs/testing.md#playwright-web-e2e).
 
 ### `npm run ci` (local mirror)
 

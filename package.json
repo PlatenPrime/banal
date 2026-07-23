@@ -17,6 +17,7 @@
     "test:web": "nx run web:test",
     "test:contracts": "nx run shared-contracts:test",
     "test:api:e2e": "nx run api:test:e2e",
+    "test:web:e2e": "nx run web-e2e:e2e",
     "test:web:smoke": "nx run web:test:smoke",
     "lint": "nx run-many -t lint",
     "typecheck": "nx run-many -t typecheck",
@@ -30,7 +31,7 @@
     "openapi:generate": "node scripts/generate-openapi-client.mjs",
     "openapi:check": "node scripts/check-openapi-drift.mjs",
     "ci": "npm run validate:tests-first && npm run format:check && nx run-many -t lint && nx run-many -t typecheck && nx run-many -t build && nx run-many -t test && npm run test:scripts && npm run openapi:check",
-    "ci:full": "npm run ci && npm run test:api:e2e"
+    "ci:full": "npm run ci && npm run test:api:e2e && npm run test:web:e2e"
   },
   "lint-staged": {
     "*.{js,mjs,cjs,ts,tsx,json,md,yml,yaml}": "prettier --write",
