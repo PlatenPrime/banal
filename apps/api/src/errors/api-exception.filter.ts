@@ -5,6 +5,7 @@ import {
   type ProblemDetails,
 } from '@app/shared-contracts';
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common';
+import { ThrottlerException } from '@nestjs/throttler';
 import type { Response } from 'express';
 
 const PROBLEM_JSON = 'application/problem+json';
@@ -16,6 +17,7 @@ const STATUS_TO_ERROR_TYPE: Record<number, ErrorTypeUri> = {
   [HttpStatus.NOT_FOUND]: ERROR_TYPE_URIS.notFound,
   [HttpStatus.CONFLICT]: ERROR_TYPE_URIS.conflict,
   [HttpStatus.UNPROCESSABLE_ENTITY]: ERROR_TYPE_URIS.validationFailed,
+  [HttpStatus.TOO_MANY_REQUESTS]: ERROR_TYPE_URIS.rateLimited,
 };
 
 function resolveErrorType(status: number): ErrorTypeUri {
@@ -78,6 +80,16 @@ function extractErrors(exception: HttpException): Record<string, string[]> | und
  * Unknown errors become a generic 500 — never leak stack or exception message.
  */
 export function toProblemDetails(exception: HttpException, instance?: string): ProblemDetails {
+  if (exception instanceof ThrottlerException) {
+    return problemDetailsSchema.parse({
+      type: ERROR_TYPE_URIS.rateLimited,
+      title: 'Too Many Requests',
+      status: HttpStatus.TOO_MANY_REQUESTS,
+      detail: 'Rate limit exceeded. Try again later.',
+      instance,
+    });
+  }
+
   const status = exception.getStatus();
   const errors = extractErrors(exception);
   const problem = {

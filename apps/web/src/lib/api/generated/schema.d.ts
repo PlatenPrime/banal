@@ -589,6 +589,13 @@ export interface operations {
                 };
                 content?: never;
             };
+            /** @description Login rate limit exceeded */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
         };
     };
     AuthController_refresh_v1: {

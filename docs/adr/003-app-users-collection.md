@@ -36,6 +36,8 @@ Canonical field lists and planned indexes live in the inventory; schemas in T15 
 | `email`                   | Required; unique; stored normalized lowercase     |
 | `username`                | Required; unique; **login key** (ADR-002)         |
 | `passwordHash`            | Argon2id only; never plaintext; never in API DTOs |
+| `failedAttempts`          | Consecutive failed logins; reset on success (T16) |
+| `lockedUntil`             | Optional; when in the future, login → generic 401 |
 | `createdAt` / `updatedAt` | Timestamps                                        |
 
 Public `AuthUser` DTO exposes only `id`, `email`, `username`.

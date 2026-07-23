@@ -10,10 +10,27 @@ export type NodeEnv = Env['NODE_ENV'];
 export const PINO_REDACT_CENSOR = '[Redacted]';
 
 /**
- * Pino redact paths so Mongo credentials never land in JSON logs
- * (top-level env dumps and nested config objects).
+ * Pino redact paths so secrets never land in JSON logs
+ * (Mongo URI, passwords, tokens, Authorization / Cookie headers).
  */
-export const PINO_REDACT_PATHS = ['MONGODB_URI', '*.MONGODB_URI'] as const;
+export const PINO_REDACT_PATHS = [
+  'MONGODB_URI',
+  '*.MONGODB_URI',
+  'password',
+  '*.password',
+  'req.body.password',
+  'access_token',
+  '*.access_token',
+  'refresh_token',
+  '*.refresh_token',
+  'accessToken',
+  '*.accessToken',
+  'refreshToken',
+  '*.refreshToken',
+  'req.headers.authorization',
+  'req.headers.cookie',
+  'req.headers["set-cookie"]',
+] as const;
 
 /**
  * Resolves the correlation id for pino-http from the request-id middleware field,

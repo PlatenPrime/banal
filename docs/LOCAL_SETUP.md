@@ -167,7 +167,7 @@ Vite embeds every `VITE_*` variable into the client bundle. Put **only** public 
 
 ### TRUST_PROXY
 
-Nest runs behind Railway’s reverse proxy in staging/production. Set **`TRUST_PROXY=1`** on Railway so Secure cookies and client IP behave correctly (wiring lands in Track 16). Locally leave `TRUST_PROXY=0` / unset. Details: [deploy/railway.md](./deploy/railway.md).
+Nest runs behind Railway’s reverse proxy in staging/production. Set **`TRUST_PROXY=1`** on Railway so Secure cookies and client IP behave correctly (`app.set('trust proxy', 1)` when the flag is truthy). Locally leave `TRUST_PROXY=0` / unset. Details: [deploy/railway.md](./deploy/railway.md).
 
 ### Manual check
 

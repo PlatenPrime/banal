@@ -4,6 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Env } from '../config/env.schema';
 import { AuthService } from './auth.service';
+import { AUTH_INVALID_CREDENTIALS_MESSAGE, LOGIN_MAX_FAILED_ATTEMPTS } from './login-lockout';
 import { PasswordService } from './password.service';
 
 describe('AuthService', () => {
@@ -99,6 +100,7 @@ describe('AuthService', () => {
       email: 'alice@example.com',
       username: 'alice',
       passwordHash: 'argon2-hash',
+      failedAttempts: 0,
     });
     expect(issued).toMatchObject({
       accessToken: 'access.jwt',
@@ -120,12 +122,15 @@ describe('AuthService', () => {
     ).rejects.toBeInstanceOf(ConflictException);
   });
 
-  it('logs in with valid credentials', async () => {
+  it('logs in with valid credentials and clears lockout counters', async () => {
     const user = {
       _id: { toString: () => 'uid-1' },
       email: 'alice@example.com',
       username: 'alice',
       passwordHash: 'hash',
+      failedAttempts: 2,
+      lockedUntil: undefined,
+      save: vi.fn().mockResolvedValue(undefined),
     };
     userModel.findOne.mockReturnValue({ exec: vi.fn().mockResolvedValue(user) });
     passwordService.verify.mockResolvedValue(true);
@@ -136,19 +141,79 @@ describe('AuthService', () => {
 
     expect(issued.user.username).toBe('alice');
     expect(issued.accessToken).toBe('access.jwt');
+    expect(user.failedAttempts).toBe(0);
+    expect(user.save).toHaveBeenCalled();
   });
 
-  it('rejects login with bad password', async () => {
+  it('rejects login with bad password using a generic message and increments attempts', async () => {
+    const user = {
+      _id: { toString: () => 'uid-1' },
+      passwordHash: 'hash',
+      failedAttempts: 0,
+      lockedUntil: undefined,
+      save: vi.fn().mockResolvedValue(undefined),
+    };
     userModel.findOne.mockReturnValue({
-      exec: vi.fn().mockResolvedValue({
-        _id: { toString: () => 'uid-1' },
-        passwordHash: 'hash',
-      }),
+      exec: vi.fn().mockResolvedValue(user),
     });
     passwordService.verify.mockResolvedValue(false);
 
     await expect(
       service.login({ username: 'alice', password: 'wrong-pass' }),
-    ).rejects.toBeInstanceOf(UnauthorizedException);
+    ).rejects.toMatchObject({
+      response: expect.objectContaining({ message: AUTH_INVALID_CREDENTIALS_MESSAGE }),
+    });
+    expect(user.failedAttempts).toBe(1);
+    expect(user.save).toHaveBeenCalled();
+  });
+
+  it('uses the same generic message for unknown user and bad password', async () => {
+    userModel.findOne.mockReturnValue({ exec: vi.fn().mockResolvedValue(null) });
+
+    const unknown = service.login({ username: 'missing', password: 'password1' });
+    await expect(unknown).rejects.toBeInstanceOf(UnauthorizedException);
+    await expect(unknown).rejects.toMatchObject({
+      response: expect.objectContaining({ message: AUTH_INVALID_CREDENTIALS_MESSAGE }),
+    });
+
+    const user = {
+      _id: { toString: () => 'uid-1' },
+      passwordHash: 'hash',
+      failedAttempts: 0,
+      save: vi.fn().mockResolvedValue(undefined),
+    };
+    userModel.findOne.mockReturnValue({ exec: vi.fn().mockResolvedValue(user) });
+    passwordService.verify.mockResolvedValue(false);
+
+    const badPassword = service.login({ username: 'alice', password: 'wrong' });
+    await expect(badPassword).rejects.toMatchObject({
+      response: expect.objectContaining({ message: AUTH_INVALID_CREDENTIALS_MESSAGE }),
+    });
+  });
+
+  it('locks the account after max failed attempts and rejects while locked', async () => {
+    const user = {
+      _id: { toString: () => 'uid-1' },
+      passwordHash: 'hash',
+      failedAttempts: LOGIN_MAX_FAILED_ATTEMPTS - 1,
+      lockedUntil: undefined as Date | undefined,
+      save: vi.fn().mockResolvedValue(undefined),
+    };
+    userModel.findOne.mockReturnValue({ exec: vi.fn().mockResolvedValue(user) });
+    passwordService.verify.mockResolvedValue(false);
+
+    await expect(service.login({ username: 'alice', password: 'wrong' })).rejects.toBeInstanceOf(
+      UnauthorizedException,
+    );
+    expect(user.failedAttempts).toBe(LOGIN_MAX_FAILED_ATTEMPTS);
+    expect(user.lockedUntil).toBeInstanceOf(Date);
+
+    passwordService.verify.mockClear();
+    await expect(service.login({ username: 'alice', password: 'password1' })).rejects.toMatchObject(
+      {
+        response: expect.objectContaining({ message: AUTH_INVALID_CREDENTIALS_MESSAGE }),
+      },
+    );
+    expect(passwordService.verify).not.toHaveBeenCalled();
   });
 });

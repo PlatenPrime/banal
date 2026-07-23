@@ -473,6 +473,9 @@
           },
           "401": {
             "description": "Invalid credentials"
+          },
+          "429": {
+            "description": "Login rate limit exceeded"
           }
         },
         "summary": "Login with username and password",

@@ -14,6 +14,13 @@ describe('UserSchema', () => {
     expect(paths.passwordHash?.isRequired).toBe(true);
   });
 
+  it('tracks failedAttempts and optional lockedUntil for login lockout', () => {
+    const paths = UserSchema.paths;
+
+    expect(paths.failedAttempts).toBeDefined();
+    expect(paths.lockedUntil).toBeDefined();
+  });
+
   it('declares unique indexes on email and username', () => {
     const indexes = UserSchema.indexes();
 

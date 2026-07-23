@@ -55,8 +55,8 @@ Until a domain module replaces the demo:
 
 ### 5. CSRF and cookie profiles
 
-- Mutating methods (`POST`/`PUT`/`PATCH`/`DELETE`): **Origin allowlist** = `WEB_ORIGIN` + preview allowlist/regex (T12).
-- Optional double-submit `csrf` cookie may be added later; Origin check is mandatory for platform auth.
+- Mutating methods (`POST`/`PUT`/`PATCH`/`DELETE`): **Origin allowlist** = `WEB_ORIGIN` + preview allowlist/regex (T12). Implemented as Nest middleware (`applyCsrfOriginMiddleware`); missing or non-allowlisted Origin → **403** Problem Details.
+- **Double-submit `csrf` cookie is deferred** for platform-v1: Origin allowlist + httpOnly cookies + SameSite profiles are the mandatory CSRF controls. Revisit if a non-browser or third-party cookie client needs defense in depth beyond Origin.
 - **Preview** (e.g. `*.vercel.app` ↔ Railway preview): `SameSite=None; Secure` when cross-site.
 - **Production** custom domains (`app.` + `api.` on one parent): `SameSite=Lax`, `COOKIE_DOMAIN=.example.com`.
 
@@ -65,10 +65,22 @@ Until a domain module replaces the demo:
 - `AUTH_REGISTRATION_ENABLED=false` in production by default.
 - First admin via bootstrap CLI (T15); not part of this ADR’s implementation.
 
+### 7. Auth security hardening (T16)
+
+| Control             | Behavior                                                                 |
+| ------------------- | ------------------------------------------------------------------------ |
+| Global throttle     | 100 req / 60s / IP (`@nestjs/throttler`)                                 |
+| Login throttle      | 5 req / 60s / IP on `POST /auth/login` → **429** `rate-limited`          |
+| Account lockout     | 5 failed attempts → `lockedUntil` +15m; same generic 401 as bad password |
+| Generic auth errors | Login never distinguishes unknown user vs bad password                   |
+| Tokens in JSON      | Never; access/refresh only via httpOnly cookies                          |
+| Log redact          | password, tokens, `Authorization`, `Cookie`, `MONGODB_URI`               |
+| `TRUST_PROXY`       | When true, `app.set('trust proxy', 1)` for Secure cookies behind Railway |
+
 ## Consequences
 
-- Nest AuthModule, cookie helpers, and OpenAPI paths land in **T15**; security hardening (throttling, lockout, generic errors) in **T16**.
-- Web must call API with `credentials: 'include'`; CORS must allow the web origin with credentials.
+- Nest AuthModule, cookie helpers, and OpenAPI paths land in **T15**; security hardening (throttling, lockout, generic errors, CSRF Origin, trust proxy, redact) in **T16**.
+- Web must call API with `credentials: 'include'` and send an allowlisted `Origin` on mutations; CORS must allow the web origin with credentials.
 - JWT secrets and cookie env vars stay in Railway / local `.env` only (T12).
 
 ## Alternatives considered

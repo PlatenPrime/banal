@@ -581,14 +581,14 @@ T25 Acceptance + tag platform-v1.0.0
 
 ### Текущий этап
 
-| Поле             | Значение                          |
-| ---------------- | --------------------------------- |
-| Трек             | **T16 — Auth Security Hardening** |
-| Текущий шаг      | **146** — Throttler global + auth |
-| Статус шага      | `todo`                            |
-| Последний `done` | **145** — T15 freeze              |
-| Закрыто шагов    | **49 / 150** (097–246)            |
-| Обновлено        | 2026-07-22                        |
+| Поле             | Значение                    |
+| ---------------- | --------------------------- |
+| Трек             | **T17 — Auth Web**          |
+| Текущий шаг      | **156** — Fetch credentials |
+| Статус шага      | `todo`                      |
+| Последний `done` | **155** — T16 freeze        |
+| Закрыто шагов    | **59 / 150** (097–246)      |
+| Обновлено        | 2026-07-23                  |
 
 ### Сводка по трекам
 
@@ -599,7 +599,7 @@ T25 Acceptance + tag platform-v1.0.0
 | T13 Atlas & network   | 115–122 | 8    | `done` |
 | T14 Auth data & ADR   | 123–128 | 6    | `done` |
 | T15 Auth API          | 129–145 | 17   | `done` |
-| T16 Auth security     | 146–155 | 0    | `todo` |
+| T16 Auth security     | 146–155 | 10   | `done` |
 | T17 Auth web          | 156–168 | 0    | `todo` |
 | T18 Feature flags     | 169–174 | 0    | `todo` |
 | T19 Quality expansion | 175–182 | 0    | `todo` |
@@ -688,18 +688,18 @@ T25 Acceptance + tag platform-v1.0.0
 
 #### T16 — Auth Security Hardening (146–155)
 
-| Step | Title                   | Status | Notes |
-| ---- | ----------------------- | ------ | ----- |
-| 146  | Throttler global + auth | `todo` |       |
-| 147  | Login lockout           | `todo` |       |
-| 148  | Generic auth errors     | `todo` |       |
-| 149  | CSRF Origin middleware  | `todo` |       |
-| 150  | Optional CSRF cookie    | `todo` |       |
-| 151  | TRUST_PROXY wiring      | `todo` |       |
-| 152  | No tokens in JSON       | `todo` |       |
-| 153  | Redact auth fields      | `todo` |       |
-| 154  | Security test suite     | `todo` |       |
-| 155  | T16 freeze              | `todo` |       |
+| Step | Title                   | Status | Notes                                                                  |
+| ---- | ----------------------- | ------ | ---------------------------------------------------------------------- |
+| 146  | Throttler global + auth | `done` | `@nestjs/throttler`; login 5/min → 429 Problem Details                 |
+| 147  | Login lockout           | `done` | `failedAttempts` / `lockedUntil`; generic 401                          |
+| 148  | Generic auth errors     | `done` | same 401 for unknown user / bad password                               |
+| 149  | CSRF Origin middleware  | `done` | allowlist WEB_ORIGIN(+previews); bad Origin → 403                      |
+| 150  | Optional CSRF cookie    | `done` | deferred; documented in ADR-002 §5                                     |
+| 151  | TRUST_PROXY wiring      | `done` | `applyTrustProxy` when env set                                         |
+| 152  | No tokens in JSON       | `done` | e2e asserts cookies only                                               |
+| 153  | Redact auth fields      | `done` | pino password/tokens/Authorization/Cookie                              |
+| 154  | Security test suite     | `done` | cookie flags + throttle/lockout/CSRF e2e                               |
+| 155  | T16 freeze              | `done` | [`track-16-auth-security-freeze.md`](track-16-auth-security-freeze.md) |
 
 #### T17 — Auth Web (156–168)
 
