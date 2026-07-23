@@ -227,9 +227,12 @@ jobs:
 
       - name: Start API, bootstrap admin, start web
         shell: bash
+        env:
+          # Required by API env schema; keep off job-level so npm ci still installs devDeps.
+          NODE_ENV: production
         run: |
           set -euo pipefail
-          NODE_ENV=production node apps/api/dist/main.js &
+          node apps/api/dist/main.js &
           echo $! > /tmp/api.pid
           for i in $(seq 1 60); do
             if curl -fsS http://127.0.0.1:4000/health >/dev/null; then
