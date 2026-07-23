@@ -28,5 +28,5 @@ npx nx run web:build
 ## Related
 
 - Previous: [`track-16-auth-security-freeze.md`](track-16-auth-security-freeze.md)
-- Next track: **T18 — Feature Flags Skeleton** (169–174)
+- Next track: **T18 — Feature Flags Skeleton** (169–174) — closed in [`track-18-feature-flags-freeze.md`](track-18-feature-flags-freeze.md)
 - ADRs: [`adr/002-auth-jwt-cookies.md`](adr/002-auth-jwt-cookies.md), [`adr/003-app-users-collection.md`](adr/003-app-users-collection.md)

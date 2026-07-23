@@ -63,6 +63,7 @@ Implementation: `apps/api/src/cors.options.ts`.
 ## Related
 
 - [secrets-checklist.md](secrets-checklist.md) — where each secret lives + JWT rotation
+- [feature-flags.md](feature-flags.md) — env feature flags (registration, legacy writes)
 - [incident-rollback.md](incident-rollback.md)
 - [deploy/railway.md](../deploy/railway.md) — `TRUST_PROXY=1` note (full runbook T21)
 - [PLATFORM-ROADMAP.md](../PLATFORM-ROADMAP.md) — Track 12

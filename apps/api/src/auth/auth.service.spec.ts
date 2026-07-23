@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Env } from '../config/env.schema';
+import { FlagsService } from '../flags/flags.service';
 import { AuthService } from './auth.service';
 import { AUTH_INVALID_CREDENTIALS_MESSAGE, LOGIN_MAX_FAILED_ATTEMPTS } from './login-lockout';
 import { PasswordService } from './password.service';
@@ -31,12 +32,16 @@ describe('AuthService', () => {
   const config = {
     get: vi.fn((key: string) => {
       const values: Record<string, unknown> = {
-        AUTH_REGISTRATION_ENABLED: true,
         JWT_ACCESS_SECRET: 'access-secret-min-32-characters!!!!',
         JWT_REFRESH_SECRET: 'refresh-secret-min-32-characters!!!',
       };
       return values[key];
     }),
+  };
+  const flags = {
+    isRegistrationEnabled: vi.fn(() => true),
+    isLegacyWriteAllowed: vi.fn(() => false),
+    getKnownFlags: vi.fn(() => ({ registrationEnabled: true })),
   };
 
   let service: AuthService;
@@ -45,28 +50,24 @@ describe('AuthService', () => {
     vi.clearAllMocks();
     config.get.mockImplementation((key: string) => {
       const values: Record<string, unknown> = {
-        AUTH_REGISTRATION_ENABLED: true,
         JWT_ACCESS_SECRET: 'access-secret-min-32-characters!!!!',
         JWT_REFRESH_SECRET: 'refresh-secret-min-32-characters!!!',
       };
       return values[key];
     });
+    flags.isRegistrationEnabled.mockReturnValue(true);
     service = new AuthService(
       userModel as never,
       refreshTokenModel as never,
       passwordService as unknown as PasswordService,
       jwtService as unknown as JwtService,
       config as unknown as ConfigService<Env, true>,
+      flags as unknown as FlagsService,
     );
   });
 
   it('rejects register when AUTH_REGISTRATION_ENABLED is false', async () => {
-    config.get.mockImplementation((key: string) => {
-      if (key === 'AUTH_REGISTRATION_ENABLED') {
-        return false;
-      }
-      return 'secret-min-32-characters!!!!!!!!!!!!';
-    });
+    flags.isRegistrationEnabled.mockReturnValue(false);
 
     await expect(
       service.register({

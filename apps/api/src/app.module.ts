@@ -15,6 +15,7 @@ import { createValidationPipe } from './config/validation.pipe';
 import { DatabaseModule } from './database/database.module';
 import { ApiExceptionFilter } from './errors/api-exception.filter';
 import { ExamplesModule } from './examples/examples.module';
+import { FlagsModule } from './flags/flags.module';
 import { HealthModule } from './health/health.module';
 import { RequestLoggingInterceptor } from './logging/request-logging.interceptor';
 import { UsersModule } from './users/users.module';
@@ -25,6 +26,7 @@ import { UsersModule } from './users/users.module';
       isGlobal: true,
       validate,
     }),
+    FlagsModule,
     LoggerModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
