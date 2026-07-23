@@ -175,6 +175,31 @@ Nest runs behind Railway’s reverse proxy in staging/production. Set **`TRUST_P
 2. Browser DevTools → Network: requests go to `http://localhost:4000/...` with `Origin: http://localhost:3000`.
 3. Preflight `OPTIONS` succeeds when `WEB_ORIGIN` matches the web origin exactly.
 
+### Auth (local login)
+
+Platform accounts live in MongoDB `a_users`. Public registration is **off** by default (`AUTH_REGISTRATION_ENABLED=false`). Create the first admin via CLI, then sign in on the web app.
+
+1. Ensure API `.env` has JWT secrets, `WEB_ORIGIN=http://localhost:3000`, and Mongo running.
+2. Set bootstrap credentials (see `apps/api/.env.example`):
+
+```bash
+# in apps/api/.env (or export for one shot)
+BOOTSTRAP_ADMIN_EMAIL=admin@example.com
+BOOTSTRAP_ADMIN_USERNAME=admin
+BOOTSTRAP_ADMIN_PASSWORD=change-me-min-8-chars
+```
+
+3. Bootstrap once:
+
+```bash
+npx nx run api:bootstrap-admin
+```
+
+4. With API + web serving, open `http://localhost:3000/login`, sign in with the bootstrap **username** + password.
+5. Cookies (`access_token` / `refresh_token`) are httpOnly on the API origin; the web client uses `credentials: 'include'`. Creating an example (`/examples/new`) requires a session.
+
+Logout: `http://localhost:3000/logout`. Details: [ADR-002](adr/002-auth-jwt-cookies.md), [track-17-auth-web-freeze.md](track-17-auth-web-freeze.md).
+
 ### Why no Vite proxy
 
 A `server.proxy` would only rewrite **browser** same-origin calls. SSR loaders and the shared fetch client already use absolute `VITE_API_URL`, so a proxy would split SSR vs CSR base URLs. Keep CORS + absolute API URL for both.

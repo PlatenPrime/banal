@@ -46,6 +46,7 @@
     "lint-staged": "^17.1.1",
     "nx": "~23.1",
     "prettier": "^3.9.6",
+    "tree-kill": "^1.2.2",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.65.0"
   }

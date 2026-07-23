@@ -1,10 +1,18 @@
 import { ERROR_TYPE_URIS } from '@app/shared-contracts';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { createApiClient, unwrapApiResult } from './create-api-client';
+import { createApiClient, unwrapApiResult, unwrapEmptyApiResult } from './create-api-client';
 
 describe('createApiClient / unwrapApiResult', () => {
   afterEach(() => {
     vi.unstubAllGlobals();
+  });
+
+  it('unwrapEmptyApiResult accepts 204 responses', async () => {
+    const result = {
+      response: new Response(null, { status: 204 }),
+    };
+
+    await expect(unwrapEmptyApiResult(result)).resolves.toBeUndefined();
   });
 
   it('returns data for successful responses', async () => {
@@ -22,6 +30,10 @@ describe('createApiClient / unwrapApiResult', () => {
     const data = await unwrapApiResult(await client.GET('/api/v1/examples'));
 
     expect(data).toEqual({ items: [], total: 0 });
+
+    const [request] = vi.mocked(fetch).mock.calls[0] ?? [];
+    expect(request).toBeInstanceOf(Request);
+    expect((request as Request).credentials).toBe('include');
   });
 
   it('throws ApiClientError for problem+json responses', async () => {

@@ -581,14 +581,14 @@ T25 Acceptance + tag platform-v1.0.0
 
 ### Текущий этап
 
-| Поле             | Значение                    |
-| ---------------- | --------------------------- |
-| Трек             | **T17 — Auth Web**          |
-| Текущий шаг      | **156** — Fetch credentials |
-| Статус шага      | `todo`                      |
-| Последний `done` | **155** — T16 freeze        |
-| Закрыто шагов    | **59 / 150** (097–246)      |
-| Обновлено        | 2026-07-23                  |
+| Поле             | Значение                         |
+| ---------------- | -------------------------------- |
+| Трек             | **T18 — Feature Flags Skeleton** |
+| Текущий шаг      | **169** — FlagsModule            |
+| Статус шага      | `todo`                           |
+| Последний `done` | **168** — T17 freeze             |
+| Закрыто шагов    | **72 / 150** (097–246)           |
+| Обновлено        | 2026-07-23                       |
 
 ### Сводка по трекам
 
@@ -600,7 +600,7 @@ T25 Acceptance + tag platform-v1.0.0
 | T14 Auth data & ADR   | 123–128 | 6    | `done` |
 | T15 Auth API          | 129–145 | 17   | `done` |
 | T16 Auth security     | 146–155 | 10   | `done` |
-| T17 Auth web          | 156–168 | 0    | `todo` |
+| T17 Auth web          | 156–168 | 13   | `done` |
 | T18 Feature flags     | 169–174 | 0    | `todo` |
 | T19 Quality expansion | 175–182 | 0    | `todo` |
 | T20 Observability     | 183–190 | 0    | `todo` |
@@ -703,21 +703,21 @@ T25 Acceptance + tag platform-v1.0.0
 
 #### T17 — Auth Web (156–168)
 
-| Step | Title                  | Status | Notes |
-| ---- | ---------------------- | ------ | ----- |
-| 156  | Fetch credentials      | `todo` |       |
-| 157  | Auth API module        | `todo` |       |
-| 158  | `/login` route         | `todo` |       |
-| 159  | Login mutation         | `todo` |       |
-| 160  | `/logout` route/action | `todo` |       |
-| 161  | `requireAuth` helper   | `todo` |       |
-| 162  | Protect write routes   | `todo` |       |
-| 163  | Root `/auth/me`        | `todo` |       |
-| 164  | 401 handling           | `todo` |       |
-| 165  | 429 handling           | `todo` |       |
-| 166  | Nav auth UI            | `todo` |       |
-| 167  | LOCAL_SETUP auth       | `todo` |       |
-| 168  | T17 freeze             | `todo` |       |
+| Step | Title                  | Status | Notes                                                        |
+| ---- | ---------------------- | ------ | ------------------------------------------------------------ |
+| 156  | Fetch credentials      | `done` | openapi-fetch + legacy `credentials: 'include'`              |
+| 157  | Auth API module        | `done` | `lib/api-client/auth.ts` + Zod                               |
+| 158  | `/login` route         | `done` | TanStack Form username + password                            |
+| 159  | Login mutation         | `done` | cookies via API; Problem Details                             |
+| 160  | `/logout` route/action | `done` | logout + clear auth queries → `/`                            |
+| 161  | `requireAuth` helper   | `done` | client `beforeLoad` → `/login`                               |
+| 162  | Protect write routes   | `done` | `/examples/new`                                              |
+| 163  | Root `/auth/me`        | `done` | `useAuth` client-only                                        |
+| 164  | 401 handling           | `done` | no loop on `/login`; skip auth probes                        |
+| 165  | 429 handling           | `done` | rate-limit copy on login                                     |
+| 166  | Nav auth UI            | `done` | `AppNav` login/logout states                                 |
+| 167  | LOCAL_SETUP auth       | `done` | bootstrap admin + `/login`                                   |
+| 168  | T17 freeze             | `done` | [`track-17-auth-web-freeze.md`](track-17-auth-web-freeze.md) |
 
 #### T18 — Feature Flags Skeleton (169–174)
 

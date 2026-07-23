@@ -25,5 +25,5 @@ npx nx run api:test:e2e
 ## Related
 
 - Previous: [`track-15-auth-api-freeze.md`](track-15-auth-api-freeze.md)
-- Next track: **T17 — Auth Web** (156–168)
+- Next track: **T17 — Auth Web** (156–168) — closed: [`track-17-auth-web-freeze.md`](track-17-auth-web-freeze.md)
 - ADRs: [`adr/002-auth-jwt-cookies.md`](adr/002-auth-jwt-cookies.md), [`adr/003-app-users-collection.md`](adr/003-app-users-collection.md)

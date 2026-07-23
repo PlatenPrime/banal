@@ -38,6 +38,7 @@ export async function request<T>(
     response = await fetch(url, {
       method: options.method ?? 'GET',
       headers,
+      credentials: 'include',
       body: options.body !== undefined ? JSON.stringify(options.body) : undefined,
     });
   } catch (cause) {
