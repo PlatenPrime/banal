@@ -11,6 +11,7 @@ import type { AuthUser, LoginRequest, RegisterRequest } from '@app/shared-contra
 import { createHash, randomUUID } from 'node:crypto';
 import { Model, Types } from 'mongoose';
 import type { Env } from '../config/env.schema';
+import { FlagsService } from '../flags/flags.service';
 import { UserDocument, UserEntity } from '../users/user.schema';
 import { ACCESS_TOKEN_TTL, REFRESH_TOKEN_TTL } from './auth-cookies';
 import type { AccessTokenPayload } from './jwt-auth.guard';
@@ -64,10 +65,11 @@ export class AuthService {
     private readonly passwordService: PasswordService,
     private readonly jwtService: JwtService,
     private readonly config: ConfigService<Env, true>,
+    private readonly flags: FlagsService,
   ) {}
 
   async register(dto: RegisterRequest): Promise<IssuedAuthTokens> {
-    if (!this.config.get('AUTH_REGISTRATION_ENABLED', { infer: true })) {
+    if (!this.flags.isRegistrationEnabled()) {
       throw new ForbiddenException('Registration is disabled');
     }
 

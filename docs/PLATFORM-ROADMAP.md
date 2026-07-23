@@ -581,14 +581,14 @@ T25 Acceptance + tag platform-v1.0.0
 
 ### Текущий этап
 
-| Поле             | Значение                         |
-| ---------------- | -------------------------------- |
-| Трек             | **T18 — Feature Flags Skeleton** |
-| Текущий шаг      | **169** — FlagsModule            |
-| Статус шага      | `todo`                           |
-| Последний `done` | **168** — T17 freeze             |
-| Закрыто шагов    | **72 / 150** (097–246)           |
-| Обновлено        | 2026-07-23                       |
+| Поле             | Значение                       |
+| ---------------- | ------------------------------ |
+| Трек             | **T19 — Quality Expansion**    |
+| Текущий шаг      | **175** — API coverage include |
+| Статус шага      | `todo`                         |
+| Последний `done` | **174** — T18 freeze           |
+| Закрыто шагов    | **78 / 150** (097–246)         |
+| Обновлено        | 2026-07-23                     |
 
 ### Сводка по трекам
 
@@ -601,7 +601,7 @@ T25 Acceptance + tag platform-v1.0.0
 | T15 Auth API          | 129–145 | 17   | `done` |
 | T16 Auth security     | 146–155 | 10   | `done` |
 | T17 Auth web          | 156–168 | 13   | `done` |
-| T18 Feature flags     | 169–174 | 0    | `todo` |
+| T18 Feature flags     | 169–174 | 6    | `done` |
 | T19 Quality expansion | 175–182 | 0    | `todo` |
 | T20 Observability     | 183–190 | 0    | `todo` |
 | T21 Railway API       | 191–205 | 0    | `todo` |
@@ -721,14 +721,14 @@ T25 Acceptance + tag platform-v1.0.0
 
 #### T18 — Feature Flags Skeleton (169–174)
 
-| Step | Title                       | Status | Notes |
-| ---- | --------------------------- | ------ | ----- |
-| 169  | FlagsModule                 | `todo` |       |
-| 170  | `AUTH_REGISTRATION_ENABLED` | `todo` |       |
-| 171  | `ALLOW_LEGACY_WRITE_*` stub | `todo` |       |
-| 172  | Flags doc                   | `todo` |       |
-| 173  | .env.example flags          | `todo` |       |
-| 174  | T18 freeze                  | `todo` |       |
+| Step | Title                       | Status | Notes                                                                  |
+| ---- | --------------------------- | ------ | ---------------------------------------------------------------------- |
+| 169  | FlagsModule                 | `done` | `apps/api/src/flags/` — FlagsService + flags.spec                      |
+| 170  | `AUTH_REGISTRATION_ENABLED` | `done` | AuthService → FlagsService; e2e unchanged                              |
+| 171  | `ALLOW_LEGACY_WRITE_*` stub | `done` | parser + isLegacyWriteAllowed; no writers                              |
+| 172  | Flags doc                   | `done` | [`ops/feature-flags.md`](ops/feature-flags.md)                         |
+| 173  | .env.example flags          | `done` | `apps/api/.env.example` Feature flags section                          |
+| 174  | T18 freeze                  | `done` | [`track-18-feature-flags-freeze.md`](track-18-feature-flags-freeze.md) |
 
 #### T19 — Quality Expansion (175–182)
 
