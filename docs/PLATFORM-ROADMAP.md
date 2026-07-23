@@ -581,14 +581,14 @@ T25 Acceptance + tag platform-v1.0.0
 
 ### Текущий этап
 
-| Поле             | Значение                       |
-| ---------------- | ------------------------------ |
-| Трек             | **T19 — Quality Expansion**    |
-| Текущий шаг      | **175** — API coverage include |
-| Статус шага      | `todo`                         |
-| Последний `done` | **174** — T18 freeze           |
-| Закрыто шагов    | **78 / 150** (097–246)         |
-| Обновлено        | 2026-07-23                     |
+| Поле             | Значение                           |
+| ---------------- | ---------------------------------- |
+| Трек             | **T20 — Observability Production** |
+| Текущий шаг      | **183** — Prod pino levels         |
+| Статус шага      | `todo`                             |
+| Последний `done` | **182** — T19 freeze               |
+| Закрыто шагов    | **86 / 150** (097–246)             |
+| Обновлено        | 2026-07-23                         |
 
 ### Сводка по трекам
 
@@ -602,7 +602,7 @@ T25 Acceptance + tag platform-v1.0.0
 | T16 Auth security     | 146–155 | 10   | `done` |
 | T17 Auth web          | 156–168 | 13   | `done` |
 | T18 Feature flags     | 169–174 | 6    | `done` |
-| T19 Quality expansion | 175–182 | 0    | `todo` |
+| T19 Quality expansion | 175–182 | 8    | `done` |
 | T20 Observability     | 183–190 | 0    | `todo` |
 | T21 Railway API       | 191–205 | 0    | `todo` |
 | T22 Vercel web        | 206–218 | 0    | `todo` |
@@ -732,16 +732,16 @@ T25 Acceptance + tag platform-v1.0.0
 
 #### T19 — Quality Expansion (175–182)
 
-| Step | Title                    | Status | Notes |
-| ---- | ------------------------ | ------ | ----- |
-| 175  | API coverage include     | `todo` |       |
-| 176  | Web coverage include     | `todo` |       |
-| 177  | Playwright scaffold      | `todo` |       |
-| 178  | Login e2e spec           | `todo` |       |
-| 179  | testing.md Playwright    | `todo` |       |
-| 180  | CI Playwright job        | `todo` |       |
-| 181  | branch-protection update | `todo` |       |
-| 182  | T19 freeze               | `todo` |       |
+| Step | Title                    | Status | Notes                                                                                         |
+| ---- | ------------------------ | ------ | --------------------------------------------------------------------------------------------- |
+| 175  | API coverage include     | `done` | auth/users in vitest include; Nest wiring/CLI excluded                                        |
+| 176  | Web coverage include     | `done` | `lib/auth/**` + use-auth test                                                                 |
+| 177  | Playwright scaffold      | `done` | `apps/web-e2e`                                                                                |
+| 178  | Login e2e spec           | `done` | bootstrap → `/examples/new`                                                                   |
+| 179  | testing.md Playwright    | `done` | [`testing.md`](testing.md)#playwright-web-e2e                                                 |
+| 180  | CI Playwright job        | `done` | job `playwright` in ci.yml                                                                    |
+| 181  | branch-protection update | `done` | [`branch-protection.md`](branch-protection.md); enable `playwright` in GitHub after green run |
+| 182  | T19 freeze               | `done` | [`track-19-quality-expansion-freeze.md`](track-19-quality-expansion-freeze.md)                |
 
 #### T20 — Observability Production (183–190)
 

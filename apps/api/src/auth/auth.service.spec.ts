@@ -217,4 +217,219 @@ describe('AuthService', () => {
     );
     expect(passwordService.verify).not.toHaveBeenCalled();
   });
+
+  it('bootstraps an admin without checking registration flag', async () => {
+    flags.isRegistrationEnabled.mockReturnValue(false);
+    userModel.exists.mockResolvedValue(null);
+    passwordService.hash.mockResolvedValue('argon2-hash');
+    userModel.create.mockResolvedValue({
+      _id: { toString: () => 'uid-admin' },
+      email: 'admin@example.com',
+      username: 'admin',
+    });
+
+    const user = await service.bootstrapAdmin({
+      email: 'Admin@Example.com',
+      username: 'admin',
+      password: 'password1',
+    });
+
+    expect(flags.isRegistrationEnabled).not.toHaveBeenCalled();
+    expect(user).toEqual({
+      id: 'uid-admin',
+      email: 'admin@example.com',
+      username: 'admin',
+    });
+  });
+
+  it('rejects bootstrapAdmin when user already exists', async () => {
+    userModel.exists.mockResolvedValue({ _id: 'x' });
+
+    await expect(
+      service.bootstrapAdmin({
+        email: 'admin@example.com',
+        username: 'admin',
+        password: 'password1',
+      }),
+    ).rejects.toBeInstanceOf(ConflictException);
+  });
+
+  it('maps duplicate-key create errors on register to ConflictException', async () => {
+    userModel.exists.mockResolvedValue(null);
+    passwordService.hash.mockResolvedValue('argon2-hash');
+    userModel.create.mockRejectedValue({ code: 11000 });
+
+    await expect(
+      service.register({
+        email: 'a@example.com',
+        username: 'alice',
+        password: 'password1',
+      }),
+    ).rejects.toBeInstanceOf(ConflictException);
+  });
+
+  it('rethrows non-duplicate create errors on register', async () => {
+    userModel.exists.mockResolvedValue(null);
+    passwordService.hash.mockResolvedValue('argon2-hash');
+    userModel.create.mockRejectedValue(new Error('db down'));
+
+    await expect(
+      service.register({
+        email: 'a@example.com',
+        username: 'alice',
+        password: 'password1',
+      }),
+    ).rejects.toThrow('db down');
+  });
+
+  it('refreshes a valid session and rotates the refresh token', async () => {
+    jwtService.verifyAsync.mockResolvedValue({
+      sub: 'uid-1',
+      jti: 'jti-1',
+      typ: 'refresh',
+    });
+    const stored = {
+      revokedAt: undefined as Date | undefined,
+      expiresAt: new Date(Date.now() + 60_000),
+      userId: 'uid-1',
+      save: vi.fn().mockResolvedValue(undefined),
+    };
+    refreshTokenModel.findOne.mockReturnValue({ exec: vi.fn().mockResolvedValue(stored) });
+    const user = {
+      _id: { toString: () => 'uid-1' },
+      email: 'alice@example.com',
+      username: 'alice',
+    };
+    userModel.findById.mockReturnValue({ exec: vi.fn().mockResolvedValue(user) });
+    jwtService.signAsync.mockResolvedValueOnce('access.jwt').mockResolvedValueOnce('refresh.jwt');
+    refreshTokenModel.create.mockResolvedValue({});
+
+    const issued = await service.refresh('refresh.jwt');
+
+    expect(stored.revokedAt).toBeInstanceOf(Date);
+    expect(stored.save).toHaveBeenCalled();
+    expect(issued.accessToken).toBe('access.jwt');
+    expect(issued.refreshToken).toBe('refresh.jwt');
+  });
+
+  it('rejects refresh without a token', async () => {
+    await expect(service.refresh(undefined)).rejects.toBeInstanceOf(UnauthorizedException);
+  });
+
+  it('rejects refresh when stored token is missing or revoked', async () => {
+    jwtService.verifyAsync.mockResolvedValue({
+      sub: 'uid-1',
+      jti: 'jti-1',
+      typ: 'refresh',
+    });
+    refreshTokenModel.findOne.mockReturnValue({ exec: vi.fn().mockResolvedValue(null) });
+
+    await expect(service.refresh('refresh.jwt')).rejects.toBeInstanceOf(UnauthorizedException);
+  });
+
+  it('rejects refresh when user no longer exists', async () => {
+    jwtService.verifyAsync.mockResolvedValue({
+      sub: 'uid-1',
+      jti: 'jti-1',
+      typ: 'refresh',
+    });
+    const stored = {
+      revokedAt: undefined as Date | undefined,
+      expiresAt: new Date(Date.now() + 60_000),
+      userId: 'uid-1',
+      save: vi.fn().mockResolvedValue(undefined),
+    };
+    refreshTokenModel.findOne.mockReturnValue({ exec: vi.fn().mockResolvedValue(stored) });
+    userModel.findById.mockReturnValue({ exec: vi.fn().mockResolvedValue(null) });
+
+    await expect(service.refresh('refresh.jwt')).rejects.toBeInstanceOf(UnauthorizedException);
+  });
+
+  it('rejects refresh tokens with invalid payload type', async () => {
+    jwtService.verifyAsync.mockResolvedValue({
+      sub: 'uid-1',
+      jti: 'jti-1',
+      typ: 'access',
+    });
+
+    await expect(service.refresh('refresh.jwt')).rejects.toBeInstanceOf(UnauthorizedException);
+  });
+
+  it('rejects expired or malformed refresh JWTs', async () => {
+    jwtService.verifyAsync.mockRejectedValue(new Error('jwt expired'));
+
+    await expect(service.refresh('refresh.jwt')).rejects.toMatchObject({
+      response: expect.objectContaining({ message: 'Invalid or expired refresh token' }),
+    });
+  });
+
+  it('revokes refresh token on logout when present', async () => {
+    jwtService.verifyAsync.mockResolvedValue({
+      sub: 'uid-1',
+      jti: 'jti-1',
+      typ: 'refresh',
+    });
+    refreshTokenModel.updateOne.mockReturnValue({ exec: vi.fn().mockResolvedValue({}) });
+
+    await service.logout({ refreshToken: 'refresh.jwt' });
+
+    expect(refreshTokenModel.updateOne).toHaveBeenCalled();
+    expect(refreshTokenModel.updateMany).not.toHaveBeenCalled();
+  });
+
+  it('ignores invalid refresh token on logout and still completes', async () => {
+    jwtService.verifyAsync.mockRejectedValue(new Error('bad'));
+
+    await expect(service.logout({ refreshToken: 'bad.jwt' })).resolves.toBeUndefined();
+  });
+
+  it('revokes all sessions for access user when refresh cookie is absent', async () => {
+    refreshTokenModel.updateMany.mockReturnValue({ exec: vi.fn().mockResolvedValue({}) });
+
+    await service.logout({ accessUserId: '507f1f77bcf86cd799439011' });
+
+    expect(refreshTokenModel.updateMany).toHaveBeenCalled();
+  });
+
+  it('returns the current user from getMe', async () => {
+    userModel.findById.mockReturnValue({
+      exec: vi.fn().mockResolvedValue({
+        _id: { toString: () => 'uid-1' },
+        email: 'alice@example.com',
+        username: 'alice',
+      }),
+    });
+
+    await expect(service.getMe('uid-1')).resolves.toEqual({
+      id: 'uid-1',
+      email: 'alice@example.com',
+      username: 'alice',
+    });
+  });
+
+  it('rejects getMe for unknown users', async () => {
+    userModel.findById.mockReturnValue({ exec: vi.fn().mockResolvedValue(null) });
+
+    await expect(service.getMe('missing')).rejects.toBeInstanceOf(UnauthorizedException);
+  });
+
+  it('skips clearLoginLockout writes when counters are already clear', async () => {
+    const user = {
+      _id: { toString: () => 'uid-1' },
+      email: 'alice@example.com',
+      username: 'alice',
+      passwordHash: 'hash',
+      failedAttempts: 0,
+      lockedUntil: undefined,
+      save: vi.fn().mockResolvedValue(undefined),
+    };
+    userModel.findOne.mockReturnValue({ exec: vi.fn().mockResolvedValue(user) });
+    passwordService.verify.mockResolvedValue(true);
+    jwtService.signAsync.mockResolvedValueOnce('access.jwt').mockResolvedValueOnce('refresh.jwt');
+    refreshTokenModel.create.mockResolvedValue({});
+
+    await service.login({ username: 'alice', password: 'password1' });
+
+    expect(user.save).not.toHaveBeenCalled();
+  });
 });

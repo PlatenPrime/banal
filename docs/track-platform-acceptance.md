@@ -13,7 +13,7 @@ Predecessor: [track-foundation-acceptance.md](track-foundation-acceptance.md) (`
 | Staging API on Railway + Web on Vercel       | ⬜ todo    | URLs recorded in this file / [`docs/deploy/README.md`](deploy/README.md) after T21–T22                                                                                                                                                                                                               |
 | Prod custom domains + cookies `SameSite=Lax` | ⬜ todo    | T23; login → me → logout on `app.` / `api.`                                                                                                                                                                                                                                                          |
 | Atlas only via env; CI without prod URI      | ✅ done    | T12 env matrix + naming; T13 [`deploy/atlas.md`](deploy/atlas.md) connection/network policy; CI `mongo:7` / `app_foundation_ci` ([`ops/environments.md`](ops/environments.md), [`track-13-atlas-network-freeze.md`](track-13-atlas-network-freeze.md))                                               |
-| Auth e2e + Playwright login                  | ⬜ todo    | T15–T16, T19; CI green                                                                                                                                                                                                                                                                               |
+| Auth e2e + Playwright login                  | ✅ done    | T15–T16 API auth e2e; T19 [`apps/web-e2e`](../apps/web-e2e) + CI job `playwright` ([`track-19-quality-expansion-freeze.md`](track-19-quality-expansion-freeze.md))                                                                                                                                   |
 | Branch protection + Dependabot               | ✅ done    | T11; [`docs/branch-protection.md`](branch-protection.md), [`.github/dependabot.yml`](../.github/dependabot.yml), [`track-11-ops-freeze.md`](track-11-ops-freeze.md)                                                                                                                                  |
 | OpenAPI drift + tests-first                  | ⬜ todo    | foundation gates unchanged; auth paths in OpenAPI                                                                                                                                                                                                                                                    |
 | Runbooks deploy / rollback / secrets         | 🟡 partial | T12: [`ops/secrets-checklist.md`](ops/secrets-checklist.md), [`deploy/`](deploy/README.md) stubs; full Railway/Vercel runbooks T21–T25; [`ops/incident-rollback.md`](ops/incident-rollback.md)                                                                                                       |
@@ -30,11 +30,11 @@ Fill statuses to ✅ as tracks close. Do not mark this checklist complete until 
 | T12 Env & secrets     | 105–114 | `done` |
 | T13 Atlas & network   | 115–122 | `done` |
 | T14 Auth data & ADR   | 123–128 | `done` |
-| T15 Auth API          | 129–145 | `todo` |
+| T15 Auth API          | 129–145 | `done` |
 | T16 Auth security     | 146–155 | `done` |
 | T17 Auth web          | 156–168 | `done` |
-| T18 Feature flags     | 169–174 | `todo` |
-| T19 Quality expansion | 175–182 | `todo` |
+| T18 Feature flags     | 169–174 | `done` |
+| T19 Quality expansion | 175–182 | `done` |
 | T20 Observability     | 183–190 | `todo` |
 | T21 Railway API       | 191–205 | `todo` |
 | T22 Vercel web        | 206–218 | `todo` |

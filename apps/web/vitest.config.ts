@@ -26,7 +26,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reportsDirectory: './coverage',
-      include: ['src/lib/api-client/**/*.ts', 'src/lib/query-client.ts'],
+      include: ['src/lib/api-client/**/*.ts', 'src/lib/query-client.ts', 'src/lib/auth/**/*.ts'],
       exclude: ['**/*.{spec,test}.{ts,tsx}'],
       thresholds: {
         lines: 75,

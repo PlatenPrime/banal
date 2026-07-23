@@ -12,6 +12,9 @@ node_modules
 **/dist
 **/.output
 **/coverage
+**/test-results
+**/playwright-report
+**/blob-report
 *.tsbuildinfo
 *.log
 .DS_Store
