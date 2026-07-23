@@ -46,7 +46,7 @@ Staging and production may share an Atlas **cluster** with the legacy app, but u
 ### Staging and production
 
 1. Prefer an **IP allowlist** (or Atlas private networking when available) that admits Railway egress for the API service(s).
-2. Document the chosen approach when wiring Railway → Atlas in **T21 step 197** (concrete IPs / peering).
+2. **T21-197 (2026-07-23):** live staging/prod API use **Railway-managed MongoDB** on the private network (no Atlas allowlist yet). When migrating to Atlas, pick allowlist or temporary `0.0.0.0/0` per the table below and record the date in [railway.md](railway.md)#atlas-network-railway.
 3. Keep Atlas Database Users scoped per environment (staging vs prod credentials; least privilege).
 
 ### `0.0.0.0/0` risk note

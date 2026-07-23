@@ -1,0 +1,24 @@
+# Railway service config for @app/api (monorepo).
+# Dashboard: Root Directory = "/" (repo root), NOT apps/api — Docker build
+# context must include libs/shared-contracts and the workspace lockfile.
+# Path: committed at repo root so Railway discovers it with Root Directory = /.
+
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "apps/api/Dockerfile"
+watchPatterns = [
+  "apps/api/**",
+  "libs/shared-contracts/**",
+  "package.json",
+  "package-lock.json",
+  "nx.json",
+  "tsconfig.base.json",
+  "tsconfig.json",
+  "railway.toml",
+]
+
+[deploy]
+healthcheckPath = "/health"
+healthcheckTimeout = 300
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 5

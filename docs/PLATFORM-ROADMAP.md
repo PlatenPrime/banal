@@ -581,14 +581,14 @@ T25 Acceptance + tag platform-v1.0.0
 
 ### Текущий этап
 
-| Поле             | Значение                     |
-| ---------------- | ---------------------------- |
-| Трек             | **T21 — Railway API Deploy** |
-| Текущий шаг      | **191** — API Dockerfile     |
-| Статус шага      | `todo`                       |
-| Последний `done` | **190** — T20 freeze         |
-| Закрыто шагов    | **94 / 150** (097–246)       |
-| Обновлено        | 2026-07-23                   |
+| Поле             | Значение                    |
+| ---------------- | --------------------------- |
+| Трек             | **T22 — Vercel Web Deploy** |
+| Текущий шаг      | **206** — Nitro confirm     |
+| Статус шага      | `todo`                      |
+| Последний `done` | **205** — T21 freeze        |
+| Закрыто шагов    | **109 / 150** (097–246)     |
+| Обновлено        | 2026-07-23                  |
 
 ### Сводка по трекам
 
@@ -604,7 +604,7 @@ T25 Acceptance + tag platform-v1.0.0
 | T18 Feature flags     | 169–174 | 6    | `done` |
 | T19 Quality expansion | 175–182 | 8    | `done` |
 | T20 Observability     | 183–190 | 8    | `done` |
-| T21 Railway API       | 191–205 | 0    | `todo` |
+| T21 Railway API       | 191–205 | 15   | `done` |
 | T22 Vercel web        | 206–218 | 0    | `todo` |
 | T23 Custom domains    | 219–226 | 0    | `todo` |
 | T24 CI/CD deploy      | 227–236 | 0    | `todo` |
@@ -758,23 +758,23 @@ T25 Acceptance + tag platform-v1.0.0
 
 #### T21 — Railway API Deploy (191–205)
 
-| Step | Title                 | Status | Notes |
-| ---- | --------------------- | ------ | ----- |
-| 191  | API Dockerfile        | `todo` |       |
-| 192  | `.dockerignore`       | `todo` |       |
-| 193  | `railway.toml`        | `todo` |       |
-| 194  | Deploy doc Railway    | `todo` |       |
-| 195  | Env mapping table     | `todo` |       |
-| 196  | Staging service       | `todo` |       |
-| 197  | Atlas network Railway | `todo` |       |
-| 198  | Staging smoke         | `todo` |       |
-| 199  | Production service    | `todo` |       |
-| 200  | Prod secrets          | `todo` |       |
-| 201  | Graceful shutdown     | `todo` |       |
-| 202  | Rollback procedure    | `todo` |       |
-| 203  | Monorepo build args   | `todo` |       |
-| 204  | PORT binding          | `todo` |       |
-| 205  | T21 freeze            | `todo` |       |
+| Step | Title                 | Status | Notes                                                                            |
+| ---- | --------------------- | ------ | -------------------------------------------------------------------------------- |
+| 191  | API Dockerfile        | `done` | [`apps/api/Dockerfile`](../apps/api/Dockerfile) multi-stage Node 24              |
+| 192  | `.dockerignore`       | `done` | [`.dockerignore`](../.dockerignore)                                              |
+| 193  | `railway.toml`        | `done` | [`railway.toml`](../railway.toml) root; health `/health`                         |
+| 194  | Deploy doc Railway    | `done` | [`deploy/railway.md`](deploy/railway.md)                                         |
+| 195  | Env mapping table     | `done` | railway.md ↔ secrets-checklist                                                   |
+| 196  | Staging service       | `done` | `https://api-staging-9c27.up.railway.app`                                        |
+| 197  | Atlas network Railway | `done` | Railway Mongo private (interim); Atlas path documented                           |
+| 198  | Staging smoke         | `done` | [`scripts/smoke-api.mjs`](../scripts/smoke-api.mjs) health+ready                 |
+| 199  | Production service    | `done` | `https://api-production-b6c9.up.railway.app`                                     |
+| 200  | Prod secrets          | `done` | JWT distinct; checklist signed in railway.md                                     |
+| 201  | Graceful shutdown     | `done` | SIGTERM hooks; redeploy verified                                                 |
+| 202  | Rollback procedure    | `done` | [`ops/incident-rollback.md`](ops/incident-rollback.md)                           |
+| 203  | Monorepo build args   | `done` | `@app/shared-contracts` in image                                                 |
+| 204  | PORT binding          | `done` | Zod PORT + Railway inject                                                        |
+| 205  | T21 freeze            | `done` | [`track-21-railway-api-deploy-freeze.md`](track-21-railway-api-deploy-freeze.md) |
 
 #### T22 — Vercel Web Deploy (206–218)
 

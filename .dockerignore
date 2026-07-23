@@ -1,0 +1,37 @@
+# Keep Docker build context small (repo root = context for apps/api/Dockerfile).
+
+.git
+.github
+.husky
+.nx
+.cursor
+.vscode
+
+**/node_modules
+**/dist
+**/coverage
+**/.vite
+**/test-results
+**/playwright-report
+
+**/.env
+**/.env.*
+!**/.env.example
+
+# Web/e2e sources are not needed in the API image; keep package.json for npm workspaces.
+apps/web/**
+!apps/web/package.json
+apps/web-e2e/**
+!apps/web-e2e/package.json
+
+docs
+
+*.md
+!README.md
+
+docker-compose*.yml
+
+*.log
+*.tsbuildinfo
+.DS_Store
+Thumbs.db
