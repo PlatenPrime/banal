@@ -25,5 +25,5 @@ npx nx run web-e2e:e2e
 ## Related
 
 - Previous: [`track-18-feature-flags-freeze.md`](track-18-feature-flags-freeze.md)
-- Next track: **T20 — Observability Production** (183–190)
+- Next track: **T20 — Observability Production** (183–190) — closed in [`track-20-observability-production-freeze.md`](track-20-observability-production-freeze.md)
 - Ops: [`testing.md`](testing.md), [`branch-protection.md`](branch-protection.md)

@@ -30,6 +30,8 @@ CI (GitHub Actions e2e) uses Docker `mongo:7` and DB name **`app_foundation_ci`*
 | `OTEL_ENABLED`                | `false`                    | optional                         | optional                   |
 | `OTEL_EXPORTER_OTLP_ENDPOINT` | unset                      | required if OTEL on              | required if OTEL on        |
 
+OTel wiring: [observability.md](observability.md). Alerting stub: [alerting.md](alerting.md).
+
 ## Atlas DB naming
 
 | Environment | DB name              | Where set                        |

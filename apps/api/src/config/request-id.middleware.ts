@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { type INestApplication } from '@nestjs/common';
 import type { NextFunction, Request, Response } from 'express';
+import { attachRequestIdToActiveSpan } from '../observability/request-id-span';
 
 export const REQUEST_ID_HEADER = 'x-request-id';
 export const MAX_REQUEST_ID_LENGTH = 128;
@@ -38,6 +39,7 @@ export function resolveRequestId(header: string | string[] | undefined): string 
 
 /**
  * Ensures every response carries `x-request-id` and attaches `requestId` to the request.
+ * Also sets `request.id` on the active OTel span when one exists.
  * Apply early in bootstrap (before CORS/versioning) so all routes are covered.
  */
 export function applyRequestIdMiddleware(app: INestApplication): void {
@@ -45,6 +47,7 @@ export function applyRequestIdMiddleware(app: INestApplication): void {
     const requestId = resolveRequestId(req.headers[REQUEST_ID_HEADER]);
     (req as RequestWithId).requestId = requestId;
     res.setHeader(REQUEST_ID_HEADER, requestId);
+    attachRequestIdToActiveSpan(requestId);
     next();
   });
 }

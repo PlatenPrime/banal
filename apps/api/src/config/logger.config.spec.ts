@@ -182,7 +182,7 @@ describe('createPinoHttpOptions', () => {
     expect(parsed.config.MONGODB_URI).toBe(PINO_REDACT_CENSOR);
   });
 
-  it('redacts password, tokens, and Authorization from JSON log lines', async () => {
+  it('redacts password, tokens, Authorization, and Cookie from JSON log lines (T20 redact audit)', async () => {
     const chunks: Buffer[] = [];
     const destination = new Writable({
       write(chunk, _encoding, callback) {
@@ -200,16 +200,22 @@ describe('createPinoHttpOptions', () => {
       destination,
     );
 
+    const jwtAccess = 'eyJhbGciOiJIUzI1NiJ9.payload.sig';
+    const jwtRefresh = 'eyJhbGciOiJIUzI1NiJ9.refresh.sig';
+
     logger.info(
       {
         password: 'super-secret-password',
-        accessToken: 'eyJhbGciOiJIUzI1NiJ9.payload.sig',
-        refreshToken: 'eyJhbGciOiJIUzI1NiJ9.refresh.sig',
+        access_token: jwtAccess,
+        refresh_token: jwtRefresh,
+        accessToken: jwtAccess,
+        refreshToken: jwtRefresh,
         req: {
           body: { password: 'body-password' },
           headers: {
-            authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.payload.sig',
-            cookie: 'access_token=eyJ.access; refresh_token=eyJ.refresh',
+            authorization: `Bearer ${jwtAccess}`,
+            cookie: `access_token=${jwtAccess}; refresh_token=${jwtRefresh}`,
+            'set-cookie': [`access_token=${jwtAccess}; HttpOnly`],
           },
         },
       },
@@ -226,23 +232,29 @@ describe('createPinoHttpOptions', () => {
     expect(line).not.toContain('body-password');
     expect(line).not.toContain('eyJhbGciOiJIUzI1NiJ9');
     expect(line).not.toContain('Bearer ');
+    expect(line).not.toContain('HttpOnly');
 
     const parsed = JSON.parse(line!) as {
       password: string;
+      access_token: string;
+      refresh_token: string;
       accessToken: string;
       refreshToken: string;
       req: {
         body: { password: string };
-        headers: { authorization: string; cookie: string };
+        headers: { authorization: string; cookie: string; 'set-cookie': string };
       };
     };
 
     expect(parsed.password).toBe(PINO_REDACT_CENSOR);
+    expect(parsed.access_token).toBe(PINO_REDACT_CENSOR);
+    expect(parsed.refresh_token).toBe(PINO_REDACT_CENSOR);
     expect(parsed.accessToken).toBe(PINO_REDACT_CENSOR);
     expect(parsed.refreshToken).toBe(PINO_REDACT_CENSOR);
     expect(parsed.req.body.password).toBe(PINO_REDACT_CENSOR);
     expect(parsed.req.headers.authorization).toBe(PINO_REDACT_CENSOR);
     expect(parsed.req.headers.cookie).toBe(PINO_REDACT_CENSOR);
+    expect(parsed.req.headers['set-cookie']).toBe(PINO_REDACT_CENSOR);
   });
 });
 

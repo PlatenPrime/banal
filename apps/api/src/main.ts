@@ -11,14 +11,23 @@ import { applySecurityHeaders } from './config/security-headers';
 import { applySwaggerDocs } from './config/swagger';
 import { applyTrustProxy } from './config/trust-proxy';
 import { getCorsOptions } from './cors.options';
-import { initOtelNoop } from './observability/otel-noop';
+import { initOtelFromEnv } from './observability/otel';
 
 async function bootstrap() {
-  initOtelNoop();
+  const otel = await initOtelFromEnv();
 
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
   app.useLogger(app.get(Logger));
   app.enableShutdownHooks();
+
+  const nestClose = app.close.bind(app);
+  app.close = async () => {
+    try {
+      await nestClose();
+    } finally {
+      await otel.shutdown();
+    }
+  };
 
   const config = app.get(ConfigService<Env, true>);
 

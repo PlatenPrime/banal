@@ -581,14 +581,14 @@ T25 Acceptance + tag platform-v1.0.0
 
 ### Текущий этап
 
-| Поле             | Значение                           |
-| ---------------- | ---------------------------------- |
-| Трек             | **T20 — Observability Production** |
-| Текущий шаг      | **183** — Prod pino levels         |
-| Статус шага      | `todo`                             |
-| Последний `done` | **182** — T19 freeze               |
-| Закрыто шагов    | **86 / 150** (097–246)             |
-| Обновлено        | 2026-07-23                         |
+| Поле             | Значение                     |
+| ---------------- | ---------------------------- |
+| Трек             | **T21 — Railway API Deploy** |
+| Текущий шаг      | **191** — API Dockerfile     |
+| Статус шага      | `todo`                       |
+| Последний `done` | **190** — T20 freeze         |
+| Закрыто шагов    | **94 / 150** (097–246)       |
+| Обновлено        | 2026-07-23                   |
 
 ### Сводка по трекам
 
@@ -603,7 +603,7 @@ T25 Acceptance + tag platform-v1.0.0
 | T17 Auth web          | 156–168 | 13   | `done` |
 | T18 Feature flags     | 169–174 | 6    | `done` |
 | T19 Quality expansion | 175–182 | 8    | `done` |
-| T20 Observability     | 183–190 | 0    | `todo` |
+| T20 Observability     | 183–190 | 8    | `done` |
 | T21 Railway API       | 191–205 | 0    | `todo` |
 | T22 Vercel web        | 206–218 | 0    | `todo` |
 | T23 Custom domains    | 219–226 | 0    | `todo` |
@@ -745,16 +745,16 @@ T25 Acceptance + tag platform-v1.0.0
 
 #### T20 — Observability Production (183–190)
 
-| Step | Title                  | Status | Notes |
-| ---- | ---------------------- | ------ | ----- |
-| 183  | Prod pino levels       | `todo` |       |
-| 184  | Railway logs doc       | `todo` |       |
-| 185  | OTEL flag wiring       | `todo` |       |
-| 186  | OTLP exporter optional | `todo` |       |
-| 187  | Trace request id       | `todo` |       |
-| 188  | Alerting stub          | `todo` |       |
-| 189  | Redact audit           | `todo` |       |
-| 190  | T20 freeze             | `todo` |       |
+| Step | Title                  | Status | Notes                                                                                        |
+| ---- | ---------------------- | ------ | -------------------------------------------------------------------------------------------- |
+| 183  | Prod pino levels       | `done` | info prod/test, debug development; JSON lines                                                |
+| 184  | Railway logs doc       | `done` | [`deploy/railway.md`](deploy/railway.md)#logs                                                |
+| 185  | OTEL flag wiring       | `done` | `initOtelFromEnv` — noop when false                                                          |
+| 186  | OTLP exporter optional | `done` | sdk-node + OTLP HTTP behind flag                                                             |
+| 187  | Trace request id       | `done` | [`ops/observability.md`](ops/observability.md); span attr `request.id`                       |
+| 188  | Alerting stub          | `done` | [`ops/alerting.md`](ops/alerting.md)                                                         |
+| 189  | Redact audit           | `done` | logger spec JWT/cookie/Authorization                                                         |
+| 190  | T20 freeze             | `done` | [`track-20-observability-production-freeze.md`](track-20-observability-production-freeze.md) |
 
 #### T21 — Railway API Deploy (191–205)
 
