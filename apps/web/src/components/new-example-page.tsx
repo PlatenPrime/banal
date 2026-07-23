@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { ApiClientError } from '../lib/api-client/client';
 import { createExample } from '../lib/api-client/examples';
 import { exampleKeys } from '../lib/api-client/query-keys';
+import { AppNav } from './app-nav';
 
 export function NewExamplePage() {
   const navigate = useNavigate();
@@ -46,6 +47,7 @@ export function NewExamplePage() {
 
   return (
     <main>
+      <AppNav />
       <h1>New example</h1>
       <form
         onSubmit={(event) => {

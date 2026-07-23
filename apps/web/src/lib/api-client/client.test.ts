@@ -24,7 +24,7 @@ describe('api-client request', () => {
     await expect(request('/api/v1/examples', responseSchema)).resolves.toEqual({ ok: true });
     expect(fetch).toHaveBeenCalledWith(
       'http://localhost:4000/api/v1/examples',
-      expect.objectContaining({ method: 'GET' }),
+      expect.objectContaining({ method: 'GET', credentials: 'include' }),
     );
   });
 

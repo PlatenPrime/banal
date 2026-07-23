@@ -2,6 +2,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
 import type { ErrorComponentProps } from '@tanstack/react-router';
 import { examplesQueryOptions } from '../lib/api-client/examples-query';
+import { AppNav } from './app-nav';
 import { RouteError } from './route-error';
 
 export function ExamplesPage() {
@@ -9,6 +10,7 @@ export function ExamplesPage() {
 
   return (
     <main>
+      <AppNav />
       <h1>Examples</h1>
       <p>{data.total} total</p>
       {data.items.length === 0 ? (

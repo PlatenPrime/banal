@@ -70,6 +70,7 @@ describe('examples api-client', () => {
     expect(request).toBeInstanceOf(Request);
     expect((request as Request).url).toBe('http://localhost:4000/api/v1/examples');
     expect((request as Request).method).toBe('POST');
+    expect((request as Request).credentials).toBe('include');
     await expect((request as Request).clone().text()).resolves.toBe(
       JSON.stringify({ name: 'Beta' }),
     );
