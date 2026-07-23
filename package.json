@@ -10,7 +10,7 @@
     "libs/*"
   ],
   "scripts": {
-    "prepare": "husky && node scripts/patch-husky-runner.mjs",
+    "prepare": "node scripts/prepare.mjs",
     "build": "nx run-many -t build",
     "test": "nx run-many -t test",
     "test:api": "nx run api:test",

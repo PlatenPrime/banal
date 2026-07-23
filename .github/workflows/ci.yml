@@ -18,6 +18,8 @@ env:
   # Public Vite client config (same as apps/web/.env.example). Required because
   # gitignored `.env*` files are absent in CI checkouts.
   VITE_API_URL: http://localhost:4000
+  # Skip husky install during npm prepare — runners do not use git hooks.
+  HUSKY: '0'
 
 jobs:
   quality:
