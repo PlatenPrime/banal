@@ -25,7 +25,7 @@ Separate services for staging and production. Full list mirrors `apps/api` Zod s
 | `OTEL_ENABLED`                | no       | Default `false`                                  |
 | `OTEL_EXPORTER_OTLP_ENDPOINT` | if OTEL  | Required when `OTEL_ENABLED=true`                |
 
-See also [deploy/railway.md](../deploy/railway.md).
+Full per-environment mapping and Railway dashboard steps: [deploy/railway.md](../deploy/railway.md)#env-mapping-railway--api-zod.
 
 ## Vercel (web)
 

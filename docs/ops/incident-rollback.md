@@ -1,6 +1,6 @@
-# Incident rollback (stub)
+# Incident rollback
 
-Minimal revert steps for production/staging incidents. Full deploy runbooks land in Tracks **T21–T25** (`docs/deploy/` — not yet created).
+Minimal revert steps for production/staging incidents. API deploy runbook: [deploy/railway.md](../deploy/railway.md).
 
 ## Principles
 
@@ -10,14 +10,14 @@ Minimal revert steps for production/staging incidents. Full deploy runbooks land
 
 ## Railway (API)
 
-When Railway is configured (T21):
-
 1. Open the API service → **Deployments**.
 2. Select the last known-good deployment → **Redeploy** / rollback to that revision.
 3. Verify env vars unchanged (JWT secrets, `MONGODB_URI`, `TRUST_PROXY`, CORS origins).
-4. Smoke: `GET /health` and `GET /health/ready` on the staging/prod API URL.
+4. Smoke: `GET /health` and `GET /health/ready` (or `API_BASE_URL=… node scripts/smoke-api.mjs`).
 
 If rollback is unavailable, pin the service to the previous git commit/image and redeploy from that ref.
+
+**Dry-run (staging):** Confirmed 2026-07-23 during T21 — staging Deployments lists prior revisions with Redeploy available after successful deploys. Full practice redeploy optional; see [track-21-railway-api-deploy-freeze.md](../track-21-railway-api-deploy-freeze.md).
 
 ## Vercel (Web)
 
