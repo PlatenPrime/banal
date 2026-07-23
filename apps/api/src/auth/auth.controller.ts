@@ -19,12 +19,15 @@ import {
   ApiOkResponse,
   ApiOperation,
   ApiTags,
+  ApiTooManyRequestsResponse,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { Throttle } from '@nestjs/throttler';
 import type { AuthUser } from '@app/shared-contracts';
 import type { Request, Response } from 'express';
 import { API_DEFAULT_VERSION } from '../config/api-versioning';
 import type { Env } from '../config/env.schema';
+import { THROTTLE_LOGIN_LIMIT, THROTTLE_LOGIN_TTL_MS } from '../config/throttle';
 import {
   ACCESS_TOKEN_COOKIE,
   clearAuthCookies,
@@ -40,6 +43,7 @@ import {
   type AuthenticatedRequest,
 } from './current-user.decorator';
 import type { AccessTokenPayload } from './jwt-auth.guard';
+import { AUTH_REQUIRED_MESSAGE } from './login-lockout';
 import { Public } from './public.decorator';
 
 @ApiTags('auth')
@@ -67,11 +71,13 @@ export class AuthController {
   }
 
   @Public()
+  @Throttle({ default: { limit: THROTTLE_LOGIN_LIMIT, ttl: THROTTLE_LOGIN_TTL_MS } })
   @Post('login')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Login with username and password' })
   @ApiOkResponse({ type: AuthUserResponseDto })
   @ApiUnauthorizedResponse({ description: 'Invalid credentials' })
+  @ApiTooManyRequestsResponse({ description: 'Login rate limit exceeded' })
   async login(
     @Body() dto: LoginRequestDto,
     @Res({ passthrough: true }) res: Response,
@@ -117,7 +123,7 @@ export class AuthController {
   @ApiUnauthorizedResponse({ description: 'Missing or invalid access cookie' })
   me(@CurrentUser() user: AuthRequestUser | undefined): Promise<AuthUser> {
     if (!user?.userId) {
-      throw new UnauthorizedException('Authentication required');
+      throw new UnauthorizedException(AUTH_REQUIRED_MESSAGE);
     }
 
     return this.authService.getMe(user.userId);

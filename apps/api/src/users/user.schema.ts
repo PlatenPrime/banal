@@ -13,6 +13,14 @@ export class UserEntity {
 
   @Prop({ required: true })
   passwordHash!: string;
+
+  /** Consecutive failed login attempts; reset on successful login. */
+  @Prop({ default: 0 })
+  failedAttempts!: number;
+
+  /** When set and in the future, login is rejected with a generic 401. */
+  @Prop({ type: Date, required: false })
+  lockedUntil?: Date;
 }
 
 export type UserDocument = HydratedDocument<UserEntity>;

@@ -6,6 +6,7 @@ import {
   NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
+import { ThrottlerException } from '@nestjs/throttler';
 import type { Response } from 'express';
 import { describe, expect, it, vi } from 'vitest';
 import { apiV1Path } from '../config/api-versioning';
@@ -55,6 +56,20 @@ describe('toProblemDetails', () => {
     expect(problem.type).toBe(ERROR_TYPE_URIS.internal);
     expect(problem.status).toBe(HttpStatus.I_AM_A_TEAPOT);
     expect(problemDetailsSchema.safeParse(problem).success).toBe(true);
+  });
+
+  it('maps ThrottlerException to rate-limited Problem Details', () => {
+    const instance = apiV1Path('auth/login');
+    const problem = toProblemDetails(new ThrottlerException(), instance);
+
+    expect(problemDetailsSchema.parse(problem)).toEqual(problem);
+    expect(problem).toMatchObject({
+      type: ERROR_TYPE_URIS.rateLimited,
+      title: 'Too Many Requests',
+      status: HttpStatus.TOO_MANY_REQUESTS,
+      detail: 'Rate limit exceeded. Try again later.',
+      instance,
+    });
   });
 
   it('maps UnprocessableEntityException field errors into Problem Details', () => {

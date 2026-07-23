@@ -1,11 +1,11 @@
 # Collections inventory (legacy MongoDB)
 
-| Collection             | Writers      | Readers                   | Key fields                                             | Indexes (note)                            | New app mode            |
-| ---------------------- | ------------ | ------------------------- | ------------------------------------------------------ | ----------------------------------------- | ----------------------- |
-| `_foundation_examples` | new API only | new API                   | `_id`, `name`, `description?`, `createdAt`             | `_id` default                             | read/write              |
-| `a_users`              | new API only | new API                   | `_id`, `email`, `username`, `passwordHash`, timestamps | unique `email`, unique `username`         | read/write              |
-| `a_refresh_tokens`     | new API only | new API                   | `_id`, `jti` (hash), `userId`, `expiresAt`             | unique `jti`; optional TTL on `expiresAt` | read/write              |
-| `users`                | legacy       | legacy; new TBD (ADR-004) | … (legacy shape)                                       | legacy-managed                            | read-only until ADR-004 |
+| Collection             | Writers      | Readers                   | Key fields                                                                              | Indexes (note)                            | New app mode            |
+| ---------------------- | ------------ | ------------------------- | --------------------------------------------------------------------------------------- | ----------------------------------------- | ----------------------- |
+| `_foundation_examples` | new API only | new API                   | `_id`, `name`, `description?`, `createdAt`                                              | `_id` default                             | read/write              |
+| `a_users`              | new API only | new API                   | `_id`, `email`, `username`, `passwordHash`, `failedAttempts`, `lockedUntil`, timestamps | unique `email`, unique `username`         | read/write              |
+| `a_refresh_tokens`     | new API only | new API                   | `_id`, `jti` (hash), `userId`, `expiresAt`                                              | unique `jti`; optional TTL on `expiresAt` | read/write              |
+| `users`                | legacy       | legacy; new TBD (ADR-004) | … (legacy shape)                                                                        | legacy-managed                            | read-only until ADR-004 |
 
 ## Rules
 
@@ -33,14 +33,16 @@ Writers: `apps/api` ExamplesModule only. Legacy app does not write here.
 
 App-owned password accounts for the new API. **Not** the legacy `users` collection (warehouse auth: [`legacy/auth-legacy.md`](../legacy/auth-legacy.md)).
 
-| Field          | Type     | Notes                                  |
-| -------------- | -------- | -------------------------------------- |
-| `_id`          | ObjectId | Mongo default                          |
-| `email`        | string   | Required; unique; normalized lowercase |
-| `username`     | string   | Required; unique                       |
-| `passwordHash` | string   | Argon2id (never store plaintext)       |
-| `createdAt`    | Date     | Set on create                          |
-| `updatedAt`    | Date     | Set on update                          |
+| Field            | Type     | Notes                                       |
+| ---------------- | -------- | ------------------------------------------- |
+| `_id`            | ObjectId | Mongo default                               |
+| `email`          | string   | Required; unique; normalized lowercase      |
+| `username`       | string   | Required; unique                            |
+| `passwordHash`   | string   | Argon2id (never store plaintext)            |
+| `failedAttempts` | number   | Consecutive failed logins; reset on success |
+| `lockedUntil`    | Date?    | Temporary lockout window after max failures |
+| `createdAt`      | Date     | Set on create                               |
+| `updatedAt`      | Date     | Set on update                               |
 
 Writers: Auth / Users module in `apps/api` (T15+). Legacy must not write here. Dual-read/link with legacy `users` is **[ADR-004](../adr/004-legacy-users-dual-read.md)** (Deferred; out of platform scope).
 

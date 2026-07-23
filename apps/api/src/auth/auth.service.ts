@@ -1,4 +1,3 @@
-import { createHash, randomUUID } from 'node:crypto';
 import {
   ConflictException,
   ForbiddenException,
@@ -9,17 +8,24 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import type { AuthUser, LoginRequest, RegisterRequest } from '@app/shared-contracts';
+import { createHash, randomUUID } from 'node:crypto';
 import { Model, Types } from 'mongoose';
 import type { Env } from '../config/env.schema';
+import { UserDocument, UserEntity } from '../users/user.schema';
 import { ACCESS_TOKEN_TTL, REFRESH_TOKEN_TTL } from './auth-cookies';
 import type { AccessTokenPayload } from './jwt-auth.guard';
+import {
+  AUTH_INVALID_CREDENTIALS_MESSAGE,
+  AUTH_REQUIRED_MESSAGE,
+  LOGIN_LOCKOUT_MS,
+  LOGIN_MAX_FAILED_ATTEMPTS,
+} from './login-lockout';
 import { PasswordService } from './password.service';
 import {
   REFRESH_TOKEN_TTL_MS,
   RefreshTokenDocument,
   RefreshTokenEntity,
 } from './refresh-token.schema';
-import { UserDocument, UserEntity } from '../users/user.schema';
 
 export type RefreshTokenPayload = {
   sub: string;
@@ -43,6 +49,10 @@ function toAuthUser(user: UserDocument): AuthUser {
     email: user.email,
     username: user.username,
   };
+}
+
+function isLocked(user: UserDocument, now = new Date()): boolean {
+  return user.lockedUntil instanceof Date && user.lockedUntil.getTime() > now.getTime();
 }
 
 @Injectable()
@@ -79,6 +89,7 @@ export class AuthService {
       email: dto.email.toLowerCase(),
       username: dto.username,
       passwordHash,
+      failedAttempts: 0,
     });
 
     return toAuthUser(user);
@@ -87,14 +98,20 @@ export class AuthService {
   async login(dto: LoginRequest): Promise<IssuedAuthTokens> {
     const user = await this.userModel.findOne({ username: dto.username }).exec();
     if (!user) {
-      throw new UnauthorizedException('Invalid username or password');
+      throw new UnauthorizedException(AUTH_INVALID_CREDENTIALS_MESSAGE);
+    }
+
+    if (isLocked(user)) {
+      throw new UnauthorizedException(AUTH_INVALID_CREDENTIALS_MESSAGE);
     }
 
     const valid = await this.passwordService.verify(user.passwordHash, dto.password);
     if (!valid) {
-      throw new UnauthorizedException('Invalid username or password');
+      await this.recordFailedLogin(user);
+      throw new UnauthorizedException(AUTH_INVALID_CREDENTIALS_MESSAGE);
     }
 
+    await this.clearLoginLockout(user);
     return this.issueSession(user);
   }
 
@@ -116,7 +133,7 @@ export class AuthService {
 
     const user = await this.userModel.findById(stored.userId).exec();
     if (!user) {
-      throw new UnauthorizedException('User not found');
+      throw new UnauthorizedException('Invalid or revoked refresh token');
     }
 
     return this.issueSession(user);
@@ -153,10 +170,31 @@ export class AuthService {
   async getMe(userId: string): Promise<AuthUser> {
     const user = await this.userModel.findById(userId).exec();
     if (!user) {
-      throw new UnauthorizedException('User not found');
+      throw new UnauthorizedException(AUTH_REQUIRED_MESSAGE);
     }
 
     return toAuthUser(user);
+  }
+
+  private async recordFailedLogin(user: UserDocument): Promise<void> {
+    const failedAttempts = (user.failedAttempts ?? 0) + 1;
+    user.failedAttempts = failedAttempts;
+
+    if (failedAttempts >= LOGIN_MAX_FAILED_ATTEMPTS) {
+      user.lockedUntil = new Date(Date.now() + LOGIN_LOCKOUT_MS);
+    }
+
+    await user.save();
+  }
+
+  private async clearLoginLockout(user: UserDocument): Promise<void> {
+    if ((user.failedAttempts ?? 0) === 0 && !user.lockedUntil) {
+      return;
+    }
+
+    user.failedAttempts = 0;
+    user.lockedUntil = undefined;
+    await user.save();
   }
 
   private async createUserAndSession(dto: RegisterRequest): Promise<IssuedAuthTokens> {
@@ -177,6 +215,7 @@ export class AuthService {
         email,
         username: dto.username,
         passwordHash,
+        failedAttempts: 0,
       });
     } catch (error) {
       if (isDuplicateKeyError(error)) {

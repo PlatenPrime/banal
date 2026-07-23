@@ -10,6 +10,7 @@ import { apiV1Path } from '../src/config/api-versioning';
 import { cookieHeader, mergeCookies } from './helpers/cookie-jar';
 import { createE2eApp } from './helpers/create-e2e-app';
 import { createE2eEnv, createIsolatedMongoUri, isMongoReachable } from './helpers/mongo-test-uri';
+import { jsonOriginHeaders } from './helpers/origin-headers';
 
 describe('Health (e2e)', () => {
   let mongoAvailable = false;
@@ -91,7 +92,7 @@ describe('Examples (e2e)', () => {
 
     const registerResponse = await fetch(`${baseUrl}${apiV1Path('auth/register')}`, {
       method: 'POST',
-      headers: { 'content-type': 'application/json' },
+      headers: jsonOriginHeaders(),
       body: JSON.stringify({
         email: 'examples-e2e@example.com',
         username: 'examples_e2e',
@@ -105,7 +106,7 @@ describe('Examples (e2e)', () => {
     const createResponse = await fetch(`${baseUrl}${apiV1Path('examples')}`, {
       method: 'POST',
       headers: {
-        'content-type': 'application/json',
+        ...jsonOriginHeaders(),
         cookie: cookieHeader(jar, [ACCESS_TOKEN_COOKIE]),
       },
       body: JSON.stringify({ name: 'E2E example', description: 'Created in test' }),

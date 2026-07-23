@@ -10,7 +10,7 @@ Railway terminates TLS and proxies to the Nest process. For Secure cookies and c
 TRUST_PROXY=1
 ```
 
-Local development should keep `TRUST_PROXY=0` (or omit). Nest `app.set('trust proxy', 1)` wiring is **Track 16** step 151; the env flag is validated in Zod from Track 12.
+Local development should keep `TRUST_PROXY=0` (or omit). Nest wires `app.set('trust proxy', 1)` when `TRUST_PROXY` is truthy (T16 step 151).
 
 ## Variables
 

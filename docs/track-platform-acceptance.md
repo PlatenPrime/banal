@@ -31,7 +31,7 @@ Fill statuses to ✅ as tracks close. Do not mark this checklist complete until 
 | T13 Atlas & network   | 115–122 | `done` |
 | T14 Auth data & ADR   | 123–128 | `done` |
 | T15 Auth API          | 129–145 | `todo` |
-| T16 Auth security     | 146–155 | `todo` |
+| T16 Auth security     | 146–155 | `done` |
 | T17 Auth web          | 156–168 | `todo` |
 | T18 Feature flags     | 169–174 | `todo` |
 | T19 Quality expansion | 175–182 | `todo` |
