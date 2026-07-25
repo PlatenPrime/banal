@@ -136,6 +136,23 @@ Until Atlas URI is set on Railway Variables, keep the Railway Mongo plugin. See 
 
 Do **not** put `api.banal.app` on the staging service.
 
+## Watch / promote (T24)
+
+Policy locked with [deploy/README.md](README.md)#deploy-automation-t24:
+
+| Railway env  | Service | GitHub source                         | Deploy trigger                                                  |
+| ------------ | ------- | ------------------------------------- | --------------------------------------------------------------- |
+| `staging`    | `api`   | this monorepo                         | **Auto** on push to branch **`main`**                           |
+| `production` | `api`   | this monorepo (or image from staging) | **Manual** only — Redeploy / promote; **not** every `main` push |
+
+### Dashboard checklist (owner verify)
+
+1. Project `banal` → environment **staging** → service `api` → **Settings** → Source / Triggers: connected to GitHub; watch branch **`main`**; auto-deploy **on**.
+2. Environment **production** → service `api` → **Settings** → Source / Triggers: auto-deploy on `main` **off** (disconnected trigger, or no watch on `main`). Prod updates via Deployments → known-good → **Redeploy** (or explicit promote runbook).
+3. Record result in [track-24-cicd-deploy-automation-freeze.md](../track-24-cicd-deploy-automation-freeze.md).
+
+Do **not** wire Railway → GitHub Actions deploy tokens; smoke is separate ([`.github/workflows/deploy-smoke.yml`](../../.github/workflows/deploy-smoke.yml)).
+
 ## Service URLs
 
 | Environment | Railway project / env  | Public API base URL                                           | Recorded   |
@@ -206,7 +223,8 @@ See [ops/incident-rollback.md](../ops/incident-rollback.md)#railway-api. Summary
 - [ops/alerting.md](../ops/alerting.md) — alerting stub (no required SaaS)
 - [LOCAL_SETUP.md](../LOCAL_SETUP.md)#trust_proxy
 - [cookie-cutover.md](cookie-cutover.md) — T23 preview → prod cookies
-- [PLATFORM-ROADMAP.md](../PLATFORM-ROADMAP.md) — T21 / T23
+- [PLATFORM-ROADMAP.md](../PLATFORM-ROADMAP.md) — T21 / T23 / T24
+- [track-24-cicd-deploy-automation-freeze.md](../track-24-cicd-deploy-automation-freeze.md)
 - [incident-rollback.md](../ops/incident-rollback.md)
 - [`apps/api/Dockerfile`](../../apps/api/Dockerfile)
 - [`railway.toml`](../../railway.toml)

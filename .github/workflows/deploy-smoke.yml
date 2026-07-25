@@ -1,0 +1,68 @@
+# Post-deploy health smoke (T24). Does not deploy — Vercel/Railway Git integrations own that.
+name: Deploy smoke
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: GitHub Environment to smoke (staging or production)
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+        default: staging
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-smoke-${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'staging' }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    name: smoke (${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'staging' }})
+    runs-on: ubuntu-latest
+    # push → staging only; production only via workflow_dispatch + Environment reviewers
+    environment: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'staging' }}
+    env:
+      # Public URLs from Environment variables (never JWT / Mongo / platform tokens)
+      API_BASE_URL: ${{ vars.API_BASE_URL }}
+      WEB_BASE_URL: ${{ vars.WEB_BASE_URL }}
+      HUSKY: '0'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Require Environment URLs
+        run: |
+          if [ -z "$API_BASE_URL" ] || [ -z "$WEB_BASE_URL" ]; then
+            echo "::error::Set Environment variables API_BASE_URL and WEB_BASE_URL on GitHub Environment '${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'staging' }}' (Settings → Environments). See docs/deploy/README.md#github-environments-smoke-only"
+            exit 1
+          fi
+          # Do not print full URLs if they ever become sensitive; hosts only for triage
+          echo "API host configured: $(node -e "try{console.log(new URL(process.env.API_BASE_URL).host)}catch{console.log('invalid')}")"
+          echo "WEB host configured: $(node -e "try{console.log(new URL(process.env.WEB_BASE_URL).host)}catch{console.log('invalid')}")"
+
+      - name: Wait for Git deploy settle
+        # Native Vercel/Railway deploys are async after push; give them a short window.
+        run: sleep 90
+        if: github.event_name == 'push'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: API smoke
+        run: node ./scripts/smoke-api.mjs
+
+      - name: Web smoke
+        run: node ./scripts/smoke-web.mjs

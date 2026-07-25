@@ -1,15 +1,58 @@
 # Deploy docs
 
-Environment matrix and secrets: [ops/environments.md](../ops/environments.md), [ops/secrets-checklist.md](../ops/secrets-checklist.md). Atlas connection and network policy: [atlas.md](atlas.md) (T13). Railway API runbook: [railway.md](railway.md) (T21). Vercel web runbook: [vercel.md](vercel.md) (T22). Custom domains & cookie cutover: [cookie-cutover.md](cookie-cutover.md) (T23).
+Environment matrix and secrets: [ops/environments.md](../ops/environments.md), [ops/secrets-checklist.md](../ops/secrets-checklist.md). Atlas connection and network policy: [atlas.md](atlas.md) (T13). Railway API runbook: [railway.md](railway.md) (T21). Vercel web runbook: [vercel.md](vercel.md) (T22). Custom domains & cookie cutover: [cookie-cutover.md](cookie-cutover.md) (T23). Deploy automation (T24): [below](#deploy-automation-t24).
 
-| Doc                                    | Status     | Scope                                                    |
-| -------------------------------------- | ---------- | -------------------------------------------------------- |
-| [atlas.md](atlas.md)                   | done (T13) | Connection URI policy; network access; readiness         |
-| [railway.md](railway.md)               | done (T21) | API on Railway; Dockerfile; env mapping; smoke; rollback |
-| [vercel.md](vercel.md)                 | done (T22) | Web on Vercel; monorepo Root Directory; SSR smoke        |
-| [cookie-cutover.md](cookie-cutover.md) | done (T23) | Preview → prod cookie profile; DNS gate; rollback        |
+| Doc                                                     | Status     | Scope                                                    |
+| ------------------------------------------------------- | ---------- | -------------------------------------------------------- |
+| [atlas.md](atlas.md)                                    | done (T13) | Connection URI policy; network access; readiness         |
+| [railway.md](railway.md)                                | done (T21) | API on Railway; Dockerfile; env mapping; smoke; rollback |
+| [vercel.md](vercel.md)                                  | done (T22) | Web on Vercel; monorepo Root Directory; SSR smoke        |
+| [cookie-cutover.md](cookie-cutover.md)                  | done (T23) | Preview → prod cookie profile; DNS gate; rollback        |
+| This file — [Deploy automation](#deploy-automation-t24) | done (T24) | Strategy lock; Environments; smoke workflow; permissions |
 
 Platform acceptance tracks URLs in [track-platform-acceptance.md](../track-platform-acceptance.md).
+
+## Deploy automation (T24)
+
+**Decision locked (2026-07-25):** Actions does **not** deploy. Platforms deploy via native Git; Actions only smokes health after deploy.
+
+| Layer | Who deploys                   | Policy                                                                                                                                                                                                                                                                                                            |
+| ----- | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Web   | **Vercel GitHub integration** | Both `banal-web-staging` and `banal-web-production`: Production Branch **`main`**. Staging allows PR previews; production skips preview builds (Ignored Build Step). Details: [vercel.md](vercel.md)#git--production-branch-t24.                                                                                  |
+| API   | **Railway GitHub deploy**     | Staging service: watch / auto-deploy **`main`**. Production: **manual** Redeploy / promote (no auto-deploy on every `main` push). Details: [railway.md](railway.md)#watch--promote-t24.                                                                                                                           |
+| Smoke | **Optional** GitHub Actions   | [`.github/workflows/deploy-smoke.yml`](../../.github/workflows/deploy-smoke.yml): `workflow_dispatch` + `push` to `main` → staging only. Uses Environment vars `API_BASE_URL` / `WEB_BASE_URL` + [`scripts/smoke-api.mjs`](../../scripts/smoke-api.mjs) / [`scripts/smoke-web.mjs`](../../scripts/smoke-web.mjs). |
+
+### GitHub Environments (smoke only)
+
+| Environment  | Required reviewers  | Variables (public URLs — not Secrets)                                                                                                                                              | Notes                                        |
+| ------------ | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| `staging`    | off                 | `API_BASE_URL=https://api-staging-9c27.up.railway.app`, `WEB_BASE_URL=https://banal-web-staging.vercel.app`                                                                        | Auto smoke on push to `main`                 |
+| `production` | **on** (repo owner) | Interim: `API_BASE_URL=https://api-production-b6c9.up.railway.app`, `WEB_BASE_URL=https://banal-web-production.vercel.app` (after T23 cutover → `api.banal.app` / `app.banal.app`) | Smoke only via `workflow_dispatch` + Approve |
+
+**Do not** store JWT, Mongo URIs, or Railway/Vercel tokens in GitHub Environments. App secrets stay on Railway/Vercel. Placement: [ops/secrets-checklist.md](../ops/secrets-checklist.md)#github-environments-t24.
+
+**Owner setup (live gate):** create `staging` / `production` under Settings → Environments if missing; set variables above; enable Required reviewers on `production`. Freeze evidence: [track-24-cicd-deploy-automation-freeze.md](../track-24-cicd-deploy-automation-freeze.md).
+
+### Optional Playwright against staging
+
+Not wired as a default GHA job. To run locally or as a future nightly/post-deploy job against staging:
+
+```bash
+# Point client + Playwright at staging (cross-site SameSite=None profile)
+export VITE_API_URL=https://api-staging-9c27.up.railway.app
+export WEB_BASE_URL=https://banal-web-staging.vercel.app
+# Staging needs a bootstrapped e2e user (Railway one-off or known test account)
+npx nx run web-e2e:e2e
+```
+
+Auth e2e against staging needs credentials that exist in `app_staging` / Railway Mongo — do **not** put those passwords in Actions logs. Prefer local or a protected Environment with masked secrets if you add a job later. See [testing.md](../testing.md)#optional-playwright-against-staging-t24.
+
+### Secrets in Actions logs + deploy permissions
+
+- Smoke workflow prints only HTTP status lines from public `/health` and SSR pages — no env dumps, no `SMOKE_PASSWORD` / JWT.
+- If a future job needs a sensitive input, mask it (`::add-mask::`) and store it as an Environment **secret**, never `echo` it.
+- Workflow permissions: `contents: read` only. **No** `RAILWAY_TOKEN` / `VERCEL_TOKEN` in Actions for the T24 path (Git integrations own deploy).
+- Least privilege: Environments scope which URLs a job may smoke; production smoke requires a human reviewer.
 
 ## Custom domains (T23) — domain plan
 

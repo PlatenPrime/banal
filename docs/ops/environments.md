@@ -45,13 +45,16 @@ OTel wiring: [observability.md](observability.md). Alerting stub: [alerting.md](
 
 ## Secrets placement
 
-| Store                         | Allowed content                                   |
-| ----------------------------- | ------------------------------------------------- |
-| Railway (API)                 | JWT secrets, `MONGODB_URI`, cookie/CORS/OTEL vars |
-| Vercel (web)                  | **Only** public `VITE_*` (e.g. `VITE_API_URL`)    |
-| GitHub Actions / Environments | CI dummy JWT + `mongo:7`; deploy secrets in T24   |
-| Local `apps/*/.env`           | Full API secrets; gitignored                      |
-| Git / Vite client bundle      | **Never** secrets                                 |
+| Store                     | Allowed content                                                                  |
+| ------------------------- | -------------------------------------------------------------------------------- |
+| Railway (API)             | JWT secrets, `MONGODB_URI`, cookie/CORS/OTEL vars                                |
+| Vercel (web)              | **Only** public `VITE_*` (e.g. `VITE_API_URL`)                                   |
+| GitHub Actions CI         | Dummy JWT + `mongo:7` / `app_foundation_ci`                                      |
+| GitHub Environments (T24) | Public smoke URLs only (`API_BASE_URL`, `WEB_BASE_URL`); **no** JWT/Mongo/tokens |
+| Local `apps/*/.env`       | Full API secrets; gitignored                                                     |
+| Git / Vite client bundle  | **Never** secrets                                                                |
+
+Setup checklist: [deploy/README.md](../deploy/README.md)#github-environments-smoke-only, [secrets-checklist.md](secrets-checklist.md)#github-environments-t24.
 
 ## Preview CORS plan
 
