@@ -138,6 +138,15 @@ mongodb://127.0.0.1:27017/app_foundation_dev
 
 Atlas staging/prod connection and network policy (not for local CI): [deploy/atlas.md](deploy/atlas.md). Health probes: `GET /health` (liveness), `GET /health/ready` (Mongo ping → **503** if down).
 
+### Local vs deployed
+
+| Context            | Mongo                                 | API                       | Web                       |
+| ------------------ | ------------------------------------- | ------------------------- | ------------------------- |
+| **Local**          | Docker Compose (`app_foundation_dev`) | `nx serve api` on `:4000` | `nx serve web` on `:3000` |
+| **Staging / prod** | Mongo Atlas (env `MONGODB_URI` only)  | Railway                   | Vercel                    |
+
+Do not point local `.env` at Atlas prod. Deploy runbooks, cookie cutover, and smoke: [deploy/README.md](deploy/README.md). Env matrix: [ops/environments.md](ops/environments.md).
+
 Stop:
 
 ```bash

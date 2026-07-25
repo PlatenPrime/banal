@@ -19,13 +19,13 @@ Closes **T24** (steps **227–236**) from [PLATFORM-ROADMAP.md](PLATFORM-ROADMAP
 
 ## Owner gates (fill when done)
 
-| Gate                                           | Done | Notes                                                                                                                                                                     |
-| ---------------------------------------------- | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| GH Environment `staging` + vars                | ☑    | Owner confirmed 2026-07-25 (Settings → Environments)                                                                                                                      |
-| GH Environment `production` + reviewers + vars | ☑    | Owner confirmed 2026-07-25                                                                                                                                                |
-| Railway: staging auto `main`; prod manual      | ☐    | **Prod OK** (manual / auto unavailable). **Staging** 2026-07-25: repo+`main` connected, Wait for CI OFF, but **Auto deploy unavailable** — need Enable before gate closes |
-| Vercel: both projects Production Branch `main` | ☐    | [vercel.md](deploy/vercel.md)#dashboard-checklist-owner-verify                                                                                                            |
-| Actions → Deploy smoke → `staging` green       | ☐    | After Environments exist + workflow on `main`                                                                                                                             |
+| Gate                                           | Done | Notes                                                                                                                                                      |
+| ---------------------------------------------- | ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| GH Environment `staging` + vars                | ☑    | Owner confirmed 2026-07-25 (Settings → Environments)                                                                                                       |
+| GH Environment `production` + reviewers + vars | ☑    | Owner confirmed 2026-07-25                                                                                                                                 |
+| Railway: staging auto `main`; prod manual      | ☑    | Owner 2026-07-25: staging `api` → `PlatenPrime/banal` / `main`, **Auto deploys when pushed** ON, Wait for CI OFF. Prod: auto unavailable / manual Redeploy |
+| Vercel: both projects Production Branch `main` | ☑    | Owner confirmed 2026-07-25: `banal-web-staging` + `banal-web-production` → Production Branch **`main`**                                                    |
+| Actions → Deploy smoke → `staging` green       | ☐    | Merge T24 to `main`, then Actions → Deploy smoke → environment `staging`                                                                                   |
 
 ## Verification (when gates clear)
 

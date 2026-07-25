@@ -1,6 +1,6 @@
 # Deploy docs
 
-Environment matrix and secrets: [ops/environments.md](../ops/environments.md), [ops/secrets-checklist.md](../ops/secrets-checklist.md). Atlas connection and network policy: [atlas.md](atlas.md) (T13). Railway API runbook: [railway.md](railway.md) (T21). Vercel web runbook: [vercel.md](vercel.md) (T22). Custom domains & cookie cutover: [cookie-cutover.md](cookie-cutover.md) (T23). Deploy automation (T24): [below](#deploy-automation-t24).
+Index for platform deploy runbooks (T13–T24) and linked ops. Platform freeze: [track-platform-acceptance.md](../track-platform-acceptance.md) (`platform-v1.0.0`).
 
 | Doc                                                     | Status     | Scope                                                    |
 | ------------------------------------------------------- | ---------- | -------------------------------------------------------- |
@@ -10,7 +10,18 @@ Environment matrix and secrets: [ops/environments.md](../ops/environments.md), [
 | [cookie-cutover.md](cookie-cutover.md)                  | done (T23) | Preview → prod cookie profile; DNS gate; rollback        |
 | This file — [Deploy automation](#deploy-automation-t24) | done (T24) | Strategy lock; Environments; smoke workflow; permissions |
 
-Platform acceptance tracks URLs in [track-platform-acceptance.md](../track-platform-acceptance.md).
+### Ops runbooks (linked)
+
+| Doc                                                     | Scope                                              |
+| ------------------------------------------------------- | -------------------------------------------------- |
+| [ops/environments.md](../ops/environments.md)           | Env matrix; naming; local vs staging/prod          |
+| [ops/secrets-checklist.md](../ops/secrets-checklist.md) | Secret placement; GH Environments; least privilege |
+| [ops/incident-rollback.md](../ops/incident-rollback.md) | Railway / Vercel rollback paths                    |
+| [ops/observability.md](../ops/observability.md)         | Logging / OTel behind flag                         |
+| [ops/alerting.md](../ops/alerting.md)                   | Alert ownership notes                              |
+| [ops/feature-flags.md](../ops/feature-flags.md)         | Feature flag ops                                   |
+
+Quick links: Atlas → [atlas.md](atlas.md) · Railway → [railway.md](railway.md) · Vercel → [vercel.md](vercel.md) · Cookies → [cookie-cutover.md](cookie-cutover.md) · Automation → [below](#deploy-automation-t24).
 
 ## Deploy automation (T24)
 
