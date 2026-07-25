@@ -86,7 +86,7 @@ Every variable mirrors [`apps/api/src/config/env.schema.ts`](../../apps/api/src/
 | ----------------------------- | -------------------------------------- | ------------------------------------------------- | -------- | --------------------------------------------------------------- |
 | `NODE_ENV`                    | `production`                           | `production`                                      | yes      |                                                                 |
 | `PORT`                        | (Railway injects)                      | (Railway injects)                                 | yes\*    | Usually omit in dashboard                                       |
-| `MONGODB_URI`                 | Railway Mongo / Atlas `app_staging`    | Railway Mongo / Atlas `app_prod`                  | yes      | Live: `${{MongoDB.MONGO_URL}}`; Atlas when swapped              |
+| `MONGODB_URI`                 | Atlas `app_staging`                    | Atlas `btw` (legacy shared DB)                    | yes      | Swapped to Atlas 2026-07-25; Railway Mongo removed              |
 | `WEB_ORIGIN`                  | `https://banal-web-staging.vercel.app` | `https://app.banal.app` (interim: `*.vercel.app`) | yes      | Exact origin; cutover in [cookie-cutover.md](cookie-cutover.md) |
 | `WEB_ORIGIN_PREVIEW_REGEX`    | `^https://.*\.vercel\.app$`            | unset                                             | no       | Staging PR previews only; never on prod                         |
 | `WEB_ORIGIN_PREVIEW_LIST`     | optional CSV                           | usually unset                                     | no       |                                                                 |
@@ -107,21 +107,16 @@ Before marking production live:
 
 - [x] `JWT_ACCESS_SECRET` and `JWT_REFRESH_SECRET` are each ≥32 random characters. (set 2026-07-23 via Railway CLI)
 - [x] Prod secrets **differ** from staging (and from each other).
-- [x] `MONGODB_URI` on prod points at the production environment Mongo (Railway plugin; swap to Atlas `app_prod` when ready).
+- [x] `MONGODB_URI` on prod points at the production environment Mongo (Atlas `btw` since 2026-07-25; Railway plugin removed).
 - [x] Values exist only in Railway Variables — not in git, chat, or `VITE_*`.
 
 ## Atlas network (Railway)
 
-**Recorded approach (2026-07-23, T21-197):** staging and production use **Railway-managed MongoDB** (private network `*.railway.internal`) via `MONGODB_URI=${{MongoDB.MONGO_URL}}`. No public Atlas allowlist required for this interim. `/health/ready` returned 200 on both environments.
+**Recorded approach (2026-07-25, swap done):** staging and production use **Mongo Atlas** (legacy shared cluster `cluster0`). Production `MONGODB_URI` → DB **`btw`** (the live legacy database, per ADR-001 shared-DB strangler); staging → DB **`app_staging`** on the same cluster. The interim **Railway-managed MongoDB** service and its volume were **removed** from the project the same day after `/health/ready` returned 200 on both environments against Atlas.
 
-When swapping to **Mongo Atlas** (legacy shared cluster):
+Network Access: Atlas currently admits **all IPs (`0.0.0.0/0`)** — treated as the documented ops exception from [atlas.md](atlas.md)#0000-risk-note (owner-approved 2026-07-25; tighten to a Railway egress allowlist when stable egress is available).
 
-| Approach                        | When to use                                      | Risk                          |
-| ------------------------------- | ------------------------------------------------ | ----------------------------- |
-| Atlas IP allowlist (egress IPs) | Stable Railway static egress / documented ranges | Must update if egress changes |
-| Temporary `0.0.0.0/0`           | Dynamic egress, no private link yet              | Open internet; revisit ASAP   |
-
-Until Atlas URI is set on Railway Variables, keep the Railway Mongo plugin. See [atlas.md](atlas.md)#network-access.
+History (2026-07-23, T21-197): interim Railway Mongo via `MONGODB_URI=${{MongoDB.MONGO_URL}}` on the private network — superseded by the swap above.
 
 ## Custom domain (`api.banal.app`)
 

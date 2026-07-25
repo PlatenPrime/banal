@@ -8,7 +8,7 @@ Canonical Atlas policy for the platform API (Track **T13**). DB naming and env p
 
 | Store                        | Allowed                                      |
 | ---------------------------- | -------------------------------------------- |
-| Railway staging / production | Atlas URI for `app_staging` / `app_prod`     |
+| Railway staging / production | Atlas URI for `app_staging` / `btw` (legacy) |
 | Local `apps/api/.env`        | Docker Mongo or a **non-prod** Atlas URI     |
 | GitHub Actions CI            | Docker `mongo:7` → `app_foundation_ci` only  |
 | Vercel / any `VITE_*`        | **Never** — browser must not see Mongo creds |
@@ -37,17 +37,17 @@ Local Docker Compose typically needs no Atlas-specific params:
 mongodb://127.0.0.1:27017/app_foundation_dev
 ```
 
-### Shared cluster, separate databases
+### Shared cluster and database layout
 
-Staging and production may share an Atlas **cluster** with the legacy app, but use **different database names** (`app_staging` / `app_prod` vs legacy DB). Collection ownership and write modes are governed by [collections-inventory.md](../data/collections-inventory.md) and ADR-001 — not by URI alone.
+Staging and production share the Atlas **cluster** with the legacy app. Since 2026-07-25 **production uses the legacy database itself** (`btw`) — the target ADR-001 strangler layout: the API owns only `_foundation_*` / `a_*` collections there and treats legacy collections as read-only. **Staging** uses a separate database **`app_staging`** on the same cluster so e2e/preview traffic never touches live data. Collection ownership and write modes are governed by [collections-inventory.md](../data/collections-inventory.md) and ADR-001 — not by URI alone.
 
 ## Network access
 
 ### Staging and production
 
 1. Prefer an **IP allowlist** (or Atlas private networking when available) that admits Railway egress for the API service(s).
-2. **T21-197 (2026-07-23):** live staging/prod API use **Railway-managed MongoDB** on the private network (no Atlas allowlist yet). When migrating to Atlas, pick allowlist or temporary `0.0.0.0/0` per the table below and record the date in [railway.md](railway.md)#atlas-network-railway.
-3. Keep Atlas Database Users scoped per environment (staging vs prod credentials; least privilege).
+2. **2026-07-25 (swap done):** staging/prod API moved from interim Railway Mongo to **Atlas** (`cluster0`, prod DB `btw`, staging DB `app_staging`). Network Access currently `0.0.0.0/0` — recorded ops exception (see risk note below); tighten when stable Railway egress is available. Details: [railway.md](railway.md)#atlas-network-railway.
+3. Keep Atlas Database Users scoped per environment (staging vs prod credentials; least privilege). **Current state:** one shared DB user for both environments — split into per-env users as a follow-up.
 
 ### `0.0.0.0/0` risk note
 

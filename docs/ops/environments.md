@@ -9,7 +9,7 @@ Canonical definition of **local**, **preview**, **staging**, and **production** 
 | **local**      | `localhost:4000` (Nest) | `localhost:3000` (Vite)                                    | `app_foundation_dev`            | Docker Compose Mongo; copy `.env.example` → `.env`                                                                     |
 | **preview**    | Railway **staging** API | Vercel PR preview (`*.vercel.app` on `banal-web-staging`)  | `app_staging` (via staging API) | CORS via `WEB_ORIGIN` + `WEB_ORIGIN_PREVIEW_REGEX`; interim SameSite=None                                              |
 | **staging**    | Railway staging service | `https://banal-web-staging.vercel.app`                     | `app_staging`                   | Separate Vercel project from prod                                                                                      |
-| **production** | Railway prod service    | Planned: `https://app.banal.app` (interim: `*.vercel.app`) | `app_prod`                      | Custom domains + SameSite=Lax ([cookie-cutover.md](../deploy/cookie-cutover.md)); interim SameSite=None until DNS live |
+| **production** | Railway prod service    | Planned: `https://app.banal.app` (interim: `*.vercel.app`) | `btw` (legacy shared DB)        | Custom domains + SameSite=Lax ([cookie-cutover.md](../deploy/cookie-cutover.md)); interim SameSite=None until DNS live |
 
 CI (GitHub Actions e2e) uses Docker `mongo:7` and DB name **`app_foundation_ci`** — never Atlas staging or prod.
 
@@ -17,7 +17,7 @@ CI (GitHub Actions e2e) uses Docker `mongo:7` and DB name **`app_foundation_ci`*
 
 | Variable                      | local                      | preview / staging                            | production                                                                      |
 | ----------------------------- | -------------------------- | -------------------------------------------- | ------------------------------------------------------------------------------- |
-| `MONGODB_URI`                 | `…/app_foundation_dev`     | Atlas → `app_staging`                        | Atlas → `app_prod`                                                              |
+| `MONGODB_URI`                 | `…/app_foundation_dev`     | Atlas → `app_staging`                        | Atlas → `btw` (legacy shared DB)                                                |
 | `WEB_ORIGIN`                  | `http://localhost:3000`    | `https://banal-web-staging.vercel.app`       | `https://app.banal.app` (interim: `https://banal-web-production.vercel.app`)    |
 | `WEB_ORIGIN_PREVIEW_REGEX`    | unset                      | `^https://.*\.vercel\.app$`                  | unset (or empty)                                                                |
 | `WEB_ORIGIN_PREVIEW_LIST`     | unset                      | optional comma-separated URLs                | unset                                                                           |
@@ -39,9 +39,11 @@ OTel wiring: [observability.md](observability.md). Alerting stub: [alerting.md](
 | Local       | `app_foundation_dev` | `apps/api/.env`                  |
 | CI          | `app_foundation_ci`  | `.github/workflows/ci.yml`       |
 | Staging     | `app_staging`        | Railway staging `MONGODB_URI`    |
-| Production  | `app_prod`           | Railway production `MONGODB_URI` |
+| Production  | `btw` (legacy)       | Railway production `MONGODB_URI` |
 
-**Rule:** CI and local **never** use Atlas URIs that point at `app_prod` or `app_staging`. Aligns with ADR-001 (prod Mongo not in CI). Full Atlas URI params and network allowlist: [deploy/atlas.md](../deploy/atlas.md).
+Since 2026-07-25 production connects to the **legacy shared database `btw`** on Atlas (ADR-001 strangler layout; app-owned collections are `_foundation_*` / `a_*`, legacy collections read-only). The interim Railway-managed MongoDB was removed.
+
+**Rule:** CI and local **never** use Atlas URIs that point at `btw` or `app_staging`. Aligns with ADR-001 (prod Mongo not in CI). Full Atlas URI params and network allowlist: [deploy/atlas.md](../deploy/atlas.md).
 
 ## Secrets placement
 
