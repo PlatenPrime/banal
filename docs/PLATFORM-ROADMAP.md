@@ -581,14 +581,14 @@ T25 Acceptance + tag platform-v1.0.0
 
 ### Текущий этап
 
-| Поле             | Значение                          |
-| ---------------- | --------------------------------- |
-| Трек             | **T24 — CI/CD Deploy Automation** |
-| Текущий шаг      | **227** — Deploy strategy doc     |
-| Статус шага      | `todo`                            |
-| Последний `done` | **226** — T23 freeze              |
-| Закрыто шагов    | **130 / 150** (097–246)           |
-| Обновлено        | 2026-07-25                        |
+| Поле             | Значение                    |
+| ---------------- | --------------------------- |
+| Трек             | **T25 — Runbooks & Freeze** |
+| Текущий шаг      | **237** — Deploy index      |
+| Статус шага      | `todo`                      |
+| Последний `done` | **236** — T24 freeze        |
+| Закрыто шагов    | **140 / 150** (097–246)     |
+| Обновлено        | 2026-07-25                  |
 
 ### Сводка по трекам
 
@@ -607,7 +607,7 @@ T25 Acceptance + tag platform-v1.0.0
 | T21 Railway API       | 191–205 | 15   | `done` |
 | T22 Vercel web        | 206–218 | 13   | `done` |
 | T23 Custom domains    | 219–226 | 8    | `done` |
-| T24 CI/CD deploy      | 227–236 | 0    | `todo` |
+| T24 CI/CD deploy      | 227–236 | 10   | `done` |
 | T25 Runbooks & freeze | 237–246 | 0    | `todo` |
 
 ### Чеклист шагов
@@ -809,18 +809,18 @@ T25 Acceptance + tag platform-v1.0.0
 
 #### T24 — CI/CD Deploy Automation (227–236)
 
-| Step | Title                               | Status | Notes |
-| ---- | ----------------------------------- | ------ | ----- |
-| 227  | Deploy strategy doc                 | `todo` |       |
-| 228  | GitHub Environment staging          | `todo` |       |
-| 229  | GitHub Environment production       | `todo` |       |
-| 230  | Post-deploy smoke workflow          | `todo` |       |
-| 231  | Optional Playwright against staging | `todo` |       |
-| 232  | Railway watch branch                | `todo` |       |
-| 233  | Vercel prod branch                  | `todo` |       |
-| 234  | No prod secrets in Actions logs     | `todo` |       |
-| 235  | Deploy permissions                  | `todo` |       |
-| 236  | T24 freeze                          | `todo` |       |
+| Step | Title                               | Status | Notes                                                                                     |
+| ---- | ----------------------------------- | ------ | ----------------------------------------------------------------------------------------- |
+| 227  | Deploy strategy doc                 | `done` | [`deploy/README.md`](deploy/README.md)#deploy-automation-t24                              |
+| 228  | GitHub Environment staging          | `done` | Checklist + vars; live create gated — freeze                                              |
+| 229  | GitHub Environment production       | `done` | Required reviewers checklist; live gated                                                  |
+| 230  | Post-deploy smoke workflow          | `done` | [`.github/workflows/deploy-smoke.yml`](../.github/workflows/deploy-smoke.yml)             |
+| 231  | Optional Playwright against staging | `done` | Documented in deploy README + [`testing.md`](testing.md)                                  |
+| 232  | Railway watch branch                | `done` | [`railway.md`](deploy/railway.md)#watch--promote-t24; dashboard verify gated              |
+| 233  | Vercel prod branch                  | `done` | [`vercel.md`](deploy/vercel.md)#git--production-branch-t24; dashboard verify gated        |
+| 234  | No prod secrets in Actions logs     | `done` | [`ops/secrets-checklist.md`](ops/secrets-checklist.md)#no-prod-secrets-in-actions-logs    |
+| 235  | Deploy permissions                  | `done` | [`ops/secrets-checklist.md`](ops/secrets-checklist.md)#deploy-permissions-least-privilege |
+| 236  | T24 freeze                          | `done` | [`track-24-cicd-deploy-automation-freeze.md`](track-24-cicd-deploy-automation-freeze.md)  |
 
 #### T25 — Runbooks & Freeze (237–246)
 

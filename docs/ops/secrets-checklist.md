@@ -44,10 +44,33 @@ Recorded web origins (2026-07-25): staging `https://banal-web-staging.vercel.app
 | Context             | Content                                                                 |
 | ------------------- | ----------------------------------------------------------------------- |
 | Actions CI (e2e)    | `mongo:7` service; `MONGODB_URI=…/app_foundation_ci`; dummy JWT secrets |
-| GitHub Environments | Deploy secrets for T24 automation (not used until then)                 |
+| GitHub Environments | **Smoke URLs only** (T24) — see below                                   |
 | Repository secrets  | Prefer Environments over org-wide when possible                         |
 
 CI must **never** receive Atlas prod/staging URIs.
+
+### GitHub Environments (T24)
+
+Environments `staging` and `production` exist for [`.github/workflows/deploy-smoke.yml`](../../.github/workflows/deploy-smoke.yml) only. They hold **public base URLs**, not app secrets.
+
+| Environment  | Variables                                                                                                  | Secrets | Protection                          |
+| ------------ | ---------------------------------------------------------------------------------------------------------- | ------- | ----------------------------------- |
+| `staging`    | `API_BASE_URL`, `WEB_BASE_URL` (staging Railway / Vercel hosts)                                            | none    | none                                |
+| `production` | `API_BASE_URL`, `WEB_BASE_URL` (interim `*.up.railway.app` / `*.vercel.app`; after cutover custom domains) | none    | **Required reviewers** (repo owner) |
+
+**Never** put in Environments: `JWT_*`, `MONGODB_URI`, `SMOKE_PASSWORD`, `RAILWAY_TOKEN`, `VERCEL_TOKEN`.
+
+#### No prod secrets in Actions logs
+
+- Do not `echo`, `printenv`, or debug-dump Environment / repository secrets.
+- Deploy smoke does not pass login credentials; health/SSR only.
+- If a future job needs a sensitive value: store as an Environment **secret**, use `${{ secrets.NAME }}` without logging, and `echo "::add-mask::$VALUE"` when a step must materialize it into the shell.
+
+#### Deploy permissions (least privilege)
+
+- Deploy smoke workflow: `permissions: contents: read` only; jobs bind `environment:` for URL vars.
+- **No** platform deploy tokens in Actions — Vercel Git + Railway GitHub own deploys ([deploy/README.md](../deploy/README.md)#deploy-automation-t24).
+- Do not grant Actions `contents: write` or org-wide admin tokens for smoke.
 
 ## Local
 
@@ -76,4 +99,6 @@ Prefer rotating **access and refresh together** so there is no mixed-secret wind
 
 - [environments.md](environments.md)
 - [SECURITY.md](../../SECURITY.md)
-- [PLATFORM-ROADMAP.md](../PLATFORM-ROADMAP.md) — Track 12
+- [PLATFORM-ROADMAP.md](../PLATFORM-ROADMAP.md) — Track 12 / T24
+- [deploy/README.md](../deploy/README.md)#deploy-automation-t24
+- [track-24-cicd-deploy-automation-freeze.md](../track-24-cicd-deploy-automation-freeze.md)

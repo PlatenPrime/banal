@@ -101,6 +101,17 @@ Use the same host for web and `WEB_ORIGIN` / `VITE_API_URL` (prefer `localhost` 
 
 GitHub Actions job **`playwright`** (ubuntu-only, `mongo:7`): builds api+web, starts both, bootstraps admin, runs Chromium. Required for merges into `main` — see [branch-protection.md](./branch-protection.md).
 
+### Optional Playwright against staging (T24)
+
+**Not** a default or required Actions job. Local CI Playwright targets the ephemeral stack in `ci.yml`. Against live staging:
+
+1. Staging API + web healthy (`scripts/smoke-api.mjs` / `scripts/smoke-web.mjs`).
+2. Bootstrapped test user in staging Mongo (Railway one-off `bootstrap-admin` or known account).
+3. Point the e2e client at staging origins (`VITE_API_URL` / `WEB_BASE_URL` as in [deploy/README.md](./deploy/README.md)#optional-playwright-against-staging).
+4. Run `npx nx run web-e2e:e2e` locally (or a future protected nightly workflow — do not log passwords).
+
+Post-deploy health stays on [`.github/workflows/deploy-smoke.yml`](../.github/workflows/deploy-smoke.yml) (curl/fetch smoke only).
+
 ## Where files live
 
 | Kind                       | Path pattern                                                             |
@@ -127,6 +138,7 @@ GitHub Actions job **`playwright`** (ubuntu-only, `mongo:7`): builds api+web, st
 - [LOCAL_SETUP.md](./LOCAL_SETUP.md) — install, hooks, Mongo, local ↔ GHA parity
 - [branch-protection.md](./branch-protection.md) — required Actions checks for `main`
 - [FOUNDATION-ROADMAP.md](./FOUNDATION-ROADMAP.md) — Track 6 (069–076), Track 7 CI/CD (077–084)
-- [PLATFORM-ROADMAP.md](./PLATFORM-ROADMAP.md) — Track 19 Quality Expansion
+- [PLATFORM-ROADMAP.md](./PLATFORM-ROADMAP.md) — Track 19 Quality Expansion; T24 optional staging Playwright
 - Vitest configs: `apps/api/vitest.config.ts`, `apps/api/vitest.e2e.config.ts`, `apps/web/vitest.config.ts`, `apps/web/vitest.smoke.config.ts`, `libs/shared-contracts/vitest.config.ts`
 - Playwright: `apps/web-e2e/playwright.config.ts`
+- Deploy smoke: [`.github/workflows/deploy-smoke.yml`](../.github/workflows/deploy-smoke.yml)

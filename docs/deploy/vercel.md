@@ -100,6 +100,23 @@ Set on the **API** Railway service after web URLs exist:
 
 Do **not** attach `app.banal.app` to the staging project.
 
+## Git / Production Branch (T24)
+
+Policy locked with [deploy/README.md](README.md)#deploy-automation-t24. Both projects use GitHub integration; Actions does not call the Vercel API.
+
+| Vercel project         | Production Branch | Previews                    | Notes                                                            |
+| ---------------------- | ----------------- | --------------------------- | ---------------------------------------------------------------- |
+| `banal-web-staging`    | **`main`**        | **Enabled** (PR / branch)   | Staging Production deployments come from `main`                  |
+| `banal-web-production` | **`main`**        | Skip via Ignored Build Step | `if [ "$VERCEL_ENV" = "preview" ]; then exit 0; else exit 1; fi` |
+
+### Dashboard checklist (owner verify)
+
+1. Vercel → `banal-web-staging` → **Settings** → **Git** → Production Branch = **`main`**; Preview Deployments enabled.
+2. Vercel → `banal-web-production` → **Settings** → **Git** → Production Branch = **`main`**; Ignored Build Step still skips previews.
+3. Record result in [track-24-cicd-deploy-automation-freeze.md](../track-24-cicd-deploy-automation-freeze.md).
+
+No `VERCEL_TOKEN` in GitHub Actions for the T24 smoke path.
+
 ## Service URLs
 
 | Environment | Vercel project         | Public web origin                                         | Recorded   |
@@ -147,7 +164,8 @@ See [ops/incident-rollback.md](../ops/incident-rollback.md)#vercel-web. Summary:
 - [ops/environments.md](../ops/environments.md) — env matrix + preview CORS
 - [ops/secrets-checklist.md](../ops/secrets-checklist.md) — Vercel may only hold `VITE_*`
 - [cookie-cutover.md](cookie-cutover.md) — T23 preview → prod cookies
-- [PLATFORM-ROADMAP.md](../PLATFORM-ROADMAP.md) — T22 / T23
+- [PLATFORM-ROADMAP.md](../PLATFORM-ROADMAP.md) — T22 / T23 / T24
+- [track-24-cicd-deploy-automation-freeze.md](../track-24-cicd-deploy-automation-freeze.md)
 - [incident-rollback.md](../ops/incident-rollback.md)
 - [`apps/web/vercel.json`](../../apps/web/vercel.json)
 - [`apps/web/vite.config.ts`](../../apps/web/vite.config.ts)
