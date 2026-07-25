@@ -29,11 +29,15 @@ Full per-environment mapping and Railway dashboard steps: [deploy/railway.md](..
 
 ## Vercel (web)
 
-| Variable       | Required | Notes                                      |
-| -------------- | -------- | ------------------------------------------ |
-| `VITE_API_URL` | yes      | Absolute API base URL for that environment |
+Separate projects for staging and production. Full runbook: [deploy/vercel.md](../deploy/vercel.md).
+
+| Variable       | Staging (`banal-web-staging`)             | Production (`banal-web-production`)          | Required | Notes                                      |
+| -------------- | ----------------------------------------- | -------------------------------------------- | -------- | ------------------------------------------ |
+| `VITE_API_URL` | `https://api-staging-9c27.up.railway.app` | `https://api-production-b6c9.up.railway.app` | yes      | Absolute API base URL for that environment |
 
 **No** JWT secrets, Mongo URIs, or other API secrets on Vercel. Vite embeds `VITE_*` into the client bundle.
+
+Recorded web origins (2026-07-25): `https://banal-web-staging.vercel.app`, `https://banal-web-production.vercel.app`.
 
 ## GitHub
 

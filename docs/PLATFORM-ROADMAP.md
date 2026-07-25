@@ -443,21 +443,21 @@ T25 Acceptance + tag platform-v1.0.0
 
 ## Track 22 — Vercel Web Deploy (206–218)
 
-| Step | Title                  | Что создать                                                                                                             | Verification      | DoD               | Тесты  |
-| ---- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------- | ----------------- | ----------------- | ------ |
-| 206  | Nitro confirm          | `nitro()` in [`apps/web/vite.config.ts`](../apps/web/vite.config.ts) (already present)                                  | build             | no change if OK   | smoke  |
-| 207  | Vercel project doc     | [`docs/deploy/vercel.md`](deploy/vercel.md)                                                                             | review            | monorepo settings | —      |
-| 208  | Monorepo install       | Root Directory / Install Command: `npm ci` from repo root; Build: `npx nx run web:build` or `npm run build -w @app/web` | Vercel build log  | success           | —      |
-| 209  | Framework preset       | `tanstack-start` (dashboard or `vercel project update`)                                                                 | detect OK         | documented        | —      |
-| 210  | `VITE_API_URL` staging | points to Railway staging API                                                                                           | preview           | login works       | —      |
-| 211  | CORS WEB_ORIGIN        | Railway `WEB_ORIGIN` = Vercel staging URL                                                                               | preflight         | credentials OK    | —      |
-| 212  | Preview SameSite       | `AUTH_COOKIE_SAMESITE=none` on API for preview only                                                                     | login cross-site  | interim OK        | manual |
-| 213  | Production web project | separate prod Vercel env                                                                                                | deploy            | URL recorded      | —      |
-| 214  | SSR smoke prod         | home + login render                                                                                                     | curl/browser      | 200               | —      |
-| 215  | Env sync checklist     | Vercel envs ↔ docs                                                                                                      | secrets-checklist | complete          | —      |
-| 216  | Vercel Git integration | auto deploy on `main` / PR previews                                                                                     | PR preview URL    | enabled           | —      |
-| 217  | Rollback Vercel        | promote previous / revert                                                                                               | incident-rollback | documented        | —      |
-| 218  | T22 freeze             | staging web↔api auth works                                                                                              | 206–217 done      | track closed      | —      |
+| Step | Title                  | Что создать                                                                                                                                             | Verification      | DoD               | Тесты  |
+| ---- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ----------------- | ------ |
+| 206  | Nitro confirm          | `nitro()` in [`apps/web/vite.config.ts`](../apps/web/vite.config.ts) (already present)                                                                  | build             | no change if OK   | smoke  |
+| 207  | Vercel project doc     | [`docs/deploy/vercel.md`](deploy/vercel.md)                                                                                                             | review            | monorepo settings | —      |
+| 208  | Monorepo install       | Root Directory **`apps/web`**; Install from monorepo root (Vercel auto); Build: `npm run build` (see [`apps/web/vercel.json`](../apps/web/vercel.json)) | Vercel build log  | success           | —      |
+| 209  | Framework preset       | `tanstack-start` (dashboard or `vercel project update`)                                                                                                 | detect OK         | documented        | —      |
+| 210  | `VITE_API_URL` staging | points to Railway staging API                                                                                                                           | preview           | login works       | —      |
+| 211  | CORS WEB_ORIGIN        | Railway `WEB_ORIGIN` = Vercel staging URL                                                                                                               | preflight         | credentials OK    | —      |
+| 212  | Preview SameSite       | `AUTH_COOKIE_SAMESITE=none` on API for preview only                                                                                                     | login cross-site  | interim OK        | manual |
+| 213  | Production web project | separate prod Vercel env                                                                                                                                | deploy            | URL recorded      | —      |
+| 214  | SSR smoke prod         | home + login render                                                                                                                                     | curl/browser      | 200               | —      |
+| 215  | Env sync checklist     | Vercel envs ↔ docs                                                                                                                                      | secrets-checklist | complete          | —      |
+| 216  | Vercel Git integration | auto deploy on `main` / PR previews                                                                                                                     | PR preview URL    | enabled           | —      |
+| 217  | Rollback Vercel        | promote previous / revert                                                                                                                               | incident-rollback | documented        | —      |
+| 218  | T22 freeze             | staging web↔api auth works                                                                                                                              | 206–217 done      | track closed      | —      |
 
 ---
 
@@ -581,14 +581,14 @@ T25 Acceptance + tag platform-v1.0.0
 
 ### Текущий этап
 
-| Поле             | Значение                    |
-| ---------------- | --------------------------- |
-| Трек             | **T22 — Vercel Web Deploy** |
-| Текущий шаг      | **206** — Nitro confirm     |
-| Статус шага      | `todo`                      |
-| Последний `done` | **205** — T21 freeze        |
-| Закрыто шагов    | **109 / 150** (097–246)     |
-| Обновлено        | 2026-07-23                  |
+| Поле             | Значение                               |
+| ---------------- | -------------------------------------- |
+| Трек             | **T23 — Custom Domains & Cookie Prod** |
+| Текущий шаг      | **219** — Domain plan                  |
+| Статус шага      | `todo`                                 |
+| Последний `done` | **218** — T22 freeze                   |
+| Закрыто шагов    | **122 / 150** (097–246)                |
+| Обновлено        | 2026-07-25                             |
 
 ### Сводка по трекам
 
@@ -605,7 +605,7 @@ T25 Acceptance + tag platform-v1.0.0
 | T19 Quality expansion | 175–182 | 8    | `done` |
 | T20 Observability     | 183–190 | 8    | `done` |
 | T21 Railway API       | 191–205 | 15   | `done` |
-| T22 Vercel web        | 206–218 | 0    | `todo` |
+| T22 Vercel web        | 206–218 | 13   | `done` |
 | T23 Custom domains    | 219–226 | 0    | `todo` |
 | T24 CI/CD deploy      | 227–236 | 0    | `todo` |
 | T25 Runbooks & freeze | 237–246 | 0    | `todo` |
@@ -778,21 +778,21 @@ T25 Acceptance + tag platform-v1.0.0
 
 #### T22 — Vercel Web Deploy (206–218)
 
-| Step | Title                  | Status | Notes |
-| ---- | ---------------------- | ------ | ----- |
-| 206  | Nitro confirm          | `todo` |       |
-| 207  | Vercel project doc     | `todo` |       |
-| 208  | Monorepo install       | `todo` |       |
-| 209  | Framework preset       | `todo` |       |
-| 210  | `VITE_API_URL` staging | `todo` |       |
-| 211  | CORS WEB_ORIGIN        | `todo` |       |
-| 212  | Preview SameSite       | `todo` |       |
-| 213  | Production web project | `todo` |       |
-| 214  | SSR smoke prod         | `todo` |       |
-| 215  | Env sync checklist     | `todo` |       |
-| 216  | Vercel Git integration | `todo` |       |
-| 217  | Rollback Vercel        | `todo` |       |
-| 218  | T22 freeze             | `todo` |       |
+| Step | Title                  | Status | Notes                                                                          |
+| ---- | ---------------------- | ------ | ------------------------------------------------------------------------------ |
+| 206  | Nitro confirm          | `done` | `nitro()` in vite.config; preset-aware assert gate                             |
+| 207  | Vercel project doc     | `done` | [`deploy/vercel.md`](deploy/vercel.md)                                         |
+| 208  | Monorepo install       | `done` | Root Directory `apps/web`; install from monorepo root                          |
+| 209  | Framework preset       | `done` | `tanstack-start` + [`apps/web/vercel.json`](../apps/web/vercel.json)           |
+| 210  | `VITE_API_URL` staging | `done` | → `https://api-staging-9c27.up.railway.app`                                    |
+| 211  | CORS WEB_ORIGIN        | `done` | Railway staging `WEB_ORIGIN` = staging Vercel origin; preflight OK             |
+| 212  | Preview SameSite       | `done` | `AUTH_COOKIE_SAMESITE=none` + preview regex; cookies verified                  |
+| 213  | Production web project | `done` | `https://banal-web-production.vercel.app`                                      |
+| 214  | SSR smoke prod         | `done` | [`scripts/smoke-web.mjs`](../scripts/smoke-web.mjs) staging+prod               |
+| 215  | Env sync checklist     | `done` | secrets-checklist + environments ↔ live URLs                                   |
+| 216  | Vercel Git integration | `done` | Git connected; staging previews on; prod skips preview builds                  |
+| 217  | Rollback Vercel        | `done` | [`ops/incident-rollback.md`](ops/incident-rollback.md)#vercel-web              |
+| 218  | T22 freeze             | `done` | [`track-22-vercel-web-deploy-freeze.md`](track-22-vercel-web-deploy-freeze.md) |
 
 #### T23 — Custom Domains & Cookie Prod (219–226)
 

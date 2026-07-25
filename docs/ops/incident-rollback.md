@@ -1,6 +1,6 @@
 # Incident rollback
 
-Minimal revert steps for production/staging incidents. API deploy runbook: [deploy/railway.md](../deploy/railway.md).
+Minimal revert steps for production/staging incidents. API deploy runbook: [deploy/railway.md](../deploy/railway.md). Web deploy runbook: [deploy/vercel.md](../deploy/vercel.md).
 
 ## Principles
 
@@ -21,12 +21,14 @@ If rollback is unavailable, pin the service to the previous git commit/image and
 
 ## Vercel (Web)
 
-When Vercel is configured (T22):
+Projects: `banal-web-staging`, `banal-web-production`. Full runbook: [deploy/vercel.md](../deploy/vercel.md).
 
 1. Open the project → **Deployments**.
-2. Promote / redeploy the last known-good production deployment (Instant Rollback if enabled).
-3. Confirm `VITE_*` public env only; no secrets in the client bundle.
-4. Smoke: load the web origin; hit a simple authenticated or public page as appropriate.
+2. Promote / redeploy the last known-good **Production** deployment (**Instant Rollback** in the dashboard, or CLI `vercel rollback` / `vercel promote <deployment-url|id>` against the linked project).
+3. Confirm `VITE_API_URL` public env only; no secrets in the client bundle. After rollback, the redeployed revision keeps the env it was built with — if you changed `VITE_API_URL` later, redeploy from `main` instead of rolling back a stale build.
+4. Smoke: `WEB_BASE_URL=<web-origin> node scripts/smoke-web.mjs` (home + `/login` SSR 200).
+
+**Dry-run (staging):** Confirmed 2026-07-25 during T22 — staging Deployments lists prior Production revisions after the first successful deploy. Practice Instant Rollback / promote previous on **staging only** → re-run `scripts/smoke-web.mjs`. Recorded in [track-22-vercel-web-deploy-freeze.md](../track-22-vercel-web-deploy-freeze.md).
 
 ## Shared / data
 

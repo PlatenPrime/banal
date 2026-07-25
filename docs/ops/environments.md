@@ -1,34 +1,34 @@
 # Environments matrix
 
-Canonical definition of **local**, **preview**, **staging**, and **production** for the banal platform (Track 12). Deploy runbooks: [deploy/README.md](../deploy/README.md) (stubs until T21–T22). Secrets placement: [secrets-checklist.md](secrets-checklist.md). Local runbook: [LOCAL_SETUP.md](../LOCAL_SETUP.md). Shared Mongo policy: [ADR-001](../adr/001-shared-mongodb-with-legacy.md).
+Canonical definition of **local**, **preview**, **staging**, and **production** for the banal platform (Track 12). Deploy runbooks: [deploy/README.md](../deploy/README.md), [deploy/railway.md](../deploy/railway.md), [deploy/vercel.md](../deploy/vercel.md). Secrets placement: [secrets-checklist.md](secrets-checklist.md). Local runbook: [LOCAL_SETUP.md](../LOCAL_SETUP.md). Shared Mongo policy: [ADR-001](../adr/001-shared-mongodb-with-legacy.md).
 
 ## Matrix
 
-| Env            | API                          | Web                                | Mongo DB name                   | Notes                                                                   |
-| -------------- | ---------------------------- | ---------------------------------- | ------------------------------- | ----------------------------------------------------------------------- |
-| **local**      | `localhost:4000` (Nest)      | `localhost:3000` (Vite)            | `app_foundation_dev`            | Docker Compose Mongo; copy `.env.example` → `.env`                      |
-| **preview**    | Railway **staging** API      | Vercel PR preview (`*.vercel.app`) | `app_staging` (via staging API) | CORS via `WEB_ORIGIN` + preview regex/list; interim SameSite=None (T22) |
-| **staging**    | Railway staging service      | Vercel staging / preview prod      | `app_staging`                   | Separate Railway service from prod                                      |
-| **production** | Railway prod (`api.` domain) | Vercel prod (`app.` domain)        | `app_prod`                      | Custom domains + SameSite=Lax (T23)                                     |
+| Env            | API                     | Web                                                       | Mongo DB name                   | Notes                                                                      |
+| -------------- | ----------------------- | --------------------------------------------------------- | ------------------------------- | -------------------------------------------------------------------------- |
+| **local**      | `localhost:4000` (Nest) | `localhost:3000` (Vite)                                   | `app_foundation_dev`            | Docker Compose Mongo; copy `.env.example` → `.env`                         |
+| **preview**    | Railway **staging** API | Vercel PR preview (`*.vercel.app` on `banal-web-staging`) | `app_staging` (via staging API) | CORS via `WEB_ORIGIN` + `WEB_ORIGIN_PREVIEW_REGEX`; interim SameSite=None  |
+| **staging**    | Railway staging service | `https://banal-web-staging.vercel.app`                    | `app_staging`                   | Separate Vercel project from prod                                          |
+| **production** | Railway prod service    | `https://banal-web-production.vercel.app` (interim)       | `app_prod`                      | Custom domains + SameSite=Lax in **T23**; cookies SameSite=None until then |
 
 CI (GitHub Actions e2e) uses Docker `mongo:7` and DB name **`app_foundation_ci`** — never Atlas staging or prod.
 
 ## Key variables by environment
 
-| Variable                      | local                      | preview / staging                | production                 |
-| ----------------------------- | -------------------------- | -------------------------------- | -------------------------- |
-| `MONGODB_URI`                 | `…/app_foundation_dev`     | Atlas → `app_staging`            | Atlas → `app_prod`         |
-| `WEB_ORIGIN`                  | `http://localhost:3000`    | staging web URL                  | `https://app.<domain>`     |
-| `WEB_ORIGIN_PREVIEW_REGEX`    | unset                      | e.g. `^https://.*\.vercel\.app$` | unset (or empty)           |
-| `WEB_ORIGIN_PREVIEW_LIST`     | unset                      | optional comma-separated URLs    | unset                      |
-| `VITE_API_URL` (web only)     | `http://localhost:4000`    | staging API URL                  | `https://api.<domain>`     |
-| `JWT_ACCESS_SECRET` / refresh | local `.env` (≥32 chars)   | Railway staging                  | Railway prod               |
-| `COOKIE_DOMAIN`               | unset (host-only)          | unset or staging host            | `.example.com`             |
-| `AUTH_COOKIE_SAMESITE`        | `lax`                      | `none` interim for previews      | `lax`                      |
-| `AUTH_REGISTRATION_ENABLED`   | `true` / `false` as needed | per environment policy           | usually `false` until open |
-| `TRUST_PROXY`                 | `0` / unset                | `1` on Railway                   | `1` on Railway             |
-| `OTEL_ENABLED`                | `false`                    | optional                         | optional                   |
-| `OTEL_EXPORTER_OTLP_ENDPOINT` | unset                      | required if OTEL on              | required if OTEL on        |
+| Variable                      | local                      | preview / staging                            | production                                                                     |
+| ----------------------------- | -------------------------- | -------------------------------------------- | ------------------------------------------------------------------------------ |
+| `MONGODB_URI`                 | `…/app_foundation_dev`     | Atlas → `app_staging`                        | Atlas → `app_prod`                                                             |
+| `WEB_ORIGIN`                  | `http://localhost:3000`    | `https://banal-web-staging.vercel.app`       | `https://banal-web-production.vercel.app` (→ `https://app.<domain>` in T23)    |
+| `WEB_ORIGIN_PREVIEW_REGEX`    | unset                      | `^https://.*\.vercel\.app$`                  | unset (or empty)                                                               |
+| `WEB_ORIGIN_PREVIEW_LIST`     | unset                      | optional comma-separated URLs                | unset                                                                          |
+| `VITE_API_URL` (web only)     | `http://localhost:4000`    | `https://api-staging-9c27.up.railway.app`    | `https://api-production-b6c9.up.railway.app` (→ `https://api.<domain>` in T23) |
+| `JWT_ACCESS_SECRET` / refresh | local `.env` (≥32 chars)   | Railway staging                              | Railway prod                                                                   |
+| `COOKIE_DOMAIN`               | unset (host-only)          | unset or staging host                        | `.example.com`                                                                 |
+| `AUTH_COOKIE_SAMESITE`        | `lax`                      | `none` (cross-site `*.vercel.app` ↔ Railway) | `none` interim until T23 custom domains → `lax`                                |
+| `AUTH_REGISTRATION_ENABLED`   | `true` / `false` as needed | per environment policy                       | usually `false` until open                                                     |
+| `TRUST_PROXY`                 | `0` / unset                | `1` on Railway                               | `1` on Railway                                                                 |
+| `OTEL_ENABLED`                | `false`                    | optional                                     | optional                                                                       |
+| `OTEL_EXPORTER_OTLP_ENDPOINT` | unset                      | required if OTEL on                          | required if OTEL on                                                            |
 
 OTel wiring: [observability.md](observability.md). Alerting stub: [alerting.md](alerting.md).
 
@@ -68,4 +68,5 @@ Implementation: `apps/api/src/cors.options.ts`.
 - [feature-flags.md](feature-flags.md) — env feature flags (registration, legacy writes)
 - [incident-rollback.md](incident-rollback.md)
 - [deploy/railway.md](../deploy/railway.md) — `TRUST_PROXY=1` note (full runbook T21)
+- [deploy/vercel.md](../deploy/vercel.md) — web Root Directory `apps/web`, `VITE_API_URL` (T22)
 - [PLATFORM-ROADMAP.md](../PLATFORM-ROADMAP.md) — Track 12
