@@ -8,19 +8,19 @@ Predecessor: [track-foundation-acceptance.md](track-foundation-acceptance.md) (`
 
 ## «Платформа готова»
 
-| Criterion                                    | Status  | Evidence                                                                                                                                                                                                                                                                                                                                                                                                 |
-| -------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Staging API on Railway + Web on Vercel       | ✅ done | Staging+prod API (T21) + web (T22): see Deployed URLs; [`deploy/vercel.md`](deploy/vercel.md), [`track-22-vercel-web-deploy-freeze.md`](track-22-vercel-web-deploy-freeze.md)                                                                                                                                                                                                                            |
-| Prod custom domains + cookies `SameSite=Lax` | ⬜ todo | T23 docs/runbooks done ([`track-23-custom-domains-freeze.md`](track-23-custom-domains-freeze.md), [`cookie-cutover.md`](deploy/cookie-cutover.md)); **live** login→me→logout on `app.banal.app` / `api.banal.app` gated until domain owned                                                                                                                                                               |
-| Atlas only via env; CI without prod URI      | ✅ done | T12 env matrix + naming; T13 [`deploy/atlas.md`](deploy/atlas.md) connection/network policy; CI `mongo:7` / `app_foundation_ci` ([`ops/environments.md`](ops/environments.md), [`track-13-atlas-network-freeze.md`](track-13-atlas-network-freeze.md))                                                                                                                                                   |
-| Auth e2e + Playwright login                  | ✅ done | T15–T16 API auth e2e; T19 [`apps/web-e2e`](../apps/web-e2e) + CI job `playwright` ([`track-19-quality-expansion-freeze.md`](track-19-quality-expansion-freeze.md))                                                                                                                                                                                                                                       |
-| Branch protection + Dependabot               | ✅ done | T11; [`docs/branch-protection.md`](branch-protection.md), [`.github/dependabot.yml`](../.github/dependabot.yml), [`track-11-ops-freeze.md`](track-11-ops-freeze.md)                                                                                                                                                                                                                                      |
-| OpenAPI drift + tests-first                  | ⬜ todo | foundation gates unchanged; auth paths in OpenAPI                                                                                                                                                                                                                                                                                                                                                        |
-| Runbooks deploy / rollback / secrets         | ✅ done | T21: [`deploy/railway.md`](deploy/railway.md); T22: [`deploy/vercel.md`](deploy/vercel.md); T23: [`deploy/cookie-cutover.md`](deploy/cookie-cutover.md); T24: [`deploy/README.md`](deploy/README.md)#deploy-automation-t24 + [`deploy-smoke.yml`](../.github/workflows/deploy-smoke.yml); [`ops/incident-rollback.md`](ops/incident-rollback.md); [`ops/secrets-checklist.md`](ops/secrets-checklist.md) |
-| ADR-002 + ADR-003 accepted                   | ✅ done | T14; [`docs/adr/002-auth-jwt-cookies.md`](adr/002-auth-jwt-cookies.md), [`docs/adr/003-app-users-collection.md`](adr/003-app-users-collection.md); stub [`004-legacy-users-dual-read.md`](adr/004-legacy-users-dual-read.md); [`track-14-auth-data-adr-freeze.md`](track-14-auth-data-adr-freeze.md)                                                                                                     |
-| Tag `platform-v1.0.0`                        | ⬜ todo | [`CHANGELOG.md`](../CHANGELOG.md); remote tag (steps 244–245)                                                                                                                                                                                                                                                                                                                                            |
+| Criterion                                    | Status     | Evidence                                                                                                                                                                                                                                                                                                                                                                     |
+| -------------------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Staging API on Railway + Web on Vercel       | ✅ done    | Staging+prod API (T21) + web (T22): see Deployed URLs; [`deploy/vercel.md`](deploy/vercel.md), [`track-22-vercel-web-deploy-freeze.md`](track-22-vercel-web-deploy-freeze.md)                                                                                                                                                                                                |
+| Prod custom domains + cookies `SameSite=Lax` | ⏸ deferred | T23 docs/runbooks done ([`track-23-custom-domains-freeze.md`](track-23-custom-domains-freeze.md), [`cookie-cutover.md`](deploy/cookie-cutover.md)). **Live** login→me→logout on `app.banal.app` / `api.banal.app` gated until domain owned. Interim prod: `SameSite=None` on `*.vercel.app` / `*.up.railway.app` (see Deployed URLs).                                        |
+| Atlas only via env; CI without prod URI      | ✅ done    | T12 env matrix + naming; T13 [`deploy/atlas.md`](deploy/atlas.md) connection/network policy; CI `mongo:7` / `app_foundation_ci` ([`ops/environments.md`](ops/environments.md), [`track-13-atlas-network-freeze.md`](track-13-atlas-network-freeze.md))                                                                                                                       |
+| Auth e2e + Playwright login                  | ✅ done    | T15–T16 API auth e2e; T19 [`apps/web-e2e`](../apps/web-e2e) + CI job `playwright` ([`track-19-quality-expansion-freeze.md`](track-19-quality-expansion-freeze.md))                                                                                                                                                                                                           |
+| Branch protection + Dependabot               | ✅ done    | T11; [`docs/branch-protection.md`](branch-protection.md), [`.github/dependabot.yml`](../.github/dependabot.yml), [`track-11-ops-freeze.md`](track-11-ops-freeze.md)                                                                                                                                                                                                          |
+| OpenAPI drift + tests-first                  | ✅ done    | Foundation gates unchanged: `openapi:check` + `validate:tests-first` in `npm run ci` ([`package.json`](../package.json)); auth paths in OpenAPI via T15 export                                                                                                                                                                                                               |
+| Runbooks deploy / rollback / secrets         | ✅ done    | Index: [`deploy/README.md`](deploy/README.md); T21 [`railway.md`](deploy/railway.md); T22 [`vercel.md`](deploy/vercel.md); T23 [`cookie-cutover.md`](deploy/cookie-cutover.md); T24 automation + [`deploy-smoke.yml`](../.github/workflows/deploy-smoke.yml); [`ops/incident-rollback.md`](ops/incident-rollback.md); [`ops/secrets-checklist.md`](ops/secrets-checklist.md) |
+| ADR-002 + ADR-003 accepted                   | ✅ done    | T14; [`docs/adr/002-auth-jwt-cookies.md`](adr/002-auth-jwt-cookies.md), [`docs/adr/003-app-users-collection.md`](adr/003-app-users-collection.md); stub [`004-legacy-users-dual-read.md`](adr/004-legacy-users-dual-read.md); [`track-14-auth-data-adr-freeze.md`](track-14-auth-data-adr-freeze.md)                                                                         |
+| Tag `platform-v1.0.0`                        | ✅ done    | [`CHANGELOG.md`](../CHANGELOG.md); annotated tag + `git push origin platform-v1.0.0` (steps 244–245)                                                                                                                                                                                                                                                                         |
 
-Fill statuses to ✅ as tracks close. Do not mark this checklist complete until step **246**.
+Fill statuses as tracks close. Custom-domain live cutover is an **owner gate** after this freeze (same pattern as T23). Do not reopen platform scope for that DNS work.
 
 ## Tracks (T11–T25)
 
@@ -40,14 +40,15 @@ Fill statuses to ✅ as tracks close. Do not mark this checklist complete until 
 | T22 Vercel web        | 206–218 | `done` |
 | T23 Custom domains    | 219–226 | `done` |
 | T24 CI/CD deploy      | 227–236 | `done` |
-| T25 Runbooks & freeze | 237–246 | `todo` |
+| T25 Runbooks & freeze | 237–246 | `done` |
 
 ## Deployed URLs (fill during T21–T23)
 
-| Env        | API                                                          | Web                                                      |
-| ---------- | ------------------------------------------------------------ | -------------------------------------------------------- |
-| Staging    | `https://api-staging-9c27.up.railway.app`                    | `https://banal-web-staging.vercel.app`                   |
-| Production | Planned `https://api.banal.app` (interim `*.up.railway.app`) | Planned `https://app.banal.app` (interim `*.vercel.app`) |
+| Env                  | API                                                  | Web                                               |
+| -------------------- | ---------------------------------------------------- | ------------------------------------------------- |
+| Staging              | `https://api-staging-9c27.up.railway.app`            | `https://banal-web-staging.vercel.app`            |
+| Production           | Interim `https://api-production-b6c9.up.railway.app` | Interim `https://banal-web-production.vercel.app` |
+| Production (planned) | `https://api.banal.app`                              | `https://app.banal.app`                           |
 
 ## Verification commands
 
@@ -63,19 +64,28 @@ npm run ci:full
 # After deploy (staging):
 curl https://api-staging-9c27.up.railway.app/health
 curl https://api-staging-9c27.up.railway.app/health/ready
+API_BASE_URL=https://api-staging-9c27.up.railway.app node ./scripts/smoke-api.mjs
 WEB_BASE_URL=https://banal-web-staging.vercel.app node ./scripts/smoke-web.mjs
 ```
 
+Owner: GitHub Actions → **Deploy smoke** → environment `staging` (after merge to `main`). Evidence path: [`track-24-cicd-deploy-automation-freeze.md`](track-24-cicd-deploy-automation-freeze.md).
+
 ## Anti-goals (must remain out of platform scope)
 
-- OAuth / magic-link / email verification product
-- RBAC UI
+Confirmed for `platform-v1.0.0` — do not expand T11–T25 for these:
+
+- OAuth / social login / magic-link / email verification product
+- RBAC UI, roles, permissions matrix (only authenticated vs public)
 - Legacy `users` dual-read/write (ADR-004 later)
-- Postgres migration
-- Microservice split
+- Postgres migration / DB swap
+- Microservice split / separate auth-service
+- Mandatory Sentry/Datadog vendor lock (OTel OTLP optional behind flag)
+- Writes to legacy product collections (ADR + inventory still required)
 
 ## Related
 
 - Roadmap: [`PLATFORM-ROADMAP.md`](PLATFORM-ROADMAP.md)
 - Foundation: [`FOUNDATION-ROADMAP.md`](FOUNDATION-ROADMAP.md)
-- Domain after platform: [`domain-module-recipe.md`](domain-module-recipe.md)
+- Deploy index: [`deploy/README.md`](deploy/README.md)
+- **After platform — domain modules:** [`domain-module-recipe.md`](domain-module-recipe.md)
+- Freeze evidence: [`track-25-runbooks-freeze.md`](track-25-runbooks-freeze.md)

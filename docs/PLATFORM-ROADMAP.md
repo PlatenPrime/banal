@@ -581,14 +581,15 @@ T25 Acceptance + tag platform-v1.0.0
 
 ### Текущий этап
 
-| Поле             | Значение                    |
-| ---------------- | --------------------------- |
-| Трек             | **T25 — Runbooks & Freeze** |
-| Текущий шаг      | **237** — Deploy index      |
-| Статус шага      | `todo`                      |
-| Последний `done` | **236** — T24 freeze        |
-| Закрыто шагов    | **140 / 150** (097–246)     |
-| Обновлено        | 2026-07-25                  |
+| Поле             | Значение                                           |
+| ---------------- | -------------------------------------------------- |
+| Трек             | **T25 — Runbooks & Freeze**                        |
+| Текущий шаг      | **246** — Progress close                           |
+| Статус шага      | `done`                                             |
+| Последний `done` | **246** — Progress close                           |
+| Закрыто шагов    | **150 / 150** (097–246)                            |
+| Тег              | **`platform-v1.0.0`** (foundation+platform frozen) |
+| Обновлено        | 2026-07-25                                         |
 
 ### Сводка по трекам
 
@@ -608,7 +609,7 @@ T25 Acceptance + tag platform-v1.0.0
 | T22 Vercel web        | 206–218 | 13   | `done` |
 | T23 Custom domains    | 219–226 | 8    | `done` |
 | T24 CI/CD deploy      | 227–236 | 10   | `done` |
-| T25 Runbooks & freeze | 237–246 | 0    | `todo` |
+| T25 Runbooks & freeze | 237–246 | 10   | `done` |
 
 ### Чеклист шагов
 
@@ -824,18 +825,18 @@ T25 Acceptance + tag platform-v1.0.0
 
 #### T25 — Runbooks & Freeze (237–246)
 
-| Step | Title                 | Status | Notes |
-| ---- | --------------------- | ------ | ----- |
-| 237  | Deploy index          | `todo` |       |
-| 238  | Platform acceptance   | `todo` |       |
-| 239  | README links          | `todo` |       |
-| 240  | LOCAL_SETUP prod note | `todo` |       |
-| 241  | CHANGELOG entry       | `todo` |       |
-| 242  | Anti-goals confirm    | `todo` |       |
-| 243  | Domain recipe pointer | `todo` |       |
-| 244  | Tag `platform-v1.0.0` | `todo` |       |
-| 245  | Push tag              | `todo` |       |
-| 246  | Progress close        | `todo` |       |
+| Step | Title                 | Status | Notes                                                                                       |
+| ---- | --------------------- | ------ | ------------------------------------------------------------------------------------------- |
+| 237  | Deploy index          | `done` | [`deploy/README.md`](deploy/README.md) — ops + platform runbooks index                      |
+| 238  | Platform acceptance   | `done` | [`track-platform-acceptance.md`](track-platform-acceptance.md); domains deferred owner gate |
+| 239  | README links          | `done` | Root README → deploy + acceptance + domain recipe                                           |
+| 240  | LOCAL_SETUP prod note | `done` | [`LOCAL_SETUP.md`](LOCAL_SETUP.md)#local-vs-deployed                                        |
+| 241  | CHANGELOG entry       | `done` | [`CHANGELOG.md`](../CHANGELOG.md) `[platform-v1.0.0]`                                       |
+| 242  | Anti-goals confirm    | `done` | Acceptance + CHANGELOG vs roadmap § Anti-goals                                              |
+| 243  | Domain recipe pointer | `done` | → [`domain-module-recipe.md`](domain-module-recipe.md)                                      |
+| 244  | Tag `platform-v1.0.0` | `done` | Annotated tag                                                                               |
+| 245  | Push tag              | `done` | `origin` remote tag                                                                         |
+| 246  | Progress close        | `done` | [`track-25-runbooks-freeze.md`](track-25-runbooks-freeze.md); 150/150 frozen                |
 
 ---
 

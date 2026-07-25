@@ -2,7 +2,7 @@
 
 Nx monorepo foundation: NestJS API (`apps/api`), TanStack Start web (`apps/web`), and shared Zod contracts (`libs/shared-contracts`). Local MongoDB via Docker; shared-DB strangler with legacy after foundation.
 
-Roadmaps: [docs/FOUNDATION-ROADMAP.md](docs/FOUNDATION-ROADMAP.md) (`foundation-v1.0.0`, T0–T10) → [docs/PLATFORM-ROADMAP.md](docs/PLATFORM-ROADMAP.md) (auth + Railway/Vercel/Atlas, T11–T25 → `platform-v1.0.0`). Setup: [docs/LOCAL_SETUP.md](docs/LOCAL_SETUP.md). Testing: [docs/testing.md](docs/testing.md). Branch protection: [docs/branch-protection.md](docs/branch-protection.md). Security: [SECURITY.md](SECURITY.md).
+Roadmaps: [docs/FOUNDATION-ROADMAP.md](docs/FOUNDATION-ROADMAP.md) (`foundation-v1.0.0`, T0–T10) → [docs/PLATFORM-ROADMAP.md](docs/PLATFORM-ROADMAP.md) (auth + Railway/Vercel/Atlas, T11–T25 → `platform-v1.0.0`). Setup: [docs/LOCAL_SETUP.md](docs/LOCAL_SETUP.md). Deploy: [docs/deploy/README.md](docs/deploy/README.md). Platform acceptance: [docs/track-platform-acceptance.md](docs/track-platform-acceptance.md). After platform (domain modules): [docs/domain-module-recipe.md](docs/domain-module-recipe.md). Testing: [docs/testing.md](docs/testing.md). Branch protection: [docs/branch-protection.md](docs/branch-protection.md). Security: [SECURITY.md](SECURITY.md).
 
 ## Requirements
 
