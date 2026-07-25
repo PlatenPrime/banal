@@ -82,22 +82,22 @@ Nest enables `app.enableShutdownHooks()` in `apps/api/src/main.ts`; `app.close` 
 
 Every variable mirrors [`apps/api/src/config/env.schema.ts`](../../apps/api/src/config/env.schema.ts). Keep this table in sync with [ops/secrets-checklist.md](../ops/secrets-checklist.md).
 
-| Variable                      | Staging                             | Production                       | Required | Notes                                              |
-| ----------------------------- | ----------------------------------- | -------------------------------- | -------- | -------------------------------------------------- |
-| `NODE_ENV`                    | `production`                        | `production`                     | yes      |                                                    |
-| `PORT`                        | (Railway injects)                   | (Railway injects)                | yes\*    | Usually omit in dashboard                          |
-| `MONGODB_URI`                 | Railway Mongo / Atlas `app_staging` | Railway Mongo / Atlas `app_prod` | yes      | Live: `${{MongoDB.MONGO_URL}}`; Atlas when swapped |
-| `WEB_ORIGIN`                  | Vercel staging / preview origin     | Vercel prod origin               | yes      | Exact origin URL; T22 wires web                    |
-| `WEB_ORIGIN_PREVIEW_REGEX`    | optional Vercel preview pattern     | usually unset                    | no       |                                                    |
-| `WEB_ORIGIN_PREVIEW_LIST`     | optional CSV                        | usually unset                    | no       |                                                    |
-| `JWT_ACCESS_SECRET`           | ≥32 chars, staging-only             | ≥32 chars, **prod-only**         | yes      | Never reuse across envs                            |
-| `JWT_REFRESH_SECRET`          | ≥32 chars, ≠ access                 | ≥32 chars, ≠ access, ≠ staging   | yes      |                                                    |
-| `COOKIE_DOMAIN`               | unset until T23                     | e.g. `.example.com` after T23    | prod     |                                                    |
-| `AUTH_COOKIE_SAMESITE`        | `none` interim for previews         | `lax` after custom domains (T23) | yes      |                                                    |
-| `AUTH_REGISTRATION_ENABLED`   | `false` (default)                   | `false`                          | yes      | Enable only when intentionally open                |
-| `TRUST_PROXY`                 | `1`                                 | `1`                              | yes      | Required on Railway                                |
-| `OTEL_ENABLED`                | `false`                             | `false`                          | no       |                                                    |
-| `OTEL_EXPORTER_OTLP_ENDPOINT` | if OTEL on                          | if OTEL on                       | if OTEL  |                                                    |
+| Variable                      | Staging                                | Production                                | Required | Notes                                              |
+| ----------------------------- | -------------------------------------- | ----------------------------------------- | -------- | -------------------------------------------------- |
+| `NODE_ENV`                    | `production`                           | `production`                              | yes      |                                                    |
+| `PORT`                        | (Railway injects)                      | (Railway injects)                         | yes\*    | Usually omit in dashboard                          |
+| `MONGODB_URI`                 | Railway Mongo / Atlas `app_staging`    | Railway Mongo / Atlas `app_prod`          | yes      | Live: `${{MongoDB.MONGO_URL}}`; Atlas when swapped |
+| `WEB_ORIGIN`                  | `https://banal-web-staging.vercel.app` | `https://banal-web-production.vercel.app` | yes      | Exact origin URL; T22 wired 2026-07-25             |
+| `WEB_ORIGIN_PREVIEW_REGEX`    | `^https://.*\.vercel\.app$`            | unset                                     | no       | Staging PR previews                                |
+| `WEB_ORIGIN_PREVIEW_LIST`     | optional CSV                           | usually unset                             | no       |                                                    |
+| `JWT_ACCESS_SECRET`           | ≥32 chars, staging-only                | ≥32 chars, **prod-only**                  | yes      | Never reuse across envs                            |
+| `JWT_REFRESH_SECRET`          | ≥32 chars, ≠ access                    | ≥32 chars, ≠ access, ≠ staging            | yes      |                                                    |
+| `COOKIE_DOMAIN`               | unset until T23                        | e.g. `.example.com` after T23             | prod     |                                                    |
+| `AUTH_COOKIE_SAMESITE`        | `none` (interim cross-site)            | `none` interim until T23 → `lax`          | yes      | Verified staging Set-Cookie 2026-07-25             |
+| `AUTH_REGISTRATION_ENABLED`   | `false` (default)                      | `false`                                   | yes      | Enable only when intentionally open                |
+| `TRUST_PROXY`                 | `1`                                    | `1`                                       | yes      | Required on Railway                                |
+| `OTEL_ENABLED`                | `false`                                | `false`                                   | no       |                                                    |
+| `OTEL_EXPORTER_OTLP_ENDPOINT` | if OTEL on                             | if OTEL on                                | if OTEL  |                                                    |
 
 \*Zod defaults `PORT` to `4000` if unset; Railway always provides `PORT` in practice.
 
