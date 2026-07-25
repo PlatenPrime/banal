@@ -27,7 +27,7 @@ Do this twice: once for **staging**, once for **production**.
 3. Confirm [`railway.toml`](../../railway.toml) is at the **repo root** (Railway discovers it when Root Directory is `/`):
    - `healthcheckPath = "/health"`
    - `restartPolicyType = "ON_FAILURE"`
-4. Attach a public HTTPS domain (Railway generates `*.up.railway.app`; custom `api.` domain is T23).
+4. Attach a public HTTPS domain (Railway generates `*.up.railway.app`; production custom domain `api.banal.app` — [Custom domain](#custom-domain-apibanalapp)).
 5. Set variables from the [env mapping table](#env-mapping-railway--api-zod) below. Required: `TRUST_PROXY=1`, `NODE_ENV=production`, Atlas `MONGODB_URI`, JWT pair ≥32 chars and **different** from each other and from the other environment.
 6. Deploy from `main` (or the branch configured for this service). Wait for healthcheck green.
 7. Smoke: [Staging / production smoke](#smoke).
@@ -82,22 +82,22 @@ Nest enables `app.enableShutdownHooks()` in `apps/api/src/main.ts`; `app.close` 
 
 Every variable mirrors [`apps/api/src/config/env.schema.ts`](../../apps/api/src/config/env.schema.ts). Keep this table in sync with [ops/secrets-checklist.md](../ops/secrets-checklist.md).
 
-| Variable                      | Staging                                | Production                                | Required | Notes                                              |
-| ----------------------------- | -------------------------------------- | ----------------------------------------- | -------- | -------------------------------------------------- |
-| `NODE_ENV`                    | `production`                           | `production`                              | yes      |                                                    |
-| `PORT`                        | (Railway injects)                      | (Railway injects)                         | yes\*    | Usually omit in dashboard                          |
-| `MONGODB_URI`                 | Railway Mongo / Atlas `app_staging`    | Railway Mongo / Atlas `app_prod`          | yes      | Live: `${{MongoDB.MONGO_URL}}`; Atlas when swapped |
-| `WEB_ORIGIN`                  | `https://banal-web-staging.vercel.app` | `https://banal-web-production.vercel.app` | yes      | Exact origin URL; T22 wired 2026-07-25             |
-| `WEB_ORIGIN_PREVIEW_REGEX`    | `^https://.*\.vercel\.app$`            | unset                                     | no       | Staging PR previews                                |
-| `WEB_ORIGIN_PREVIEW_LIST`     | optional CSV                           | usually unset                             | no       |                                                    |
-| `JWT_ACCESS_SECRET`           | ≥32 chars, staging-only                | ≥32 chars, **prod-only**                  | yes      | Never reuse across envs                            |
-| `JWT_REFRESH_SECRET`          | ≥32 chars, ≠ access                    | ≥32 chars, ≠ access, ≠ staging            | yes      |                                                    |
-| `COOKIE_DOMAIN`               | unset until T23                        | e.g. `.example.com` after T23             | prod     |                                                    |
-| `AUTH_COOKIE_SAMESITE`        | `none` (interim cross-site)            | `none` interim until T23 → `lax`          | yes      | Verified staging Set-Cookie 2026-07-25             |
-| `AUTH_REGISTRATION_ENABLED`   | `false` (default)                      | `false`                                   | yes      | Enable only when intentionally open                |
-| `TRUST_PROXY`                 | `1`                                    | `1`                                       | yes      | Required on Railway                                |
-| `OTEL_ENABLED`                | `false`                                | `false`                                   | no       |                                                    |
-| `OTEL_EXPORTER_OTLP_ENDPOINT` | if OTEL on                             | if OTEL on                                | if OTEL  |                                                    |
+| Variable                      | Staging                                | Production                                        | Required | Notes                                                           |
+| ----------------------------- | -------------------------------------- | ------------------------------------------------- | -------- | --------------------------------------------------------------- |
+| `NODE_ENV`                    | `production`                           | `production`                                      | yes      |                                                                 |
+| `PORT`                        | (Railway injects)                      | (Railway injects)                                 | yes\*    | Usually omit in dashboard                                       |
+| `MONGODB_URI`                 | Railway Mongo / Atlas `app_staging`    | Railway Mongo / Atlas `app_prod`                  | yes      | Live: `${{MongoDB.MONGO_URL}}`; Atlas when swapped              |
+| `WEB_ORIGIN`                  | `https://banal-web-staging.vercel.app` | `https://app.banal.app` (interim: `*.vercel.app`) | yes      | Exact origin; cutover in [cookie-cutover.md](cookie-cutover.md) |
+| `WEB_ORIGIN_PREVIEW_REGEX`    | `^https://.*\.vercel\.app$`            | unset                                             | no       | Staging PR previews only; never on prod                         |
+| `WEB_ORIGIN_PREVIEW_LIST`     | optional CSV                           | usually unset                                     | no       |                                                                 |
+| `JWT_ACCESS_SECRET`           | ≥32 chars, staging-only                | ≥32 chars, **prod-only**                          | yes      | Never reuse across envs                                         |
+| `JWT_REFRESH_SECRET`          | ≥32 chars, ≠ access                    | ≥32 chars, ≠ access, ≠ staging                    | yes      |                                                                 |
+| `COOKIE_DOMAIN`               | unset                                  | `.banal.app` after custom domains live            | prod     | Host-only until cutover                                         |
+| `AUTH_COOKIE_SAMESITE`        | `none` (cross-site)                    | `lax` after cutover; `none` interim               | yes      | Staging verified SameSite=None 2026-07-25                       |
+| `AUTH_REGISTRATION_ENABLED`   | `false` (default)                      | `false`                                           | yes      | Enable only when intentionally open                             |
+| `TRUST_PROXY`                 | `1`                                    | `1`                                               | yes      | Required on Railway                                             |
+| `OTEL_ENABLED`                | `false`                                | `false`                                           | no       |                                                                 |
+| `OTEL_EXPORTER_OTLP_ENDPOINT` | if OTEL on                             | if OTEL on                                        | if OTEL  |                                                                 |
 
 \*Zod defaults `PORT` to `4000` if unset; Railway always provides `PORT` in practice.
 
@@ -123,12 +123,25 @@ When swapping to **Mongo Atlas** (legacy shared cluster):
 
 Until Atlas URI is set on Railway Variables, keep the Railway Mongo plugin. See [atlas.md](atlas.md)#network-access.
 
+## Custom domain (`api.banal.app`)
+
+**Gate:** parent `banal.app` must be registered with editable DNS. Until then keep `*.up.railway.app`.
+
+1. Railway → project `banal` → environment **production** → service `api` → **Settings** → **Networking** / **Public Networking** → **Custom Domain** → Add `api.banal.app`.
+2. Copy the DNS target Railway shows (usually a **CNAME**).
+3. Create the record at the DNS provider for `banal.app`.
+4. Wait until Railway shows the domain as ready / certificate issued and `https://api.banal.app/health` returns 200 with a browser padlock.
+5. Smoke: `API_BASE_URL=https://api.banal.app node ./scripts/smoke-api.mjs`
+6. Only then apply prod cookie/CORS vars per [cookie-cutover.md](cookie-cutover.md) (same change set as web `VITE_API_URL`).
+
+Do **not** put `api.banal.app` on the staging service.
+
 ## Service URLs
 
-| Environment | Railway project / env  | Public API base URL                          | Recorded   |
-| ----------- | ---------------------- | -------------------------------------------- | ---------- |
-| Staging     | `banal` / `staging`    | `https://api-staging-9c27.up.railway.app`    | 2026-07-23 |
-| Production  | `banal` / `production` | `https://api-production-b6c9.up.railway.app` | 2026-07-23 |
+| Environment | Railway project / env  | Public API base URL                                           | Recorded   |
+| ----------- | ---------------------- | ------------------------------------------------------------- | ---------- |
+| Staging     | `banal` / `staging`    | `https://api-staging-9c27.up.railway.app`                     | 2026-07-23 |
+| Production  | `banal` / `production` | Planned: `https://api.banal.app` (interim `*.up.railway.app`) | 2026-07-23 |
 
 Project id: `534fc942-8837-40df-8dbe-7e76f6c6e3ca`. Service: `api`. Also in [track-platform-acceptance.md](../track-platform-acceptance.md).
 
@@ -192,7 +205,8 @@ See [ops/incident-rollback.md](../ops/incident-rollback.md)#railway-api. Summary
 - [ops/observability.md](../ops/observability.md) — request-id ↔ logs/traces
 - [ops/alerting.md](../ops/alerting.md) — alerting stub (no required SaaS)
 - [LOCAL_SETUP.md](../LOCAL_SETUP.md)#trust_proxy
-- [PLATFORM-ROADMAP.md](../PLATFORM-ROADMAP.md) — T21 Railway API
+- [cookie-cutover.md](cookie-cutover.md) — T23 preview → prod cookies
+- [PLATFORM-ROADMAP.md](../PLATFORM-ROADMAP.md) — T21 / T23
 - [incident-rollback.md](../ops/incident-rollback.md)
 - [`apps/api/Dockerfile`](../../apps/api/Dockerfile)
 - [`railway.toml`](../../railway.toml)

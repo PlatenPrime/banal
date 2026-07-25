@@ -178,14 +178,14 @@ sequenceDiagram
 
 ## 4. Auth: зафиксированные решения
 
-| Тема            | Решение                                                                                                       |
-| --------------- | ------------------------------------------------------------------------------------------------------------- |
-| Users           | **1C** — коллекция `a_users` (не legacy); inventory + ADR закладывают будущую dual-read с legacy `users`      |
-| Session         | **JWT access + refresh в httpOnly cookies** (не localStorage; не server session store)                        |
-| Register        | `AUTH_REGISTRATION_ENABLED=false` в prod; bootstrap CLI для первого admin                                     |
-| CSRF            | Origin allowlist (= `WEB_ORIGIN` + preview list) на mutating methods; optional double-submit `csrf` cookie    |
-| Preview cookies | cross-site `SameSite=None; Secure` только для `*.vercel.app` ↔ Railway preview                                |
-| Prod cookies    | **обязательны custom domains** `app.` + `api.` на одном parent → `SameSite=Lax`, `COOKIE_DOMAIN=.example.com` |
+| Тема            | Решение                                                                                                     |
+| --------------- | ----------------------------------------------------------------------------------------------------------- |
+| Users           | **1C** — коллекция `a_users` (не legacy); inventory + ADR закладывают будущую dual-read с legacy `users`    |
+| Session         | **JWT access + refresh в httpOnly cookies** (не localStorage; не server session store)                      |
+| Register        | `AUTH_REGISTRATION_ENABLED=false` в prod; bootstrap CLI для первого admin                                   |
+| CSRF            | Origin allowlist (= `WEB_ORIGIN` + preview list) на mutating methods; optional double-submit `csrf` cookie  |
+| Preview cookies | cross-site `SameSite=None; Secure` только для `*.vercel.app` ↔ Railway preview                              |
+| Prod cookies    | **обязательны custom domains** `app.` + `api.` на одном parent → `SameSite=Lax`, `COOKIE_DOMAIN=.banal.app` |
 
 ### Cookie shape
 
@@ -467,9 +467,9 @@ T25 Acceptance + tag platform-v1.0.0
 | ---- | ----------------- | ------------------------------------------------------------------------------------ | -------------------- | ---------------------------- | ---------- |
 | 219  | Domain plan       | pick parent domain; `app.` → Vercel, `api.` → Railway                                | DNS docs             | recorded in deploy README    | —          |
 | 220  | DNS + TLS         | configure both platforms                                                             | browser padlock      | HTTPS only                   | —          |
-| 221  | COOKIE_DOMAIN     | `.example.com` on API prod                                                           | login                | cookies visible for API host | manual     |
+| 221  | COOKIE_DOMAIN     | `.banal.app` on API prod                                                             | login                | cookies visible for API host | manual     |
 | 222  | SameSite=Lax prod | disable None profile on prod                                                         | ADR-002 prod section | Lax active                   | e2e/manual |
-| 223  | CORS prod origin  | `WEB_ORIGIN=https://app.example.com` exact                                           | preflight            | no `*`                       | —          |
+| 223  | CORS prod origin  | `WEB_ORIGIN=https://app.banal.app` exact                                             | preflight            | no `*`                       | —          |
 | 224  | HSTS note         | document (Railway/Vercel/CDN)                                                        | ops doc              | noted                        | —          |
 | 225  | Cutover checklist | preview → prod cookies ([`docs/deploy/cookie-cutover.md`](deploy/cookie-cutover.md)) | review               | signed off                   | —          |
 | 226  | T23 freeze        | prod login→me→logout on custom domains                                               | 219–225 done         | track closed                 | —          |
@@ -554,9 +554,9 @@ T25 Acceptance + tag platform-v1.0.0
 
 ### Custom domains (prod)
 
-1. `app.example.com` → Vercel; `api.example.com` → Railway.
-2. API: `COOKIE_DOMAIN=.example.com`, `AUTH_COOKIE_SAMESITE=lax`, `WEB_ORIGIN=https://app.example.com`.
-3. Verify: login sets cookies; `/auth/me` works; logout clears.
+1. `app.banal.app` → Vercel; `api.banal.app` → Railway (parent `banal.app`).
+2. API: `COOKIE_DOMAIN=.banal.app`, `AUTH_COOKIE_SAMESITE=lax`, `WEB_ORIGIN=https://app.banal.app`.
+3. Verify: login sets cookies; `/auth/me` works; logout clears. Runbook: [`docs/deploy/cookie-cutover.md`](deploy/cookie-cutover.md).
 
 ### Default automation
 
@@ -581,14 +581,14 @@ T25 Acceptance + tag platform-v1.0.0
 
 ### Текущий этап
 
-| Поле             | Значение                               |
-| ---------------- | -------------------------------------- |
-| Трек             | **T23 — Custom Domains & Cookie Prod** |
-| Текущий шаг      | **219** — Domain plan                  |
-| Статус шага      | `todo`                                 |
-| Последний `done` | **218** — T22 freeze                   |
-| Закрыто шагов    | **122 / 150** (097–246)                |
-| Обновлено        | 2026-07-25                             |
+| Поле             | Значение                          |
+| ---------------- | --------------------------------- |
+| Трек             | **T24 — CI/CD Deploy Automation** |
+| Текущий шаг      | **227** — Deploy strategy doc     |
+| Статус шага      | `todo`                            |
+| Последний `done` | **226** — T23 freeze              |
+| Закрыто шагов    | **130 / 150** (097–246)           |
+| Обновлено        | 2026-07-25                        |
 
 ### Сводка по трекам
 
@@ -606,7 +606,7 @@ T25 Acceptance + tag platform-v1.0.0
 | T20 Observability     | 183–190 | 8    | `done` |
 | T21 Railway API       | 191–205 | 15   | `done` |
 | T22 Vercel web        | 206–218 | 13   | `done` |
-| T23 Custom domains    | 219–226 | 0    | `todo` |
+| T23 Custom domains    | 219–226 | 8    | `done` |
 | T24 CI/CD deploy      | 227–236 | 0    | `todo` |
 | T25 Runbooks & freeze | 237–246 | 0    | `todo` |
 
@@ -796,16 +796,16 @@ T25 Acceptance + tag platform-v1.0.0
 
 #### T23 — Custom Domains & Cookie Prod (219–226)
 
-| Step | Title             | Status | Notes |
-| ---- | ----------------- | ------ | ----- |
-| 219  | Domain plan       | `todo` |       |
-| 220  | DNS + TLS         | `todo` |       |
-| 221  | COOKIE_DOMAIN     | `todo` |       |
-| 222  | SameSite=Lax prod | `todo` |       |
-| 223  | CORS prod origin  | `todo` |       |
-| 224  | HSTS note         | `todo` |       |
-| 225  | Cutover checklist | `todo` |       |
-| 226  | T23 freeze        | `todo` |       |
+| Step | Title             | Status | Notes                                                                                       |
+| ---- | ----------------- | ------ | ------------------------------------------------------------------------------------------- |
+| 219  | Domain plan       | `done` | Parent `banal.app`; [`deploy/README.md`](deploy/README.md)#custom-domains-t23--domain-plan  |
+| 220  | DNS + TLS         | `done` | Runbooks vercel/railway; live attach gated until domain owned                               |
+| 221  | COOKIE_DOMAIN     | `done` | Target `.banal.app`; apply via [`cookie-cutover.md`](deploy/cookie-cutover.md)              |
+| 222  | SameSite=Lax prod | `done` | ADR-002 prod section; cutover → `lax`                                                       |
+| 223  | CORS prod origin  | `done` | Target `WEB_ORIGIN=https://app.banal.app`; live with cutover                                |
+| 224  | HSTS note         | `done` | [`cookie-cutover.md`](deploy/cookie-cutover.md)#hsts                                        |
+| 225  | Cutover checklist | `done` | [`deploy/cookie-cutover.md`](deploy/cookie-cutover.md)                                      |
+| 226  | T23 freeze        | `done` | [`track-23-custom-domains-freeze.md`](track-23-custom-domains-freeze.md); live verify gated |
 
 #### T24 — CI/CD Deploy Automation (227–236)
 
