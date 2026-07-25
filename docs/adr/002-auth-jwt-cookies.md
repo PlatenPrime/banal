@@ -57,8 +57,8 @@ Until a domain module replaces the demo:
 
 - Mutating methods (`POST`/`PUT`/`PATCH`/`DELETE`): **Origin allowlist** = `WEB_ORIGIN` + preview allowlist/regex (T12). Implemented as Nest middleware (`applyCsrfOriginMiddleware`); missing or non-allowlisted Origin → **403** Problem Details.
 - **Double-submit `csrf` cookie is deferred** for platform-v1: Origin allowlist + httpOnly cookies + SameSite profiles are the mandatory CSRF controls. Revisit if a non-browser or third-party cookie client needs defense in depth beyond Origin.
-- **Preview** (e.g. `*.vercel.app` ↔ Railway preview): `SameSite=None; Secure` when cross-site.
-- **Production** custom domains (`app.` + `api.` on one parent): `SameSite=Lax`, `COOKIE_DOMAIN=.example.com`.
+- **Preview** (e.g. `*.vercel.app` ↔ Railway preview/staging): `SameSite=None; Secure` when cross-site. Do **not** set `COOKIE_DOMAIN` for host-only cookies on platform hostnames.
+- **Production** custom domains (`app.banal.app` + `api.banal.app` on parent `banal.app`): `SameSite=Lax`, `COOKIE_DOMAIN=.banal.app`, `WEB_ORIGIN=https://app.banal.app` (exact). Cutover runbook: [cookie-cutover.md](../deploy/cookie-cutover.md). Until DNS is live, production may temporarily use the same None profile as staging on `*.vercel.app` / `*.up.railway.app`.
 
 ### 6. Registration gate
 
@@ -85,9 +85,9 @@ Until a domain module replaces the demo:
 
 ## Alternatives considered
 
-| Alternative                | Why rejected                                     |
-| -------------------------- | ------------------------------------------------ |
-| Bearer JWT in localStorage | XSS-readable; weaker SSR story                   |
-| Server session store only  | Extra infra; cookies + jti store is enough       |
-| Login by email             | Product choice for v1: username is the login key |
-| Always SameSite=None       | Weaker prod posture; custom domains enable Lax   |
+| Alternative                | Why rejected                                                 |
+| -------------------------- | ------------------------------------------------------------ |
+| Bearer JWT in localStorage | XSS-readable; weaker SSR story                               |
+| Server session store only  | Extra infra; cookies + jti store is enough                   |
+| Login by email             | Product choice for v1: username is the login key             |
+| Always SameSite=None       | Weaker prod posture; custom domains (`banal.app`) enable Lax |

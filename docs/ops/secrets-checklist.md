@@ -18,8 +18,8 @@ Separate services for staging and production. Full list mirrors `apps/api` Zod s
 | `WEB_ORIGIN_PREVIEW_LIST`     | no       | Comma-separated extra origins                    |
 | `JWT_ACCESS_SECRET`           | yes      | ≥32 chars; unique per environment                |
 | `JWT_REFRESH_SECRET`          | yes      | ≥32 chars; **must differ** from access secret    |
-| `COOKIE_DOMAIN`               | prod     | e.g. `.example.com` after custom domains (T23)   |
-| `AUTH_COOKIE_SAMESITE`        | yes      | `lax` prod; `none` interim for previews (T22)    |
+| `COOKIE_DOMAIN`               | prod     | `.banal.app` after custom domains live (T23)     |
+| `AUTH_COOKIE_SAMESITE`        | yes      | `lax` prod after cutover; `none` staging/preview |
 | `AUTH_REGISTRATION_ENABLED`   | yes      | Default `false`                                  |
 | `TRUST_PROXY`                 | yes      | **`1`** on Railway (Secure cookies behind proxy) |
 | `OTEL_ENABLED`                | no       | Default `false`                                  |
@@ -31,13 +31,13 @@ Full per-environment mapping and Railway dashboard steps: [deploy/railway.md](..
 
 Separate projects for staging and production. Full runbook: [deploy/vercel.md](../deploy/vercel.md).
 
-| Variable       | Staging (`banal-web-staging`)             | Production (`banal-web-production`)          | Required | Notes                                      |
-| -------------- | ----------------------------------------- | -------------------------------------------- | -------- | ------------------------------------------ |
-| `VITE_API_URL` | `https://api-staging-9c27.up.railway.app` | `https://api-production-b6c9.up.railway.app` | yes      | Absolute API base URL for that environment |
+| Variable       | Staging (`banal-web-staging`)             | Production (`banal-web-production`)                                             | Required | Notes                                      |
+| -------------- | ----------------------------------------- | ------------------------------------------------------------------------------- | -------- | ------------------------------------------ |
+| `VITE_API_URL` | `https://api-staging-9c27.up.railway.app` | `https://api.banal.app` (interim: `https://api-production-b6c9.up.railway.app`) | yes      | Absolute API base URL for that environment |
 
 **No** JWT secrets, Mongo URIs, or other API secrets on Vercel. Vite embeds `VITE_*` into the client bundle.
 
-Recorded web origins (2026-07-25): `https://banal-web-staging.vercel.app`, `https://banal-web-production.vercel.app`.
+Recorded web origins (2026-07-25): staging `https://banal-web-staging.vercel.app`; production planned `https://app.banal.app` (interim `https://banal-web-production.vercel.app`). Cutover: [deploy/cookie-cutover.md](../deploy/cookie-cutover.md).
 
 ## GitHub
 
